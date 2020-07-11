@@ -6,6 +6,9 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import AuthService from './components/auth/auth-service';
+import UserProfilePage from './components/user/UserProfilePage';
+import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
+
 
 class App extends Component {
   state = {
@@ -14,7 +17,7 @@ class App extends Component {
 
   service = new AuthService();
 
-  setCurrentAcoount = (accountObj) => {
+  setCurrentAccount = (accountObj) => {
     this.setState({
       loggedInAccount: accountObj
     });
@@ -34,14 +37,30 @@ fetchAccount = () => {
   }
 
   render() {
-    this.fetchAccount();
+    this.fetchUser();
     return (
       <div className="App">
-        <Navigation setCurrentAccount={this.setCurrentAccount} loggedInAccount={this.state.loggedInAccount} />
+        <Navigation />
+
         <Switch>
-          <Route exact path='/login/user' render={(props) => <Login setCurrentUser={this.setCurrentUser} accountType='user' {...props} /> } />
-          <Route exact path='/login/volunteer' render={(props) => <Login setCurrentUser={this.setCurrentUser} accountType='volunteer' {...props} /> } />
-          <Route path='/signup/:accountType' render={(props) => <Signup setCurrentUser={this.setCurrentUser} {...props} /> } />
+          <Route exact path='/login/user' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
+          <Route exact path='/login/volunteer' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
+          <Route exact path='/signup/user' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
+          <Route exact path='/signup/volunteer' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
+          <Route exact path='/user/:id' render={(props) => {
+            if(this.state.loggedInAccount){
+              return <UserProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          <Route exact path='/volunteer/:id' render={(props) => {
+            if(this.state.loggedInAccount){
+              return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
           {/* <Route exact path='/projects' component={ProjectList} />
           <Route exact path='/projects/:id' render={(props) => <ProjectDetails {...props} loggedInAccount={this.state.loggedInAccount} /> } />
           <Route exact path='/projects/:id/edit' render={(props) => {
