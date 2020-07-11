@@ -3,59 +3,74 @@ import logo from './logo.svg';
 import './App.css';
 import Navigation from './components/Navigation';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// import Login from './components/projects/auth/Login';
-// import Signup from './components/projects/auth/Signup';
-// import AuthService from './components/projects/auth/auth-service';
-// import 'react-toastify/dist/ReactToastify.css';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
+import AuthService from './components/auth/auth-service';
+import UserProfilePage from './components/user/UserProfilePage';
+import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
+
 
 class App extends Component {
-//   state = {
-//     loggedInUser: null
-//   }
+  state = {
+    loggedInAccount: null
+  }
 
-//   service = new AuthService();
+  service = new AuthService();
 
-//   setCurrentUser = (userObj) => {
-//     this.setState({
-//       loggedInUser: userObj
-//     });
-//   }
+  setCurrentAccount = (accountObj) => {
+    this.setState({
+      loggedInAccount: accountObj
+    });
+  }
 
-//   // 1. save the user into the browser localstorage
-//   // or
-//   // 2. check if the user is still loggedin by calling the backend
-// fetchUser = () => {
-//     if(this.state.loggedInUser === null) {
-//       this.service.loggedin() 
-//         .then(response => {
-//           if (response._id) {
-//             this.setState({
-//               loggedInUser: response
-//             })
-//           }
-//         })
-//     }
-//   }
+  fetchUser = () => {
+    if(this.state.loggedInAccount === null) {
+      this.service.loggedin() 
+        .then(response => {
+          if (response._id) {
+            this.setState({
+              loggedInAccount: response
+            })
+          }
+        })
+    }
+  }
 
   render() {
-    // this.fetchUser();
+    this.fetchUser();
     return (
       <div className="App">
-      <Navigation />
-        {/* <Navbar setCurrentUser={this.setCurrentUser} loggedInUser={this.state.loggedInUser} /> */}
-        {/* <Switch>
-          <Route path='/login' render={(props) => <Login setCurrentUser={this.setCurrentUser} {...props} /> } />
-          <Route path='/signup' render={(props) => <Signup setCurrentUser={this.setCurrentUser} {...props} /> } />
-          <Route exact path='/projects' component={ProjectList} />
-          <Route exact path='/projects/:id' render={(props) => <ProjectDetails {...props} loggedInUser={this.state.loggedInUser} /> } />
+        <Navigation />
+
+        <Switch>
+          <Route exact path='/login/user' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
+          <Route exact path='/login/volunteer' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
+          <Route exact path='/signup/user' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
+          <Route exact path='/signup/volunteer' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
+          <Route exact path='/user/:id' render={(props) => {
+            if(this.state.loggedInAccount){
+              return <UserProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          <Route exact path='/volunteer/:id' render={(props) => {
+            if(this.state.loggedInAccount){
+              return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          {/* <Route exact path='/projects' component={ProjectList} />
+          <Route exact path='/projects/:id' render={(props) => <ProjectDetails {...props} loggedInAccount={this.state.loggedInAccount} /> } />
           <Route exact path='/projects/:id/edit' render={(props) => {
-            if(this.state.loggedInUser) {
+            if(this.state.loggedInAccount) {
               return  <EditProject {...props} /> 
             } else {
               return <Redirect to='/login' />
             }
-          }}/>
-        </Switch> */}
+          }}/> */}
+        </Switch>
       </div>
     );
   }
