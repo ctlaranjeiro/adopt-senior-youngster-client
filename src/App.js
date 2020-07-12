@@ -37,7 +37,7 @@ fetchAccount = () => {
   }
 
   render() {
-    this.fetchUser();
+    this.fetchAccount();
     return (
       <div className="App">
         <Navigation />
