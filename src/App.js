@@ -66,7 +66,7 @@ class App extends Component {
             }
           }} />
           <Route exact path='/user/:id/assignedVolunteers' render={(props) => {
-            if(this.state.loggedInAccount){
+            if(localStorage.getItem("loggedin")){
               return <AssignedVolunteers loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
               return <Redirect to="/" />

@@ -23,9 +23,11 @@ export default class Navigation extends Component {
             })
     }
 
-    render() {
 
+    render() {
+        
         if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'User') {
+            const userVolPath = `/user/${this.props.loggedInAccount._id}/assignedVolunteers`
 
             // console.log('Account:', this.props.loggedInAccount);
             return(
@@ -40,7 +42,7 @@ export default class Navigation extends Component {
                         <NavDropdown.Item href="/login/user">Details</NavDropdown.Item>
                         <NavDropdown.Item href="/login/volunteer">Edit Details</NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href="/user/:id/assignedVolunteers" onClick={this.assignedVolunteers}>Assigned Volunteers</Nav.Link>
+                    <Nav.Link href={userVolPath} onClick={this.assignedVolunteers}>Assigned Volunteers</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
