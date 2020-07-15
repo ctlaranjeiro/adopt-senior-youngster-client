@@ -8,6 +8,7 @@ import Signup from './components/auth/Signup';
 import AuthService from './components/auth/auth-service';
 import UserProfilePage from './components/user/UserProfilePage';
 import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
+import AssignedVolunteers from './components/user/AssignedVolunteers';
 
 
 class App extends Component {
@@ -44,7 +45,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Navigation />
+        <Navigation loggedInAccount = {this.state.loggedInAccount} setCurrentAccount={this.setCurrentAccount} />
 
         <Switch>
           <Route exact path='/login/user' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
@@ -61,6 +62,13 @@ class App extends Component {
           <Route exact path='/volunteer/:id' render={(props) => {
             if (localStorage.getItem("loggedin")) {
               return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          <Route exact path='/user/:id/assignedVolunteers' render={(props) => {
+            if(this.state.loggedInAccount){
+              return <AssignedVolunteers loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }

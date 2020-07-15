@@ -148,6 +148,13 @@ class AuthService {
                 return response.data;
             });
     }
+
+    assignedVolunteers = () => {
+        return this.service.post('/user/:id/assignedVolunteers')
+            .then((response) => {
+                return response.data;
+            })
+    }
 }
 
 export default AuthService;
