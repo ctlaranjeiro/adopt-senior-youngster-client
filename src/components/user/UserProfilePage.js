@@ -37,7 +37,7 @@ class UserProfilePage extends Component {
                 <Div welcomeProfileContainer>
                     <Div welcomeMessage>
                         <RoundedPicture loggedInAccount={this.props.loggedInAccount} size='8em' />
-                        <Span>Welcome, {this.props.loggedInAccount.firstName}</Span>
+                        <Span>Welcome, {this.props.loggedInAccount && this.props.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
                         <button>Edit Profile</button>

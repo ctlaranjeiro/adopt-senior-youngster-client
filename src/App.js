@@ -23,21 +23,25 @@ class App extends Component {
     });
   }
 
-fetchAccount = () => {
-    if(this.state.loggedInAccount === null) {
+  componentDidMount() {
+    this.fetchUser();
+  }
+  
+  fetchUser = () => {
+    if(this.state.loggedInUser === null) {
       this.service.loggedin() 
         .then(response => {
           if (response._id) {
-            this.setState({
-              loggedInAccount: response
-            })
+            this.setCurrentUser(response);
+            localStorage.setItem("loggedin", true);
+          } else {
+            localStorage.clear();
           }
         })
     }
   }
 
   render() {
-    this.fetchAccount();
     return (
       <div className="App">
         <Navigation />
@@ -48,14 +52,14 @@ fetchAccount = () => {
           <Route exact path='/signup/user' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
           <Route exact path='/signup/volunteer' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
           <Route exact path='/user/:id' render={(props) => {
-            if(this.state.loggedInAccount){
+            if (localStorage.getItem("loggedin")) {
               return <UserProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }
           }} />
           <Route exact path='/volunteer/:id' render={(props) => {
-            if(this.state.loggedInAccount){
+            if (localStorage.getItem("loggedin")) {
               return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
               return <Redirect to="/" />

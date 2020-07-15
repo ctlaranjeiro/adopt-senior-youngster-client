@@ -7,6 +7,7 @@ const Div = styled.div`
     width: 40%;
     padding: 20px 30px;
     margin-bottom: 20px 0;
+    border-radius: 20px;
 `;
 
 const Table = styled.table`
@@ -32,16 +33,19 @@ const Td = styled.td`
 `;
 
 function PersonalData(props){
+   
     const account = props.loggedInAccount;
 
     let phoneNumber;
-    if(account.accountType === 'User'){
-        phoneNumber = account.phoneNumber;
-    } else if(account.accountType === 'Volunteer'){
-        phoneNumber = account.volPhoneNumber;
+
+    if(account){
+        if(account.accountType === 'User'){
+            phoneNumber = account.phoneNumber;
+        } else if(account.accountType === 'Volunteer'){
+            phoneNumber = account.volPhoneNumber;
+        }
     }
-
-
+    
     return(
         <Div>
             <Table>
@@ -56,7 +60,7 @@ function PersonalData(props){
                             Name
                         </Td>
                         <Td td2>
-                            {account.firstName} {account.lastName}
+                            {account && account.firstName} {account && account.lastName}
                         </Td>
                     </tr>
                     <tr>
@@ -64,7 +68,7 @@ function PersonalData(props){
                             Age
                         </Td>
                         <Td td2>
-                            {account.age}
+                            {account && account.age}
                         </Td>
                     </tr>
                     <tr>
@@ -72,7 +76,7 @@ function PersonalData(props){
                             Email
                         </Td>
                         <Td td2>
-                            {account.email}
+                            {account && account.email}
                         </Td>
                     </tr>
                     <tr>
@@ -88,7 +92,7 @@ function PersonalData(props){
                             Address
                         </Td>
                         <Td td2>
-                            {account.address}
+                            {account && account.address}
                         </Td>
                     </tr>
                 </tbody>

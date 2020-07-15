@@ -28,6 +28,8 @@ class Login extends Component {
                 //the line of code above lifts the state up to app.js
 
                 this.setState({ email: '', password: ''})
+                localStorage.setItem("loggedin", true);
+
                 //redirect the user
                 this.props.history.push(`/user/${response._id}`);
             })
@@ -41,6 +43,9 @@ class Login extends Component {
                 //the line of code above lifts the state up to app.js
 
                 this.setState({ email: '', password: ''})
+
+                localStorage.setItem("loggedin", true);
+
                 //redirect the user
                 this.props.history.push(`/volunteer/${response._id}`);
             })

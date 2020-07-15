@@ -7,6 +7,7 @@ const Div = styled.div`
     width: 40%;
     padding: 20px 30px;
     margin: 20px 0;
+    border-radius: 20px;
 `;
 
 const Table = styled.table`
@@ -48,7 +49,7 @@ function PersonalData(props){
                             Name
                         </Td>
                         <Td td2>
-                            {account.emergencyContact.firstName} {account.emergencyContact.lastName}
+                            {account && account.emergencyContact.firstName} {account && account.emergencyContact.lastName}
                         </Td>
                     </tr>
                     <tr>
@@ -56,7 +57,7 @@ function PersonalData(props){
                             Email
                         </Td>
                         <Td td2>
-                            {account.emergencyContact.email}
+                            {account && account.emergencyContact.email}
                         </Td>
                     </tr>
                     <tr>
@@ -64,7 +65,7 @@ function PersonalData(props){
                             Phone number
                         </Td>
                         <Td td2>
-                            {account.emergencyContact.phoneNumber}
+                            {account && account.emergencyContact.phoneNumber}
                         </Td>
                     </tr>
                     <tr>
@@ -72,7 +73,7 @@ function PersonalData(props){
                             Address
                         </Td>
                         <Td td2>
-                            {account.emergencyContact.address}
+                            {account && account.emergencyContact.address}
                         </Td>
                     </tr>
                 </tbody>
