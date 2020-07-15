@@ -29,11 +29,11 @@ class App extends Component {
   }
   
   fetchUser = () => {
-    if(this.state.loggedInUser === null) {
+    if(this.state.loggedInAccount === null) {
       this.service.loggedin() 
         .then(response => {
           if (response._id) {
-            this.setCurrentUser(response);
+            this.setCurrentAccount(response);
             localStorage.setItem("loggedin", true);
           } else {
             localStorage.clear();
@@ -73,6 +73,8 @@ class App extends Component {
               return <Redirect to="/" />
             }
           }} />
+          <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
+
           {/* <Route exact path='/projects' component={ProjectList} />
           <Route exact path='/projects/:id' render={(props) => <ProjectDetails {...props} loggedInAccount={this.state.loggedInAccount} /> } />
           <Route exact path='/projects/:id/edit' render={(props) => {

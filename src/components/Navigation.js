@@ -11,6 +11,8 @@ export default class Navigation extends Component {
         this.service.logout()
             .then(() => {
                 this.props.setCurrentAccount(null);
+                localStorage.clear();
+                this.props.history.push('/');
             })
     }
 
