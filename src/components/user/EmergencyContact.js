@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components';
 
 const Div = styled.div`
     background-color: #f1f1f1;
-    width: 40%;
+    width: 100%;
     padding: 20px 30px;
-    margin: 20px 0;
+    margin: 20px 0 0;
     border-radius: 20px;
 `;
 
@@ -32,7 +32,7 @@ const Td = styled.td`
     `}
 `;
 
-function PersonalData(props){
+function EmergencyContact(props){
     const account = props.loggedInAccount;
 
     return(
@@ -82,4 +82,4 @@ function PersonalData(props){
     )
 }
 
-export default PersonalData;
+export default EmergencyContact;

@@ -3,6 +3,7 @@ import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
 import PersonalData from '../PersonalData';
 import EmergencyContact from '../user/EmergencyContact';
+import AccountPreferencesInfo from '../AccountPreferencesInfo';
 
 const Div = styled.div`
     ${props => props.mainContainer && css`
@@ -19,6 +20,20 @@ const Div = styled.div`
     ${props => props.welcomeMessage && css`
         display: flex;
         align-items: center;
+    `}
+
+    ${props => props.info && css`
+        display: flex;
+        justify-content: space-between;
+    `}
+
+    ${props => props.rightInfo && css`
+        width: 50%;
+        padding-right: 20px;
+    `}
+    ${props => props.leftInfo && css`
+        width: 50%;
+        padding-left: 20px;
     `}
 `;
 
@@ -43,8 +58,15 @@ class UserProfilePage extends Component {
                         <button>Edit Profile</button>
                     </Div>
                 </Div>
-                <PersonalData loggedInAccount={this.props.loggedInAccount} />
-                <EmergencyContact loggedInAccount={this.props.loggedInAccount} />
+                <Div info>
+                    <Div rightInfo>
+                        <PersonalData loggedInAccount={this.props.loggedInAccount} />
+                        <EmergencyContact loggedInAccount={this.props.loggedInAccount} />
+                    </Div>
+                    <Div leftInfo>
+                        <AccountPreferencesInfo loggedInAccount={this.props.loggedInAccount} />
+                    </Div>
+                </Div>
                 
             </Div>
         )

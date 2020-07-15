@@ -1,5 +1,15 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+
+const Div = styled.div`
+        width: ${props => props.size};
+        height: ${props => props.size};
+        background-image: url(${props => props.backgroundImage});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center top;
+        border-radius: 50%;       
+    `;
 
 function RoundedPicture(props){
 
@@ -18,17 +28,6 @@ function RoundedPicture(props){
     }
 
     let imgSize = props.size;
-
-    const Div = styled.div`
-        width: ${props => props.size};
-        height: ${props => props.size};
-        background-image: url(${props => props.backgroundImage});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center top;
-        border-radius: 50%;       
-    `;
-
 
     return(
         <div>
