@@ -73,16 +73,6 @@ class App extends Component {
             }
           }} />
           <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
-
-          {/* <Route exact path='/projects' component={ProjectList} />
-          <Route exact path='/projects/:id' render={(props) => <ProjectDetails {...props} loggedInAccount={this.state.loggedInAccount} /> } />
-          <Route exact path='/projects/:id/edit' render={(props) => {
-            if(this.state.loggedInAccount) {
-              return  <EditProject {...props} /> 
-            } else {
-              return <Redirect to='/login' />
-            }
-          }}/> */}
         </Switch>
       </div>
     );

@@ -25,11 +25,15 @@ const Div = styled.div`
     ${props => props.info && css`
         display: flex;
         justify-content: space-between;
+        height: 65vh;
     `}
 
     ${props => props.rightInfo && css`
         width: 50%;
         padding-right: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     `}
     ${props => props.leftInfo && css`
         width: 50%;
