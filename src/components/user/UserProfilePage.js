@@ -4,6 +4,11 @@ import styled, { css } from 'styled-components';
 import PersonalData from '../PersonalData';
 import EmergencyContact from '../user/EmergencyContact';
 import AccountPreferencesInfo from '../AccountPreferencesInfo';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { FiEdit } from "react-icons/fi";
+
+
 
 const Div = styled.div`
     ${props => props.mainContainer && css`
@@ -59,7 +64,9 @@ class UserProfilePage extends Component {
                         <Span>Welcome, {this.props.loggedInAccount && this.props.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
-                        <button>Edit Profile</button>
+                        <Link to={`/user/${this.props.loggedInAccount && this.props.loggedInAccount._id}/edit`}>
+                        <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
+                        </Link>
                     </Div>
                 </Div>
                 <Div info>

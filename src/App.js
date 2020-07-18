@@ -8,6 +8,7 @@ import AuthService from './components/auth/auth-service';
 import UserProfilePage from './components/user/UserProfilePage';
 import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
 import AssignedVolunteers from './components/user/AssignedVolunteers';
+import EditPage from './components/EditPage';
 
 
 class App extends Component {
@@ -68,6 +69,20 @@ class App extends Component {
           <Route exact path='/user/:id/assignedVolunteers' render={(props) => {
             if(localStorage.getItem("loggedin")){
               return <AssignedVolunteers loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          <Route exact path='/user/:id/edit' render={(props) => {
+            if (localStorage.getItem("loggedin")) {
+              return <EditPage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+            } else{
+              return <Redirect to="/" />
+            }
+          }} />
+          <Route exact path='/volunteer/:id/edit' render={(props) => {
+            if (localStorage.getItem("loggedin")) {
+              return <EditPage loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }

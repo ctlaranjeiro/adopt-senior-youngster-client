@@ -43,7 +43,12 @@ const Div = styled.div`
 
 const H5 = styled.h5`
     font-size: 1.1em;
-    
+    font-weight: bold;
+    text-align: left;
+`
+
+const H6 = styled.h6`
+    font-size: 1em;
     font-weight: bold;
     text-align: left;
 `
@@ -185,7 +190,7 @@ function AccountPreferencesInfo(props){
                     <Div>
                     {account && account.notes &&
                             <Div notes>
-                                <H5>Notes:</H5>
+                                <H6>Notes:</H6>
                                 <span>{account.notes}</span>
                             </Div>
                         }
@@ -324,6 +329,7 @@ function AccountPreferencesInfo(props){
             <Div main>
                 <H5>Your Preferences</H5>
                 <Hr />
+                loading...
             </Div>
         )
     }
