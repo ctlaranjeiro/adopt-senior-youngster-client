@@ -31,8 +31,10 @@ export default class Navigation extends Component {
 
             // console.log('Account:', this.props.loggedInAccount);
             return(
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="/">LOGO</Navbar.Brand>
+                <Navbar fluid collapseOnSelect expand="lg" bg="light" variant="light"  fixed="top">
+                <Navbar.Brand href="/">
+                    <img src="../icons/Logo.png" alt=""/>
+                </Navbar.Brand>
                 <Navbar.Brand className="lg-6 justify-content-end">Hello {this.props.loggedInAccount.firstName}!</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">

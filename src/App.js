@@ -9,6 +9,9 @@ import UserProfilePage from './components/user/UserProfilePage';
 import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
 import AssignedVolunteers from './components/user/AssignedVolunteers';
 import EditPage from './components/EditPage';
+import LandingPage from './components/LandingPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import FooterComponent from './components/FooterComponent';
 
 
 class App extends Component {
@@ -48,6 +51,7 @@ class App extends Component {
         <Navigation loggedInAccount = {this.state.loggedInAccount} setCurrentAccount={this.setCurrentAccount} />
 
         <Switch>
+          <Route exact path='/' render={() => <LandingPage />} />
           <Route exact path='/login/user' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
           <Route exact path='/login/volunteer' render={(props) => <Login setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
           <Route exact path='/signup/user' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='user' {...props} /> } />
@@ -89,6 +93,7 @@ class App extends Component {
           }} />
           <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
         </Switch>
+        <FooterComponent />
       </div>
     );
   }
