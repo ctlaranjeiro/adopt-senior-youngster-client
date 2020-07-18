@@ -31,20 +31,19 @@ export default class Navigation extends Component {
 
             // console.log('Account:', this.props.loggedInAccount);
             return(
-                <Navbar fluid collapseOnSelect expand="lg" bg="light" variant="light"  fixed="top">
+                <Navbar className="navBar" fluid collapseOnSelect expand="lg" bg="light" variant="light" >
                 <Navbar.Brand href="/">
-                    <img src="../icons/Logo.png" alt=""/>
+                    <img className="logo" src="../Logo.png" alt=""/>
                 </Navbar.Brand>
-                <Navbar.Brand className="lg-6 justify-content-end">Hello {this.props.loggedInAccount.firstName}!</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-                    <Nav className="lg-6">
+                    <Nav>
                     
                     <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="/login/user">Details</NavDropdown.Item>
+                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
                         <NavDropdown.Item href="/login/volunteer">Edit Details</NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href={userVolPath} onClick={this.assignedVolunteers}>Assigned Volunteers</Nav.Link>
+                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}/assignedVolunteers`} onClick={this.assignedVolunteers}>Assigned Volunteers</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -54,18 +53,19 @@ export default class Navigation extends Component {
         
         if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'Volunteer') {
             return(
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="/">LOGO</Navbar.Brand>
-                <Navbar.Brand className="justify-content-end">Hello {this.props.loggedInAccount.firstName}!</Navbar.Brand>
+                <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
+                <Navbar.Brand href="/">
+                    <img className="logo" src="../Logo.png" alt=""/>
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-                    <Nav className="lg-6">
+                    <Nav className="foi">
                     
                     <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="/login/user">Details</NavDropdown.Item>
+                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
                         <NavDropdown.Item href="/login/volunteer">Edit Details</NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href="#">Assigned Users</Nav.Link>
+                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}/assignedUser`}>Assigned Users</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -75,16 +75,17 @@ export default class Navigation extends Component {
         
         if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'Institution') {
             return(
-                <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="/">LOGO</Navbar.Brand>
-                <Navbar.Brand className="justify-content-end">Hello {this.props.loggedInAccount.firstName}!</Navbar.Brand>
+                <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
+                <Navbar.Brand href="/">
+                    <img className="logo" src="../Logo.png" alt=""/>
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-                    <Nav className="lg-6">
+                    <Nav className="foi">
                     
                     <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="/login/user">Details</NavDropdown.Item>
-                        <NavDropdown.Item href="/login/volunteer">Edit Details</NavDropdown.Item>
+                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
+                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}/assignedUser`}>Edit Details</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link href="#">Users</Nav.Link>
                     <Nav.Link href="#">Volunteers</Nav.Link>
@@ -96,24 +97,26 @@ export default class Navigation extends Component {
         }
         
         return(
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-            <Navbar.Brand href="/">LOGO</Navbar.Brand>
-            <Navbar.Brand>Hello!</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-                <Nav className="lg-6">
-                <NavDropdown title="Login" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/login/user">User</NavDropdown.Item>
-                    <NavDropdown.Item href="/login/volunteer">Volunteer</NavDropdown.Item>
-                    <NavDropdown.Item href="/login/institution">Institution</NavDropdown.Item>
-                </NavDropdown>
-                <NavDropdown title="Signup" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">User</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Volunteer</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Institution</NavDropdown.Item>
-                </NavDropdown>
-                </Nav>
-            </Navbar.Collapse>
+            <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
+                <Navbar.Brand href="/">
+                    <img className="logo" src="../Logo.png" alt=""/>
+                </Navbar.Brand>
+                <Navbar.Brand className="oi justify-self-end">Hello!</Navbar.Brand>
+                <Navbar.Toggle className="foi" aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse className="colapse" id="responsive-navbar-nav">
+                    <Nav className="foi">
+                        <NavDropdown title="Login" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="/login/user">User</NavDropdown.Item>
+                            <NavDropdown.Item href="/login/volunteer">Volunteer</NavDropdown.Item>
+                            <NavDropdown.Item href="/login/institution">Institution</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title="Signup" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="/signup/user">User</NavDropdown.Item>
+                            <NavDropdown.Item href="/signup/volunteer">Volunteer</NavDropdown.Item>
+                            <NavDropdown.Item href="/signup/institution">Institution</NavDropdown.Item>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
             </Navbar>
         );
         

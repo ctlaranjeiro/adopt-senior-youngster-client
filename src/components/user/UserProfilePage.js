@@ -12,7 +12,8 @@ import { FiEdit } from "react-icons/fi";
 
 const Div = styled.div`
     ${props => props.mainContainer && css`
-        margin: 0 80px;
+        margin: auto 80px;
+        height: 89vh;
     `}
 
     ${props => props.welcomeProfileContainer && css`

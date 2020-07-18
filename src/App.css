@@ -53,14 +53,119 @@
 }
 
 
+.blue{
+  color:blue;
+}
+
+.navBar{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.logo{
+  width: 8em;
+}
+
+.oi{
+  position: absolute;
+  top: auto;
+  right: 12em;
+}
+
+.foi{
+  display:flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.colapse{
+  position: absolute;
+  top: auto;
+  right:1em;
+  width: 200px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Captions */
+.caption{
+  font-size: 5em;
+  font-weight: 700;
+  color: #282c34;
+}
+
+/* Accounts */
+.intent{
+  font-size: 4em;
+  margin: 2em 0;
+}
+
 .userTypeImg{
   background-color: #b1d7ff;
   width: 120px;
   height: 120px;
   padding: 20px;
   color: #61dafb;
+  margin-bottom: 2em;
 }
 
-.blue{
-  color:blue;
+.accName{
+  margin-bottom: 2em;
+}
+
+#join{
+  font-size: 3em;
+  margin: 2em 0;
+}
+
+#tomorrow{
+  font-size: 2.5em;
+  margin-bottom: 2em;
+  font-weight: 400; 
+}
+
+.signupLink::hover {
+  text-decoration: none;
+}
+
+
+
+/* footer */
+.bottom{
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+}
+
+.authors{
+  color: #fff;
+  width: 8.5em;
+  margin: 0;
+  padding: 0;
+  margin-left: 1em;
+  text-align: left;
+}
+
+.authors p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.7em;
+}
+
+.social {
+  width: 30px;
+  margin-right: 1em;
+  padding: 0.5em 0;
+}
+
+.social img{
+  width: 25px;
+  height: 25px;
+  color: #fff
 }
