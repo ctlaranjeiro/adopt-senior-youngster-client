@@ -11,27 +11,34 @@ const Div = styled.div`
     ${props => props.mainContainer && css `
         margin: 0 80px;
         overflow: auto;
-        `}
+    `}
 
     ${props => props.landing && css `
-        background-image: url('../public/carousel-user.jpg');
+        background-image: url('../images/carousel-user.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
         display: flex;
         align-items: baseline;
         heigth: 70vh;
-        `}
+    `}
     
     ${props => props.captions && css `
         width: 30%;
         text-align: left;
         margin-top: 20vh;
         margin-left: 10vw;
-        `}
+    `}
 
     ${props => props.accounts && css `
-        margin-top: 25px;`}
+        margin-top: 25px;
+    `}
+
+    ${props => props.centerFlex && css `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    `}
 `
 
 export default class LandingPage extends Component {
@@ -55,25 +62,29 @@ export default class LandingPage extends Component {
                                 {/* <Image src="holder.js/171x180" thumbnail /> */}
                             </Col>
                             <Col xs={6} md={4}>
-                                <Image className="userTypeImg" width={117} height={180} src="../icons/users-icon.png" thumbnail />
-                                <h4>User</h4>
-                                <Link>
-                                    <Button>
-                                        Signup
-                                    </Button>
-                                </Link>
-                                <p>If you need help to perform some daily or recurrent tasks.</p>
-                                <p>Or if you are in need of guidence toowards your future.</p>
+                                <Div centerFlex>
+                                    <div className="userTypeImg"><Image height={80} src="../icons/users-icon.png"  /></div>
+                                    <h4>User</h4>
+                                    <Link>
+                                        <Button>
+                                            Signup
+                                        </Button>
+                                    </Link>
+                                    <p>If you need help to perform some daily or recurrent tasks.</p>
+                                    <p>Or if you are in need of guidence towards your future.</p>
+                                </Div>
                             </Col>
                             <Col xs={6} md={4}>
-                                <Image className="userTypeImg" width={78} src="../icons/volunteers-icon.png" thumbnail />
-                                <h4>Volunteer</h4>
-                                <Link>
-                                    <Button>
-                                        Signup
-                                    </Button>
-                                </Link>
-                                <p>If you'd like to help people in need.</p>
+                                <Div centerFlex>
+                                    <div className="userTypeImg"><Image height={80} src="../icons/volunteers-icon.png"  /></div>
+                                    <h4>Volunteer</h4>
+                                    <Link>
+                                        <Button>
+                                            Signup
+                                        </Button>
+                                    </Link>
+                                    <p>If you'd like to help people in need.</p>
+                                </Div>
                             </Col>
                             <Col xs={3} md={2}>
                                 {/* <Image src="holder.js/171x180" thumbnail /> */}

@@ -54,8 +54,10 @@
 
 
 .userTypeImg{
-  background-color: #fff;
-  border: none;
+  background-color: #b1d7ff;
+  width: 120px;
+  height: 120px;
+  padding: 20px;
   color: #61dafb;
 }
 
