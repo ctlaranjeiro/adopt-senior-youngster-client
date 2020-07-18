@@ -39,13 +39,13 @@ export default class AssignedVolunteers extends Component {
                                     <div>
                                         <span>
                                             <strong>
-                                                {/* {vol.firstName} {vol.lastName} */}
-                                                vol.firstName vol.lastName
+                                                {vol.firstName} {vol.lastName}
+                                                {/* vol.firstName vol.lastName */}
                                             </strong>
                                         </span>
                                         <span>
-                                            {/* {vol.profilePicture} */}
-                                            vol.profilePicture
+                                            {vol.profilePicture}
+                                            {/* vol.profilePicture */}
                                         </span>
                                     </div>
                                 </li>
