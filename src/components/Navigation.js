@@ -31,7 +31,7 @@ export default class Navigation extends Component {
 
             // console.log('Account:', this.props.loggedInAccount);
             return(
-                <Navbar fluid collapseOnSelect expand="lg" bg="light" variant="light"  fixed="top">
+                <Navbar fluid collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Brand href="/">
                     <img src="../icons/Logo.png" alt=""/>
                 </Navbar.Brand>

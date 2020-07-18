@@ -13,25 +13,25 @@ const Div = styled.div`
 
 function RoundedPicture(props){
 
-    let avatarImg;
+    // let avatarImg;
 
-    if(props.loggedInAccount){
-        if(!props.loggedInAccount.profilePicture){
-            if(props.loggedInAccount.gender === 'Female'){
-                avatarImg = '../images/avatarWoman.jpg';
-            } else{
-                avatarImg = '../images/avatarMan.jpg';
-            }        
-        } else {
-            avatarImg = props.loggedInAccount.profilePicture;
-        } 
-    }
+    // if(props.loggedInAccount){
+    //     if(!props.pic){
+    //         if(props.loggedInAccount.gender === 'Female'){
+    //             avatarImg = '../images/avatarWoman.jpg';
+    //         } else{
+    //             avatarImg = '../images/avatarMan.jpg';
+    //         }        
+    //     } else {
+    //         avatarImg = props.pic;
+    //     } 
+    // }
 
     let imgSize = props.size;
 
     return(
         <div>
-            <Div backgroundImage={avatarImg} size={imgSize}></Div>
+            <Div backgroundImage={props.pic} size={imgSize}></Div>
         </div>
     )
 }

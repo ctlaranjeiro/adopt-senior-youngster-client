@@ -58,7 +58,7 @@ class App extends Component {
           <Route exact path='/signup/volunteer' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
           <Route exact path='/user/:id' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <UserProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+              return <UserProfilePage {...props} /> 
             } else{
               return <Redirect to="/" />
             }

@@ -18,8 +18,10 @@ const Span = styled.span`
 function ButtonAssigned (props){
     return(
         <Div btnWidth={props.btnWidth}>
-            <RoundedPicture loggedInAccount={props.loggedInAccount} size='3.2em' />
-            <Span>{props.loggedInAccount && props.loggedInAccount.firstName} {props.loggedInAccount && props.loggedInAccount.lastName}</Span>
+            <RoundedPicture
+                pic={props.picture}
+                size='3.2em' />
+            <Span>{props.firstName} {props.lastName}</Span>
         </Div>
     )
 }

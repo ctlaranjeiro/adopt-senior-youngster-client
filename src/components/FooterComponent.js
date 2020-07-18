@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components';
 
 const P = styled.p`
     margin: 0;
-    font-size: 0.7em;
+    font-size: 0.6em;
     text-align: left;
 `;
 

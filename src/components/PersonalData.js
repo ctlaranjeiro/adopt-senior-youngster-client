@@ -34,6 +34,7 @@ const Td = styled.td`
 function PersonalData(props){
    
     const account = props.loggedInAccount;
+    console.log('account:', account);
 
     let phoneNumber;
 
@@ -59,7 +60,7 @@ function PersonalData(props){
                             Name
                         </Td>
                         <Td td2>
-                            {account && account.firstName} {account && account.lastName}
+                            {account.firstName} {account.lastName}
                         </Td>
                     </tr>
                     <tr>
@@ -67,7 +68,7 @@ function PersonalData(props){
                             Age
                         </Td>
                         <Td td2>
-                            {account && account.age}
+                            {account.age}
                         </Td>
                     </tr>
                     <tr>
@@ -75,7 +76,7 @@ function PersonalData(props){
                             Email
                         </Td>
                         <Td td2>
-                            {account && account.email}
+                            {account.email}
                         </Td>
                     </tr>
                     <tr>
@@ -91,7 +92,7 @@ function PersonalData(props){
                             Address
                         </Td>
                         <Td td2>
-                            {account && account.address}
+                            {account.address}
                         </Td>
                     </tr>
                 </tbody>

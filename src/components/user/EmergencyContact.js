@@ -48,7 +48,7 @@ function EmergencyContact(props){
                             Name
                         </Td>
                         <Td td2>
-                            {account && account.emergencyContact.firstName} {account && account.emergencyContact.lastName}
+                            {account.firstName} {account.lastName}
                         </Td>
                     </tr>
                     <tr>
@@ -56,7 +56,7 @@ function EmergencyContact(props){
                             Email
                         </Td>
                         <Td td2>
-                            {account && account.emergencyContact.email}
+                            {account.email}
                         </Td>
                     </tr>
                     <tr>
@@ -64,7 +64,7 @@ function EmergencyContact(props){
                             Phone number
                         </Td>
                         <Td td2>
-                            {account && account.emergencyContact.phoneNumber}
+                            {account.phoneNumber}
                         </Td>
                     </tr>
                     <tr>
@@ -72,7 +72,7 @@ function EmergencyContact(props){
                             Address
                         </Td>
                         <Td td2>
-                            {account && account.emergencyContact.address}
+                            {account.address}
                         </Td>
                     </tr>
                 </tbody>

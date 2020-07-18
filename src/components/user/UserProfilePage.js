@@ -7,6 +7,7 @@ import AccountPreferencesInfo from '../AccountPreferencesInfo';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FiEdit } from "react-icons/fi";
+import axios from 'axios';
 
 
 
@@ -54,28 +55,46 @@ const Span = styled.span`
 `;
 
 class UserProfilePage extends Component {
+    state = {
+        loggedInAccount: [],
+        emergencyContact: []
+    };
+
+    componentDidMount(){
+        const { params } = this.props.match;
+        axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
+            .then(responseFromAPI => {
+                // console.log('responseFromAPI.data', responseFromAPI.data);
+                const loggedInAccount = responseFromAPI.data;
+                this.setState({ loggedInAccount: loggedInAccount, emergencyContact: loggedInAccount.emergencyContact});
+            })
+    }
+
     render(){
         return(
             <Div mainContainer>
                 {/* <h1>{this.props.loggedInAccount.firstName}'s User Profile Page</h1> */}
                 <Div welcomeProfileContainer>
                     <Div welcomeMessage>
-                        <RoundedPicture loggedInAccount={this.props.loggedInAccount} size='8em' />
-                        <Span>Welcome, {this.props.loggedInAccount && this.props.loggedInAccount.firstName}</Span>
+                        <RoundedPicture
+                            pic={this.state.loggedInAccount.profilePicture}
+                            size='8em' 
+                        />
+                        <Span>Welcome, {this.state.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
-                        <Link to={`/user/${this.props.loggedInAccount && this.props.loggedInAccount._id}/edit`}>
+                        <Link to={`/user/${this.state.loggedInAccount._id}/edit`}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
                     </Div>
                 </Div>
                 <Div info>
                     <Div rightInfo>
-                        <PersonalData loggedInAccount={this.props.loggedInAccount} />
-                        <EmergencyContact loggedInAccount={this.props.loggedInAccount} />
+                        <PersonalData loggedInAccount={this.state.loggedInAccount} />
+                        <EmergencyContact loggedInAccount={this.state.emergencyContact} />
                     </Div>
                     <Div leftInfo>
-                        <AccountPreferencesInfo loggedInAccount={this.props.loggedInAccount} />
+                        <AccountPreferencesInfo loggedInAccount={this.state.loggedInAccount} />
                     </Div>
                 </Div>
                 
