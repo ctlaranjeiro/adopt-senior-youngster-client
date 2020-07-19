@@ -34,7 +34,6 @@ const Td = styled.td`
 function PersonalData(props){
    
     const account = props.loggedInAccount;
-    console.log('account:', account);
 
     let phoneNumber;
 

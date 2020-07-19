@@ -110,7 +110,7 @@ function AccountPreferencesInfo(props){
         let filteredSchedule;
 
         filteredSchedule = scheduleKeys.filter(function(key) {
-            console.log(filteredSchedule);
+            // console.log(filteredSchedule);
             return account.schedulePreference[key];
         });
 
@@ -234,7 +234,7 @@ function AccountPreferencesInfo(props){
         let filteredAvailability;
 
         filteredAvailability = availabilityKeys.filter(function(key) {
-            console.log(filteredAvailability);
+            // console.log(filteredAvailability);
             return account.availablePeriods[key];
         });
 

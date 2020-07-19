@@ -58,7 +58,9 @@ const Span = styled.span`
 class UserProfilePage extends Component {
     state = {
         loggedInAccount: [],
-        emergencyContact: []
+        emergencyContact: [],
+        schedulePreference: [],
+        specificNeeds: []
     };
 
     componentDidMount(){
@@ -67,7 +69,12 @@ class UserProfilePage extends Component {
             .then(responseFromAPI => {
                 // console.log('responseFromAPI.data', responseFromAPI.data);
                 const loggedInAccount = responseFromAPI.data;
-                this.setState({ loggedInAccount: loggedInAccount, emergencyContact: loggedInAccount.emergencyContact});
+                this.setState({ 
+                    loggedInAccount: loggedInAccount,
+                    emergencyContact: loggedInAccount.emergencyContact,
+                    schedulePreference: loggedInAccount.schedulePreference,
+                    specificNeeds: loggedInAccount.specificNeeds
+                });
             })
     }
 
@@ -84,7 +91,33 @@ class UserProfilePage extends Component {
                         <Span>Welcome, {this.state.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
-                        <Link to={`/user/${this.state.loggedInAccount._id}/edit`}>
+                        <Link to={{
+                            pathname: `/user/${this.state.loggedInAccount._id}/edit`,
+                            state: {
+                                firstName: this.state.loggedInAccount.firstName,
+                                lastName: this.state.loggedInAccount.lastName,
+                                email: this.state.loggedInAccount.email,
+                                address: this.state.loggedInAccount.address,
+                                phoneNumber: this.state.loggedInAccount.phoneNumber,
+                                emergFirstName: this.state.emergencyContact.firstName,
+                                emergLastName: this.state.emergencyContact.lastName,
+                                emergEmail: this.state.emergencyContact.email,
+                                emergAddress: this.state.emergencyContact.address,
+                                emergPhoneNumber: this.state.emergencyContact.phoneNumber,
+                                morning: this.state.schedulePreference.morning,
+                                afternoon: this.state.schedulePreference.afternoon,
+                                evening: this.state.schedulePreference.evening,
+                                night: this.state.schedulePreference.night,
+                                overNight: this.state.schedulePreference.overNight,
+                                fullDay: this.state.schedulePreference.fullDay,
+                                healthCare: this.state.specificNeeds.healthCare,
+                                houseCare: this.state.specificNeeds.houseCare,
+                                displacements: this.state.specificNeeds.displacements,
+                                grocery: this.state.specificNeeds.grocery,
+                                pupil: this.state.specificNeeds.pupil,
+                                notes: this.state.loggedInAccount.notes,
+                            }
+                        }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
                     </Div>

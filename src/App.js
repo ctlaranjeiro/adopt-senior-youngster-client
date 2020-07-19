@@ -86,14 +86,14 @@ class App extends Component {
           }} />
           <Route exact path='/volunteer/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <EditPage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+              return <EditPage {...props} /> 
             } else{
               return <Redirect to="/" />
             }
           }} />
           <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
         </Switch>
-        <FooterComponent />
+        {/* <FooterComponent /> */}
       </div>
     );
   }

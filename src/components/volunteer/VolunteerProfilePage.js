@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
 import PersonalData from '../PersonalData';
-import EmergencyContact from '../user/EmergencyContact';
 import AccountPreferencesInfo from '../AccountPreferencesInfo';
 
 const Div = styled.div`
