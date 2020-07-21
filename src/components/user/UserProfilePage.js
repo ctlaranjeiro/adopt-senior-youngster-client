@@ -14,7 +14,7 @@ import axios from 'axios';
 const Div = styled.div`
     ${props => props.mainContainer && css`
         margin: auto 80px;
-        height: 89vh;
+        ${'' /* height: 100%; */}
     `}
 
     ${props => props.welcomeProfileContainer && css`

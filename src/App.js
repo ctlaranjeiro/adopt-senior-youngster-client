@@ -93,7 +93,7 @@ class App extends Component {
           }} />
           <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
         </Switch>
-        {/* <FooterComponent /> */}
+        <FooterComponent />
       </div>
     );
   }
