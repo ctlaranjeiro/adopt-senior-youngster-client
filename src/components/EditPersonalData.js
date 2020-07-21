@@ -15,38 +15,14 @@ const Div = styled.div`
     ${props => props.password && css `
         margin-top: 40px;
     `};
-`;
 
-const Table = styled.table`
-    text-align: left;
-`;
-
-const Th = styled.th`
-    font-size: 1.1em;
-    padding-bottom: 10px;
-`;
-
-const Td = styled.td`
-    padding: 5px 0;
-
-    ${props => props.td1 && css`
-        width: 200px;
-        border-right: 1px solid black;
-    `}
-
-    ${props => props.td2 && css`
-        padding-left: 20px;
-    `}
+    ${props => props.profilePicture && css `
+        margin-top: 40px;
+    `};
 `;
 
 const H5 = styled.h5`
     font-size: 1.1em;
-    font-weight: bold;
-    text-align: left;
-`;
-
-const H6 = styled.h6`
-    font-size: 1em;
     font-weight: bold;
     text-align: left;
 `;
@@ -72,6 +48,7 @@ class EditPersonalData extends Component{
     }
 
     handleFormSubmit = (event) => {
+        event.preventDefault();
         const { params } = this.props.match;
         const { 
             firstName, 
@@ -81,11 +58,23 @@ class EditPersonalData extends Component{
             phoneNumber 
         } = this.state;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/personalDetails`, 
-        {firstName, lastName, email, address, phoneNumber})
+        // console.log('firstName', firstName);
+
+
+        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/personalDetails`, {
+            firstName,
+            lastName, 
+            email, 
+            address, 
+            phoneNumber
+        }, { withCredentials: true})
             .then(() => {
-                this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                this.props.updateState();
+                //this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
+            .catch(err => {
+                console.log('Error while updating personalDetails on DB', err);
+            });
     }
 
     render(){
@@ -128,26 +117,13 @@ class EditPersonalData extends Component{
                     <Form.Row>
                         <Form.Group as={Col} controlId="formBasicAddress">
                             <Form.Label>Address</Form.Label>
-                                <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
+                            <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
                         </Form.Group>
                     </Form.Row>
-                    <Button variant="primary" type="submit">
+                    <Button variant="outline-primary" type="submit">
                         Update details
                     </Button>
                 </Form>
-                <Div password>
-                <H6>Change Password</H6>
-                    <Form onSubmit={this.handleFormSubmit}>
-                        <Form.Row>
-                            <Form.Group as={Col} controlId="formBasicPassword">
-                                <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-                            </Form.Group>
-                        </Form.Row>
-                        <Button variant="primary" type="submit">
-                            Update password
-                        </Button>
-                    </Form>
-                </Div>
             </Div>
         )
     }
