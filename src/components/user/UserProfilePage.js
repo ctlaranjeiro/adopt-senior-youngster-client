@@ -32,7 +32,7 @@ const Div = styled.div`
     ${props => props.info && css`
         display: flex;
         justify-content: space-between;
-        height: 65vh;
+        ${'' /* height: 65vh; */}
     `}
 
     ${props => props.rightInfo && css`
@@ -116,7 +116,8 @@ class UserProfilePage extends Component {
                                 grocery: this.state.specificNeeds.grocery,
                                 pupil: this.state.specificNeeds.pupil,
                                 notes: this.state.loggedInAccount.notes,
-                            }
+                                profilePicture: this.state.loggedInAccount.profilePicture,
+                            },
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>

@@ -37,7 +37,12 @@ const H5 = styled.h5`
     font-size: 1.1em;
     font-weight: bold;
     text-align: left;
-`
+`;
+
+const Hr = styled.hr`
+    width: 100%;
+    margin: 10px 0;
+`;
 
 class EditEmergencyContact extends Component{    
     state = {
@@ -54,6 +59,7 @@ class EditEmergencyContact extends Component{
     }
 
     handleFormSubmit = (event) => {
+        event.preventDefault();
         const { params } = this.props.match;
         const { 
             emergFirstName, 
@@ -63,17 +69,27 @@ class EditEmergencyContact extends Component{
             emergPhoneNumber 
         } = this.state;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/emergContact`, 
-        {emergFirstName, emergLastName, emergEmail, emergAddress, emergPhoneNumber})
+        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/emergContact`, {
+            emergFirstName,
+            emergLastName,
+            emergEmail,
+            emergAddress,
+            emergPhoneNumber
+        }, { withCredentials: true})
             .then(() => {
-                this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                this.props.updateState();
+                // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
+            .catch(err => {
+                console.log('Error while updating emergContact on DB', err);
+            });
     }
 
     render(){
         return(
             <Div>
                 <H5>Emergency Contact</H5>
+                <Hr />
                 <Form onSubmit={this.handleFormSubmit}>
                 <Form.Row>
                     <Form.Group as={Col} controlId="formBasicEmergFirstName">
@@ -101,7 +117,7 @@ class EditEmergencyContact extends Component{
                             <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange} />
                     </Form.Group>
                 </Form.Row>
-                <Button variant="primary" type="submit">
+                <Button variant="outline-primary" type="submit">
                     Update Emergency Contact
                 </Button>
             </Form>

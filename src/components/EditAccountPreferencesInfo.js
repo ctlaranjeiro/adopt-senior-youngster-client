@@ -101,6 +101,7 @@ class EditAccountPreferencesInfo extends Component{
     }
 
     handleFormSubmitSchedule = (event) => {
+        event.preventDefault();
         const { params } = this.props.match;
         const { 
             morning,
@@ -119,20 +120,57 @@ class EditAccountPreferencesInfo extends Component{
             night,
             overNight,
             fullDay
-        })
+        }, { withCredentials: true })
             .then(() => {
-                this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                this.props.updateState();
+                // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
+            .catch(err => {
+                console.log('Error while updating schedulePreferences on DB', err);
+            });
+    }
+
+    handleFormSubmitNeeds = (event) => {
+        event.preventDefault();
+        const { params } = this.props.match;
+        const { 
+            healthCare,
+            houseCare,
+            displacements,
+            grocery,
+            pupil
+        } = this.state;
+
+        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/specificNeeds`, 
+        {
+            healthCare,
+            houseCare,
+            displacements,
+            grocery,
+            pupil
+        }, { withCredentials: true })
+            .then(() => {
+                this.props.updateState();
+                // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+            })
+            .catch(err => {
+                console.log('Error while updating schedulePreferences on DB', err);
+            });
     }
 
     handleFormSubmitNotes = (event) => {
+        event.preventDefault();
         const { params } = this.props.match;
         const { notes } = this.state;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/userNotes`, { notes })
+        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/userNotes`, { userNotes: notes } , { withCredentials: true })
             .then(() => {
-                this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                this.props.updateState();
+                // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
+            .catch(err => {
+                console.log('Error while updating userNotes on DB', err);
+            });
     }
 
     render(){
@@ -140,121 +178,128 @@ class EditAccountPreferencesInfo extends Component{
             <Div main>
                 <H5>Your Preferences</H5>
                 <Hr />
-                <Form onSubmit={this.handleFormSubmitSchedule}>
-                    <Form.Row>
-                        <Div helpAndSchedule>
-                            <Div needs>
-                                <Form.Group as={Col} controlId="checkNeedsForm">
-                                    <H6>Needs</H6>
-                                    <Form.Check 
-                                        type="switch"
-                                        id="healthCare"
-                                        name="healthCare"
-                                        label="Health Care"
-                                        checked={this.state.healthCare} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="houseCare"
-                                        name="houseCare"
-                                        label="House Care/Maintenance"
-                                        checked={this.state.houseCare} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="displacements"
-                                        name="displacements"
-                                        label="Displacements"
-                                        checked={this.state.displacements} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="grocery"
-                                        name="grocery"
-                                        label="Grocery Shopping"
-                                        checked={this.state.grocery} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="pupil"
-                                        name="pupil"
-                                        label="Pupil (for at-risk youth in need of a mentor)"
-                                        checked={this.state.pupil} 
-                                        onChange={this.handleChange}
-                                    />
-                                </Form.Group>
-                            </Div>
-                            <Div schedule>
-                                <Form.Group as={Col} controlId="checkScheduleForm">
-                                    <H6>Schedule Preference</H6>
-                                    <Form.Check 
-                                        type="switch"
-                                        id="morning"
-                                        name="morning"
-                                        label="Morning: 8am - 12pm"
-                                        checked={this.state.morning} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="afternoon"
-                                        name="afternoon"
-                                        label="Afternoon: 12pm - 4pm"
-                                        checked={this.state.afternoon} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="evening"
-                                        name="evening"
-                                        label="Evening: 4pm - 8pm"
-                                        checked={this.state.evening} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="night"
-                                        name="night"
-                                        label="Night: 8pm - 12am"
-                                        checked={this.state.night} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="overNight"
-                                        name="overNight"
-                                        label="Over Night: 12am - 8am"
-                                        checked={this.state.overNight} 
-                                        onChange={this.handleChange}
-                                    />
-                                    <Form.Check 
-                                        type="switch"
-                                        id="fullDay"
-                                        name="fullDay"
-                                        label="Full Day: 24 hours"
-                                        checked={this.state.fullDay} 
-                                        onChange={this.handleChangeFullDay}
-                                    />
-                                </Form.Group>
-                            </Div>
-                        </Div>
-                    </Form.Row>
-                    <Button variant="primary" type="submit">
-                        Update preferences
-                    </Button>
-                </Form>
+                <Div helpAndSchedule>
+                    <Div needs>
+                        <Form onSubmit={this.handleFormSubmitNeeds}>
+                            <Form.Group as={Col} controlId="checkNeedsForm">
+                                <H6>Needs</H6>
+                                <Form.Check 
+                                    type="switch"
+                                    id="healthCare"
+                                    name="healthCare"
+                                    label="Health Care"
+                                    checked={this.state.healthCare} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="houseCare"
+                                    name="houseCare"
+                                    label="House Care/Maintenance"
+                                    checked={this.state.houseCare} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="displacements"
+                                    name="displacements"
+                                    label="Displacements"
+                                    checked={this.state.displacements} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="grocery"
+                                    name="grocery"
+                                    label="Grocery Shopping"
+                                    checked={this.state.grocery} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="pupil"
+                                    name="pupil"
+                                    label="Pupil (for at-risk youth in need of a mentor)"
+                                    checked={this.state.pupil} 
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Group>
+                            <div className="center-btn">
+                                <Button variant="outline-primary" type="submit">
+                                    Update needs
+                                </Button>
+                            </div>
+                        </Form>
+                    </Div>
+                    <Div schedule>
+                        <Form onSubmit={this.handleFormSubmitSchedule}>
+                            <Form.Group as={Col} controlId="checkScheduleForm">
+                                <H6>Schedule Preference</H6>
+                                <Form.Check 
+                                    type="switch"
+                                    id="morning"
+                                    name="morning"
+                                    label="Morning: 8am - 12pm"
+                                    checked={this.state.morning} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="afternoon"
+                                    name="afternoon"
+                                    label="Afternoon: 12pm - 4pm"
+                                    checked={this.state.afternoon} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="evening"
+                                    name="evening"
+                                    label="Evening: 4pm - 8pm"
+                                    checked={this.state.evening} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="night"
+                                    name="night"
+                                    label="Night: 8pm - 12am"
+                                    checked={this.state.night} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="overNight"
+                                    name="overNight"
+                                    label="Over Night: 12am - 8am"
+                                    checked={this.state.overNight} 
+                                    onChange={this.handleChange}
+                                />
+                                <Form.Check 
+                                    type="switch"
+                                    id="fullDay"
+                                    name="fullDay"
+                                    label="Full Day: 24 hours"
+                                    checked={this.state.fullDay} 
+                                    onChange={this.handleChangeFullDay}
+                                />
+                            </Form.Group>
+                            <div className="center-btn">
+                                <Button variant="outline-primary" type="submit">
+                                    Update schedule
+                                </Button>
+                            </div>
+                        </Form>
+                    </Div>
+                </Div>
                 <Form onSubmit={this.handleFormSubmitNotes}>
                     <Div notes>
                         <H6>Notes</H6>
                         <Form.Group controlId="formControlTextarea">
-                            <Form.Control as="textarea" rows="3" maxLength="250" name="notes" value={this.state.notes} onChange={this.handleChange} />
+                            <Form.Control as="textarea" rows="5" maxLength="250" name="notes" value={this.state.notes} onChange={this.handleChange} />
                         </Form.Group>
                     </Div>
-                    <Button variant="primary" type="submit">
+                    <Button variant="outline-primary" type="submit">
                         Update notes
                     </Button>
                 </Form>
