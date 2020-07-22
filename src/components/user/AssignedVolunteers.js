@@ -96,7 +96,7 @@ export default class AssignedVolunteers extends Component {
         return(
             <div mainContainer>
 
-                <Div titleContainer>
+                {/* <Div titleContainer>
                     <h2>Assigned Volunteers</h2>
                     <Div editBtn>
                         <Link to={{
@@ -107,16 +107,16 @@ export default class AssignedVolunteers extends Component {
                         </Link>
                     </Div>
                 </Div>
-                
+                 */}
 
-                <Div info>
-                    <Div leftInfo>
+                {/* <Div info> */}
+                    {/* <Div leftInfo>
                     {this.props.loggedInAccount && this.state.loggedInAccount.assignedVolunteers.map(vol => {
                         this.setState.selectedVolunteer;
                         return (
-                            <Ul list>
+                            <Ul list> */}
                             {/* onclick={ () => this.setState……………..} */}
-                                <li>
+                                {/* <li>
                                     <a className="aLink" href="#information" onClick={ () => this.setState.selectedVolunteer(vol.props)}>
                                         <Div banner>
                                             <span>
@@ -131,8 +131,8 @@ export default class AssignedVolunteers extends Component {
                             </Ul>
                         )
                     })}
-                    </Div>
-                    <Div rightInfo>
+                    </Div> */}
+                    {/* <Div rightInfo>
                         <Tabs defaultActiveKey="profile" id="information">
                             <Tab eventKey="profile" title="Profile">
                                 <p>Name: {this.state.selectedVolunteer} {this.state.selectedVolunteer.lastName}</p>
@@ -147,7 +147,7 @@ export default class AssignedVolunteers extends Component {
                             </Tab>
                         </Tabs>
                     </Div>
-                </Div>
+                </Div> */}
         </div>
         )
     }

@@ -44,9 +44,18 @@
 .loginForm{
   border: 1px solid rgba(0, 123, 255, 0.5);
   border-radius: 10px;
-  width: 750px;
+  width: 80%;
   margin: 0 auto;
   padding: 50px;
+}
+
+.signupForm{
+  border: 1px solid rgba(0, 123, 255, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  margin: 30px 0 auto;
+  padding: 50px;
+  text-align: left;
 }
 
 .form-text-align{
@@ -187,4 +196,21 @@ ul li {
 
 .aLink{
   text-decoration: none;
+}
+
+.toggle-btn-group{
+  display: flex;
+  align-items: center;
+  width: 320px;
+}
+
+.toggle-btn-group .toggle-btn{
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  border-radius: 50px;
+}
+
+.test-form{
+  margin-left: -20px;
 }

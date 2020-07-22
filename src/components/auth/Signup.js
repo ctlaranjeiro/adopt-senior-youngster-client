@@ -134,6 +134,7 @@ class Signup extends Component {
                             .then(response => {
                                 //Set the whole application with the user that just loggedin
                                 this.props.setCurrentAccount(response);
+                                localStorage.setItem("loggedin", true);
                                 //the line of code above lifts the state up to app.js
                 
                                 this.setState({ 
@@ -247,6 +248,7 @@ class Signup extends Component {
                             .then(response => {
                                 //Set the whole application with the user that just loggedin
                                 this.props.setCurrentAccount(response);
+                                localStorage.setItem("loggedin", true);
                                 //the line of code above lifts the state up to app.js
                 
                                 this.setState({
@@ -296,7 +298,7 @@ class Signup extends Component {
             return(
                 <div>
                     <div className="form">
-                        <Form onSubmit={this.handleFormSubmit} className="form-text-align">
+                        <Form onSubmit={this.handleFormSubmit} className="signupForm">
                             <h5>Your information</h5>
                             <hr />
                             <Form.Row>
@@ -307,6 +309,9 @@ class Signup extends Component {
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Text className="text-muted">
+                                        Password length must be at least 6 characters
+                                    </Form.Text>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
@@ -329,6 +334,9 @@ class Signup extends Component {
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleChange} />
+                                    <Form.Text className="text-muted">
+                                        Phone number must have 9 digits
+                                    </Form.Text>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridGender">
                                     <Form.Label>Gender</Form.Label>
@@ -388,6 +396,9 @@ class Signup extends Component {
                                 <Form.Group as={Col} controlId="formBasicEmergPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="number" name="emergPhoneNumber" value={this.state.emergPhoneNumber} onChange={this.handleChange} />
+                                    <Form.Text className="text-muted">
+                                        Phone number must have 9 digits
+                                    </Form.Text>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
@@ -413,7 +424,7 @@ class Signup extends Component {
             return(
                 <div>
                     <div className="form">
-                        <Form onSubmit={this.handleFormSubmit} className="form-text-align">
+                        <Form onSubmit={this.handleFormSubmit} className="signupForm">
                             <h5>Your information</h5>
                             <hr />
                             <Form.Row>
@@ -424,6 +435,9 @@ class Signup extends Component {
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Text className="text-muted">
+                                        Password length must be at least 6 characters
+                                    </Form.Text>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
@@ -450,6 +464,9 @@ class Signup extends Component {
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="number" name="volPhoneNumber" value={this.state.volPhoneNumber} onChange={this.handleChange} />
+                                    <Form.Text className="text-muted">
+                                        Phone number must have 9 digits
+                                    </Form.Text>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>

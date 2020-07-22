@@ -79,7 +79,7 @@ class App extends Component {
           }} />
           <Route exact path='/user/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <EditPage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+              return <EditPage loggedInAccount={this.state.loggedInAccount} setCurrentAccount={this.setCurrentAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }

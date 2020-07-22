@@ -12,6 +12,8 @@ import EditPassword from './EditPassword';
 import ModalProfilePicture from './EditProfilePictureModal';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import DeleteAssignedVol from './user/DeleteAssignedVol';
+import AssignNewVol from './user/AssignNewVol';
 
 
 
@@ -67,6 +69,33 @@ const Div = styled.div`
     ${props => props.topMargin && css`
         margin-top: 20px;
     `}
+
+    ${props => props.assignedVolunteers && css`
+        width: 100%;
+        background-color: #f1f1f1;
+        padding: 20px 30px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        ${'' /* align-items: space-between; */}
+    `}
+
+    ${props => props.btnDelete && css`
+        width: 300px;
+        margin: auto;
+        margin-top: 10px;
+        margin-bottom: 40px;
+    `}
+
+    ${props => props.titleAssVol && css`
+        width: 100%;
+    `}
+
+    ${props => props.deleteAndAssign && css`
+        display: flex;
+    `}
+
+    
 `;
 
 const ButtonStyled = styled.button`
@@ -91,6 +120,17 @@ const Span = styled.span`
     font-size: 1.5em;
     font-weigth: 900;
     margin-left: 20px;
+`;
+
+const H5 = styled.h5`
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: left;
+`;
+
+const Hr = styled.hr`
+    width: 100%;
+    margin: 10px 0;
 `;
 
 
@@ -123,7 +163,8 @@ class EditPage extends Component{
         notes: this.props.location.state.notes,
         profilePicture: this.props.location.state.profilePicture,
         modalShow: false,
-        setModalShow: false
+        setModalShow: false,
+        maxHelp: false
     };
 
     componentDidMount(){
@@ -131,10 +172,26 @@ class EditPage extends Component{
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
                 const loggedInAccount = responseFromAPI.data;
-                this.setState({loggedInAccount: loggedInAccount, emergencyContact: loggedInAccount.emergencyContact, assignedVolunteers: loggedInAccount.assignedVolunteers});
+                this.setState({loggedInAccount: loggedInAccount, emergencyContact: loggedInAccount.emergencyContact, assignedVolunteers: loggedInAccount.assignedVolunteers}, () => {
+                    this.checkAssignedVolNumber();
+                });
                 // console.log('this.state', this.state);
             })
             console.log('firstName state:',this.state.firstName);
+    }
+
+    checkAssignedVolNumber = () => {
+        if(this.state.assignedVolunteers.length === 4){
+            this.setState({
+                maxHelp: true
+            })
+            console.log('maxHelp set to true');
+        } else if (this.state.assignedVolunteers.length < 4){
+            this.setState({
+                maxHelp: false
+            })
+            console.log('maxHelp set to false');
+        }
     }
 
     handleShowModal = (event) => {
@@ -150,6 +207,21 @@ class EditPage extends Component{
             modalShow: false, 
             setModalShow: false 
         })
+    }
+
+    handleDeleteAccount = (event) => {
+        event.preventDefault();
+        const { params } = this.props.match;
+
+        axios.delete(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/deleteAccount`, { withCredentials: true})
+            .then(result => {
+                console.log('User account deleted!');
+                this.props.setCurrentAccount(null);
+                this.props.history.push(`/`);
+            })
+            .catch(err => {
+                console.log('Error while deleting user account', err);
+            });
     }
 
     updateStateEdit = () => {
@@ -183,6 +255,7 @@ class EditPage extends Component{
                     pupil: loggedInAccount.specificNeeds.pupil,
                     notes: loggedInAccount.notes,
                     profilePicture: loggedInAccount.profilePicture,
+                    assignedVolunteers: loggedInAccount.assignedVolunteers,
                 });
             })
     }
@@ -257,19 +330,56 @@ class EditPage extends Component{
                             updateState={this.updateStateEdit}
                         />
                         <Div topMargin>
-                            <EditPassword {...this.props}/>
+                            <EditPassword {...this.props} />
                         </Div>
                     </Div>
                 </Div>
+                <Div topMargin>
+                    <Div assignedVolunteers>
+                        <Div titleAssVol>
+                            <H5>Assigned volunteers</H5>
+                            <Hr />
+                        </Div>
+                        <Div deleteAndAssign>
+                            {/* Assigned Volunteers COMPONENT - to delete! */}
+                            <DeleteAssignedVol assignedVol={this.state.assignedVolunteers} updateState={this.updateStateEdit} {...this.props} />
+                        
+                        
+                        
+                            {/* Choose Volunteer COMPONENT
+                                ----- If user already has 4 volunteer assigned, set a message saying - 
+                                    "Max volunteers selected (can't assign any more)"
+
+                                ----- When user is selecting, set a max of 4 volunteers in the checkboxes. 
+                                    If user already has volunteers assigned - check number and set the 
+                                    max number to equal max of 4 volunteers assigned (ex: if user already 
+                                    has 3 volunteers, only let him check one more from the choosing)                        
+                            */}
+                            <AssignNewVol assignedVol={this.state.assignedVolunteers} maxHelp={this.state.maxHelp} updateState={this.updateStateEdit} {...this.props} />
+                        </Div>
+                    </Div>
+                </Div>
+                <Div topMargin>
+                    <span>No longer wish to have an account?</span>
+                    <Div btnDelete>
+                        <Button variant="outline-danger" size="sm" onClick={this.handleDeleteAccount}>Delete Account</Button>
+                    </Div>
+                </Div>
+
+
+
+
 
                 {/* {this.state.assignedVolunteers.map((volunteer) => {
                     return(
-                        <ButtonAssigned key={volunteer._id}
-                            picture={volunteer.profilePicture}
-                            firstName={volunteer.firstName}
-                            lastName={volunteer.lastName}
-                            btnWidth="15em"
-                        />
+                        <Div assignedVol key={volunteer._id}>
+                            <ButtonAssigned key={volunteer._id}
+                                picture={volunteer.profilePicture}
+                                firstName={volunteer.firstName}
+                                lastName={volunteer.lastName}
+                                btnWidth="15em"
+                            />
+                        </Div>
                     )
                 })} */}
             </Div>
