@@ -75,7 +75,8 @@ export default class AssignedVolunteers extends Component {
         assignedVolunteers: [],
         selectedVolunteer: [],
         skills: [],
-        availability: []
+        availability: [],
+        selVolReports: []
     }
 
 
@@ -84,6 +85,7 @@ export default class AssignedVolunteers extends Component {
         const { params } = this.props.match;
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
+                console.log('API Res:', responseFromAPI);
                 const loggedInAccount = responseFromAPI.data;
                 this.setState({
                     loggedInAccount: loggedInAccount,
@@ -97,6 +99,7 @@ export default class AssignedVolunteers extends Component {
                         }, () => {
                             this.renderSkills();
                             this.renderAvailability();
+                            this.selectReports();
                         })
                     }
                 })
@@ -109,6 +112,7 @@ export default class AssignedVolunteers extends Component {
         }, () => {
             this.renderSkills();
             this.renderAvailability();
+            this.selectReports();
         })
     }
 
@@ -181,8 +185,29 @@ export default class AssignedVolunteers extends Component {
         })
     }
 
+    selectReports() {
+        if(!this.loggedInAccount.reports) {
+            console.log('THERE ARE NO REPORTS TO SHOW!')
+            return;
+        }
+        // filtering the user associated reports according to the volunteer
+        let rep = [];
+        this.loggedInAccount.reports.forEach(report => {
+            if(this.loggedInAccount.reports.author === this.selectedVolunteer) {
+                rep.push(report);
+            }
+        });
+        console.log('rep:', rep);
+        // setting the state with the selected reports
+        this.setState({
+            selVolReports:rep
+        });
+    }
+
     render(){
-        console.log(this.state.selectedVolunteer);
+        console.log('REPORTS:', this.state.loggedInAccount.reports);
+        console.log('selected reports:', this.state.selVolReports);
+        console.log('Selected Volunter:',this.state.selectedVolunteer);
         return(
             <Div mainContainer>
 
@@ -240,6 +265,18 @@ export default class AssignedVolunteers extends Component {
                                 </ol>
                             </Tab>
                             <Tab className="tab" eventKey="reports" title="Reports">
+                                <ol>
+                                    <h5>You'r Reports</h5>
+                                    {this.state.selVolReports && this.state.selVolReports.map(report => (
+                                        <li key={report.timestamp}>
+                                            <div>
+                                                <p><strong>{report.author}</strong></p>
+                                                <p>{report.text}</p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                    <p>No reports to show!</p>
+                                </ol>
                             </Tab>
                             <Tab className="tab" eventKey="review" title="Review">
                             </Tab>
