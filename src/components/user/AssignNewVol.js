@@ -41,6 +41,12 @@ const Div = styled.div`
         display: flex;
         align-items: center;
     `};
+
+    ${props => props.allVolContainer && css`
+        height: 350px;
+        padding: 0 10px;
+        overflow: scroll;
+    `};    
 `;
 
 const Span = styled.span`
@@ -57,22 +63,22 @@ const H6 = styled.h6`
 
 
 
-
-
-
-
 class AssignNewVol extends Component{
     state = {
+        assignedVol: [],
         value: [],
         setValue: [],
-        maxHelp: this.props.maxHelp
+        maxHelp: this.props.maxHelp,
+        allVolunteersDB: []
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         // compare this.props and prevProps
         if (this.props !== prevProps) {
             this.setState({
-                maxHelp: this.props.maxHelp
+                maxHelp: this.props.maxHelp,
+                assignedVol: this.props.assignedVol,
+                allVolunteersDB: this.props.allVolunteersDB
             });
         }
     }
@@ -88,14 +94,14 @@ class AssignNewVol extends Component{
         event.preventDefault();
         const { params } = this.props.match;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/deleteAssignedVolunteers`, 
-        { assignedVolunteer: this.state.setValue}, { withCredentials: true })
+        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/assignVolunteers`, 
+        { volunteer: this.state.setValue}, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
-                console.log('Error while updating assignedVolunteers in DB', err);
+                console.log('Error while updating assignedVolunteers in DB (add new)', err);
             });
     }
 
@@ -109,43 +115,45 @@ class AssignNewVol extends Component{
                 <Form.Text className="text-muted">
                     If you need more help, add new volunteers
                 </Form.Text>
-                {this.props.assignedVol && this.state.maxHelp && 
+                {this.state.allVolunteersDB && this.state.maxHelp && 
                     <Div buttonMaxNumber>
-                        <Button variant="outline-dark" size="sm">
+                        <Button variant="outline-dark" size="sm" disabled>
                             <span>You've reached the maximum number of volunteers assigned to you.</span>
                         </Button>
                     </Div>
                 }
                 
-                {this.props.assignedVol && !this.state.maxHelp && 
+                {this.state.allVolunteersDB && !this.state.maxHelp && 
                     <Form onSubmit={this.handleFormSubmit}>
                         <Form.Group controlId="checkScheduleForm">
-                            {this.props.assignedVol && this.props.assignedVol.map(volunteer => {
-                                return(
-                                    <Div centerCheck key={volunteer._id}>
-                                        <Form.Check type="checkbox">
-                                            <ToggleButtonGroup type="checkbox" value={this.state.value} onChange={this.handleChange} className="toggle-btn-group test-form">
-                                                <ToggleButton value={volunteer._id} variant="outline-success" className="toggle-btn">
-                                                    <Div volInfo>
-                                                        <RoundedPicture
-                                                            pic={volunteer.profilePicture}
-                                                            size='3.2em' />
-                                                        <Span volName>{volunteer.firstName} {volunteer.lastName}</Span>
-                                                    </Div>
-                                                    <Div avgRate>
-                                                        {volunteer.evaluation.averageRate &&
-                                                            <span>Rate: {volunteer.evaluation.averageRate}</span>
-                                                        }
-                                                        {!volunteer.evaluation.averageRate &&
-                                                            <span>Rate: 0</span>
-                                                        }
-                                                    </Div>
-                                                </ToggleButton>
-                                            </ToggleButtonGroup>
-                                        </Form.Check>
-                                    </Div>
-                                )
-                            })}
+                            <Div allVolContainer>
+                                {this.state.allVolunteersDB && this.state.allVolunteersDB.map(volunteer => {
+                                    return(
+                                        <Div centerCheck key={volunteer._id}>
+                                            <Form.Check type="checkbox">
+                                                <ToggleButtonGroup type="checkbox" value={this.state.value} onChange={this.handleChange} className="toggle-btn-group test-form">
+                                                    <ToggleButton value={volunteer._id} variant="outline-success" className="toggle-btn">
+                                                        <Div volInfo>
+                                                            <RoundedPicture
+                                                                pic={volunteer.profilePicture}
+                                                                size='3.2em' />
+                                                            <Span volName>{volunteer.firstName} {volunteer.lastName}</Span>
+                                                        </Div>
+                                                        <Div avgRate>
+                                                            {volunteer.evaluation.averageRate &&
+                                                                <span>Rate: {volunteer.evaluation.averageRate}</span>
+                                                            }
+                                                            {!volunteer.evaluation.averageRate &&
+                                                                <span>Rate: 0</span>
+                                                            }
+                                                        </Div>
+                                                    </ToggleButton>
+                                                </ToggleButtonGroup>
+                                            </Form.Check>
+                                        </Div>
+                                    )
+                                })}
+                            </Div>
                             <Div topMargin>
                                 <Button variant="success" type="submit">
                                     Assign new volunteers

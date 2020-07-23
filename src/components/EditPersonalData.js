@@ -78,17 +78,6 @@ class EditPersonalData extends Component{
     }
 
     render(){
-        const account = this.props.loggedInAccount;
-        
-        let phoneNumber;
-        if(account){
-            if(account.accountType === 'User'){
-                phoneNumber = account.phoneNumber;
-            } else if(account.accountType === 'Volunteer'){
-                phoneNumber = account.volPhoneNumber;
-            }
-        }
-
         return(
             <Div main>
                 <H5>Personal Details</H5>
