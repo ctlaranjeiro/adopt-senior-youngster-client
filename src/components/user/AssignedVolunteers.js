@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+// import { ToastContainer, toast } from 'react-toastify';
 
 
 const Div = styled.div `
@@ -71,36 +72,77 @@ const Ul = styled.div `
 
 export default class AssignedVolunteers extends Component {
     state = {
+        reviewAuthor: '',
+        reviewText:'',
+        reviewSubject: '',
+        reviewRate: '',
+        reports: [],
         loggedInAccount: [],
         assignedVolunteers: [],
         selectedVolunteer: [],
         skills: [],
-        availability: [],
+        availablePeriods: [],
         selVolReports: []
     }
 
+    // handleReviewSubmit = (event) => {
+    //     const author = this.state.reviewAuthor;
+    //     const subject = this.state.reviewSubject;
+    //     const text = this.state.reviewText;
+    //     const rate = this.state.reviewRate;
+    //     axios.post(`${process.env.REACT_APP_SERVER}/api/user/:id/submitReview`, {author, subject, text, rate}, {withCredentials: true})
+    //         .then(() => {
+    //             this.refreshReviews();
+    //             this.setState({
+    //                 author: '',
+    //                 subject: '',
+    //                 text:'',
+    //                 rate:''
+    //             });
+    //             toast('Review created!');
+    //         })
+    // }
 
+    // handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     this.setState({[name] : value});
+    // }
+
+    componentFunctions() {
+        const filteredSkills = this.renderSkills();
+        const filteredAvailablePeriods = this.renderAvailability();
+        const rep = this.selectReports();
+        this.setState({
+            skills: filteredSkills,
+            availablePeriods: filteredAvailablePeriods,
+            selVolReports: rep
+        })
+    }
 
     componentDidMount() {
         const { params } = this.props.match;
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
-                console.log('API Res:', responseFromAPI);
-                const loggedInAccount = responseFromAPI.data;
+                // console.log('API Res:', responseFromAPI.data);
+                const loggedInAccount = responseFromAPI.data.account;
                 this.setState({
                     loggedInAccount: loggedInAccount,
-                    assignedVolunteers: loggedInAccount.assignedVolunteers
+                    assignedVolunteers: loggedInAccount.assignedVolunteers,
+                    reports: responseFromAPI.data.reports
                 }, () => {
                     if (this.state.assignedVolunteers.length > 0) {
                         
                         this.setState({
-                            selectedVolunteer: this.state.assignedVolunteers[0]/* ,
-                            skills: this.state.assignedVolunteers[0].skills */
+                            selectedVolunteer: this.state.assignedVolunteers[0]
                         }, () => {
-                            this.renderSkills();
+                            this.componentFunctions()
+                            // this.renderSkills();
+                            // this.renderAvailability();
+                        }/* , () => {
                             this.renderAvailability();
+                        }, () => {
                             this.selectReports();
-                        })
+                        } */)
                     }
                 })
             })
@@ -110,10 +152,12 @@ export default class AssignedVolunteers extends Component {
         this.setState({
             selectedVolunteer: vol
         }, () => {
-            this.renderSkills();
+            this.componentFunctions();
+        }/* , () => {
             this.renderAvailability();
+        }, () => {
             this.selectReports();
-        })
+        } */)
     }
 
     renderSkills() {
@@ -142,9 +186,10 @@ export default class AssignedVolunteers extends Component {
             }
         }
         console.log('filteredSkills:', filteredSkills);
-        this.setState({
+        /* this.setState({
             skills: filteredSkills
-        })
+        }) */
+        return filteredSkills;
     }
 
     renderAvailability() {
@@ -180,33 +225,65 @@ export default class AssignedVolunteers extends Component {
             }
         }
         console.log('filteredAvailablePeriods:', filteredAvailablePeriods);
-        this.setState({
+        /* this.setState({
             availablePeriods: filteredAvailablePeriods
-        })
+        }) */
+        return filteredAvailablePeriods
     }
 
     selectReports() {
-        if(!this.loggedInAccount.reports) {
+        if(!this.state.reports) {
             console.log('THERE ARE NO REPORTS TO SHOW!')
             return;
         }
         // filtering the user associated reports according to the volunteer
         let rep = [];
-        this.loggedInAccount.reports.forEach(report => {
-            if(this.loggedInAccount.reports.author === this.selectedVolunteer) {
+        let allReps = this.state.reports;
+        console.log('allReps:', allReps);
+        allReps.forEach(report => {
+            if(report.author._id === this.state.selectedVolunteer._id) {
                 rep.push(report);
             }
         });
         console.log('rep:', rep);
         // setting the state with the selected reports
-        this.setState({
+        /* this.setState({
             selVolReports:rep
-        });
+        }); */
+
+        return rep
+    }
+
+    showReports(auth, sub) {
+        sub = this.state.loggedInAccount._id;
+        auth = this.state.selectedVolunteer._id;
+
+        let authName = `${this.state.selectedVolunteer.firstName} ${this.state.selectedVolunteer.lastName}`;
+        
+
+        return (
+            this.state.selVolReports.map(rep => {
+                
+                return (
+                    <li key={rep._id}>
+                        <p><strong>{authName}</strong></p>
+                        {rep.text.map((res, i) => {
+                            return (
+                                <div key={i}>
+                                    <p><strong>Report:</strong> {res.report}</p>
+                                    <p><strong>Posted on:</strong>{res.createdAt}</p>
+                                </div>
+                            )
+                        })}
+                    </li>
+                );
+            })
+        );
     }
 
     render(){
-        console.log('REPORTS:', this.state.loggedInAccount.reports);
-        console.log('selected reports:', this.state.selVolReports);
+        console.log('ALL REPORTS:', this.state.reports);
+        console.log('Assigned Volunteers:', this.state.assignedVolunteers);
         console.log('Selected Volunter:',this.state.selectedVolunteer);
         return(
             <Div mainContainer>
@@ -229,7 +306,7 @@ export default class AssignedVolunteers extends Component {
                         return (
                             <Ul lista key={vol._id}>
                                 <li className="volList">
-                                    <a className="aLink" href="#information" onClick={this.selectedVol.bind(this, vol)}>
+                                    <a className="aLink" href="#" onClick={this.selectedVol.bind(this, vol)}>
                                         <Div banner>
                                             <span>
                                                 <strong>
@@ -247,7 +324,7 @@ export default class AssignedVolunteers extends Component {
 
                     <Div rightInfo>
                         <Tabs defaultActiveKey="profile" id="information">
-                            <Tab className="tab" eventKey="profile" title="Profile">
+                            <Tab className="tab" eventKey="profile" title="Profile" id="informationProfile">
                                 <h5>Volunteer Details</h5>
                                 <p><strong>Name:</strong> {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</p>
                                 <p><strong>Age:</strong> {this.state.selectedVolunteer.age}</p>
@@ -258,27 +335,28 @@ export default class AssignedVolunteers extends Component {
                                 </ul>
                                 <p><strong>About:</strong> {this.state.selectedVolunteer.aboutMe}</p>
                             </Tab>
-                            <Tab className="tab" eventKey="schedule" title="Schedule">
+                            <Tab className="tab" eventKey="schedule" title="Schedule" id="informationSchedule">
                                 <ol>
                                     <h5>Availability</h5>
-                                    {this.state.availability && this.state.availability.map(per => (<li key={per}>{per}</li>))}
+                                    {this.state.availablePeriods && this.state.availablePeriods.map(per => (<li key={per}>{per}</li>))}
                                 </ol>
                             </Tab>
-                            <Tab className="tab" eventKey="reports" title="Reports">
+                            <Tab className="tab" eventKey="reports" title="Reports" id="informationReports">
+                                <h5>Your Reports</h5>
                                 <ol>
-                                    <h5>You'r Reports</h5>
-                                    {this.state.selVolReports && this.state.selVolReports.map(report => (
-                                        <li key={report.timestamp}>
-                                            <div>
-                                                <p><strong>{report.author}</strong></p>
-                                                <p>{report.text}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                    <p>No reports to show!</p>
+                                    {this.showReports()}
                                 </ol>
                             </Tab>
                             <Tab className="tab" eventKey="review" title="Review">
+                            {/* <form onSubmit={this.handleReviewSubmit}>
+                                <label>Rate the volunteer {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</label>
+                                <input type="radio" id="male" name="gender" value="male">
+                                <label for="male">Male</label><br>
+                                <input type="radio" id="female" name="gender" value="female">
+                                <label for="female">Female</label><br>
+                                <input type="radio" id="other" name="gender" value="other">
+                                <label for="other">Other</label>
+                            </form> */}
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
                             </Tab>
