@@ -12,7 +12,7 @@ import EditPage from './components/EditPage';
 import LandingPage from './components/LandingPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FooterComponent from './components/FooterComponent';
-
+import axios from 'axios';
 
 class App extends Component {
   state = {
@@ -45,6 +45,22 @@ class App extends Component {
     }
   }
 
+  getCurrentUserProfile = (id) => {
+    return axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`)
+        .then(responseFromAPI => {
+            // console.log('responseFromAPI.data', responseFromAPI.data);
+            return responseFromAPI.data;
+        })
+  }
+
+  getCurrentVolunteerProfile = (id) => {
+    return axios.get(`${process.env.REACT_APP_SERVER}/api/volunteer/${id}`)
+        .then(responseFromAPI => {
+            // console.log('responseFromAPI.data', responseFromAPI.data);
+            return responseFromAPI.data;
+        })
+  }
+
   render() {
     return (
       <div className="App">
@@ -58,14 +74,14 @@ class App extends Component {
           <Route exact path='/signup/volunteer' render={(props) => <Signup setCurrentAccount={this.setCurrentAccount} accountType='volunteer' {...props} /> } />
           <Route exact path='/user/:id' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <UserProfilePage {...props} /> 
+              return <UserProfilePage {...props} loggedInAccount={this.state.loggedInAccount} getCurrentUserProfile={this.getCurrentUserProfile} /> 
             } else{
               return <Redirect to="/" />
             }
           }} />
           <Route exact path='/volunteer/:id' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} /> 
+              return <VolunteerProfilePage loggedInAccount={this.state.loggedInAccount} {...props} getCurrentVolunteerProfile={this.getCurrentVolunteerProfile} /> 
             } else{
               return <Redirect to="/" />
             }
@@ -79,7 +95,7 @@ class App extends Component {
           }} />
           <Route exact path='/user/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <EditPage loggedInAccount={this.state.loggedInAccount} setCurrentAccount={this.setCurrentAccount} {...props} /> 
+              return <EditPage getCurrentUserProfile={this.getCurrentUserProfile} setCurrentAccount={this.setCurrentAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }

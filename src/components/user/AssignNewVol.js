@@ -69,7 +69,8 @@ class AssignNewVol extends Component{
         value: [],
         setValue: [],
         maxHelp: this.props.maxHelp,
-        allVolunteersDB: []
+        allVolunteersDB: [],
+        success: false,
     }
 
     componentDidUpdate(prevProps) {
@@ -98,6 +99,19 @@ class AssignNewVol extends Component{
         { volunteer: this.state.setValue}, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    success: true,
+                    value: [],
+                    setValue: []
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -155,9 +169,16 @@ class AssignNewVol extends Component{
                                 })}
                             </Div>
                             <Div topMargin>
-                                <Button variant="success" type="submit">
-                                    Assign new volunteers
+                                {!this.state.success &&
+                                    <Button variant="success" type="submit">
+                                        Assign new volunteers
+                                    </Button>
+                                }
+                                {this.state.success &&
+                                <Button variant="success" disabled>
+                                    Added!
                                 </Button>
+                            }
                             </Div>
                         </Form.Group>
                     </Form>

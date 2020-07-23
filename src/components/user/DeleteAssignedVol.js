@@ -54,7 +54,8 @@ const H6 = styled.h6`
 class DeleteAssignedVol extends Component{
     state = {
         value: [],
-        setValue: []
+        setValue: [],
+        success: false
     }
 
     handleChange = (val) => {
@@ -72,6 +73,19 @@ class DeleteAssignedVol extends Component{
         { assignedVolunteer: this.state.setValue}, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    success: true,
+                    value: [],
+                    setValue: []
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -116,9 +130,16 @@ class DeleteAssignedVol extends Component{
                             )
                         })}
                         <Div topMargin>
-                            <Button variant="danger" type="submit">
-                                Delete selected volunteers
-                            </Button>
+                            {!this.state.success &&
+                                <Button variant="danger" type="submit">
+                                    Delete selected volunteers
+                                </Button>
+                            }
+                            {this.state.success &&
+                                <Button variant="outline-danger" disabled>
+                                    Deleted!
+                                </Button>
+                            }
                         </Div>
                     </Form.Group>
                 </Form>

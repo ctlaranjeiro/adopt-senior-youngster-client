@@ -26,7 +26,8 @@ const Hr = styled.hr`
 
 class EditPassword extends Component{    
     state = {
-        password: '*********'
+        password: '',
+        success: false
     }
 
     handleChange = (event) => {  
@@ -43,6 +44,16 @@ class EditPassword extends Component{
         { password }, { withCredentials: true })
             .then(() => {
                 console.log('Password updated successfully!')
+
+                this.setState({
+                    success: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 1000)
+                });
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -59,12 +70,22 @@ class EditPassword extends Component{
                     <Form.Row>
                         <Form.Group as={Col} controlId="formBasicPassword">
                             <Form.Label>Change password</Form.Label>
-                            <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                            <Form.Control type="password" name="password" pattern=".{6,}" required title="6 characters minimum" value={this.state.password} placeholder='••••••' onChange={this.handleChange} />
+                            <Form.Text className="text-muted">
+                                Password length must be at least 6 characters
+                            </Form.Text>
                         </Form.Group>
                     </Form.Row>
-                    <Button variant="outline-primary" type="submit">
-                        Update password
-                    </Button>
+                    {!this.state.success &&
+                        <Button variant="outline-primary" type="submit">
+                            Update password
+                        </Button>
+                    }
+                    {this.state.success &&
+                        <Button variant="success" disabled>
+                            Success!
+                        </Button>
+                    }
                 </Form>
             </Div>
         )
