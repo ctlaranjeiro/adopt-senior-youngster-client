@@ -143,7 +143,7 @@ class AssignNewVol extends Component{
                             <Div allVolContainer>
                                 {this.state.allVolunteersDB && this.state.allVolunteersDB.map(volunteer => {
                                     return(
-                                        <Div centerCheck key={volunteer._id}>
+                                        <Div key={volunteer._id}>
                                             <Form.Check type="checkbox">
                                                 <ToggleButtonGroup type="checkbox" value={this.state.value} onChange={this.handleChange} className="toggle-btn-group test-form">
                                                     <ToggleButton value={volunteer._id} variant="outline-success" className="toggle-btn">

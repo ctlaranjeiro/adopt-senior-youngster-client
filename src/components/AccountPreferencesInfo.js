@@ -31,13 +31,20 @@ const Div = styled.div`
     ${props => props.notes && css`
         text-align: left;
         width: 100%;
+        margin-top: 60px;
     `}
 
     ${props => props.preferencesContainer && css`
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: flex-start;
+    `}
+
+    ${props => props.volPreferencesContainer && css`
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     `}
 `;
 
@@ -271,7 +278,7 @@ function AccountPreferencesInfo(props){
             <Div main>
                 <H5>Your Preferences</H5>
                 <Hr />
-                <Div preferencesContainer>
+                <Div volPreferencesContainer>
                     <Div skillsAvailability>
                         <Div needs>
                             <Table>
