@@ -38,6 +38,7 @@ class Signup extends Component {
         occupation: '',
         mentor: false,
         aboutMe: '',
+        signingUp: false
     }
 
     service = new AuthService();
@@ -58,6 +59,7 @@ class Signup extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
+        this.setState({ signingUp: true });
 
         console.log('accountType:', this.state.accountType);
 
@@ -308,7 +310,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Control type="password" pattern=".{6,}" required title="6 characters minimum" name="password" value={this.state.password} onChange={this.handleChange} />
                                     <Form.Text className="text-muted">
                                         Password length must be at least 6 characters
                                     </Form.Text>
@@ -317,30 +319,30 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} required />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} required />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} required />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleChange} />
+                                    <Form.Control type="number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleChange} required/>
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridGender">
                                     <Form.Label>Gender</Form.Label>
-                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom>
+                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom required>
                                     <option value="" disabled selected>Select</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
@@ -349,7 +351,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridDate">
                                     <Form.Label>Birthdate</Form.Label>
-                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} />
+                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
@@ -372,7 +374,8 @@ class Signup extends Component {
                                         <Form.Check type='checkbox' id='houseCare' name='houseCare' label='House Care/Maintenance' checked={this.state.houseCare} onChange={this.handleChange} />
                                         <Form.Check type='checkbox' id='displacements' name='displacements' label='Displacement' checked={this.state.displacements} onChange={this.handleChange} />
                                         <Form.Check type='checkbox' id='grocery' name='grocery' label='Grocery Shopping' checked={this.state.grocery} onChange={this.handleChange} />
-                                        <Form.Check type='checkbox' id='pupil' name='pupil' label='Pupil' checked={this.state.pupil} onChange={this.handleChange} />                            </Form.Group>
+                                        <Form.Check type='checkbox' id='pupil' name='pupil' label='Pupil' checked={this.state.pupil} onChange={this.handleChange} /> 
+                                    </Form.Group>
                                 </Form.Row>
                             </div>
 
@@ -381,21 +384,21 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="emergFirstName" value={this.state.emergFirstName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="emergFirstName" value={this.state.emergFirstName} onChange={this.handleChange} required/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicEmergLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="emergLastName" value={this.state.emergLastName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="emergLastName" value={this.state.emergLastName} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergEmail">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" name="emergEmail" value={this.state.emergEmail} onChange={this.handleChange} />
+                                    <Form.Control type="email" name="emergEmail" value={this.state.emergEmail} onChange={this.handleChange} required/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicEmergPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="emergPhoneNumber" value={this.state.emergPhoneNumber} onChange={this.handleChange} />
+                                    <Form.Control type="number" name="emergPhoneNumber" value={this.state.emergPhoneNumber} onChange={this.handleChange} required/>
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
@@ -404,14 +407,21 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             
                             <div className="center-btn">
+                                {!this.state.signingUp &&
                                 <Button variant="primary" type="submit" block>
                                     Signup
                                 </Button>
+                                }
+                                {this.state.signingUp &&
+                                <Button variant="primary" disabled block>
+                                    Creating account...
+                                </Button>
+                                }
                             </div>
                             
                         </Form>
@@ -430,11 +440,11 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmail">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleChange} />
+                                    <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleChange} required />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Control type="password" pattern=".{6,}" required title="6 characters minimum" name="password" value={this.state.password} onChange={this.handleChange} />
                                     <Form.Text className="text-muted">
                                         Password length must be at least 6 characters
                                     </Form.Text>
@@ -443,17 +453,17 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} required/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
@@ -463,7 +473,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="volPhoneNumber" value={this.state.volPhoneNumber} onChange={this.handleChange} />
+                                    <Form.Control type="number" name="volPhoneNumber" value={this.state.volPhoneNumber} onChange={this.handleChange} required/>
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
@@ -472,7 +482,7 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridGender">
                                     <Form.Label>Gender</Form.Label>
-                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom>
+                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom required>
                                     <option value="" disabled selected>Select</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
@@ -481,7 +491,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridDate">
                                     <Form.Label>Birthdate</Form.Label>
-                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} />
+                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} required/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
@@ -513,9 +523,16 @@ class Signup extends Component {
                             </Form.Group>
                             
                             <div className="center-btn">
-                                <Button variant="primary" type="submit" block>
-                                    Signup
-                                </Button>
+                                {!this.state.signingUp &&
+                                    <Button variant="primary" type="submit" block>
+                                        Signup
+                                    </Button>
+                                }
+                                {this.state.signingUp &&
+                                    <Button variant="primary" disabled block>
+                                        Creating account...
+                                    </Button>
+                                }
                             </div>
                             
                         </Form>

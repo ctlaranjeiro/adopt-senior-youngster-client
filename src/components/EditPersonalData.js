@@ -39,7 +39,8 @@ class EditPersonalData extends Component{
         email: this.props.email,
         address: this.props.address,
         phoneNumber: this.props.phoneNumber,
-        password: '*********'
+        password: '*********',
+        success: false
     }
 
     handleChange = (event) => {  
@@ -70,11 +71,29 @@ class EditPersonalData extends Component{
         }, { withCredentials: true})
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    success: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 1000)
+                });
+
+
                 //this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
                 console.log('Error while updating personalDetails on DB', err);
             });
+    }
+
+    componentWillMount() {
+        this.setState({
+            firstName: this.props.firstName
+        })
     }
 
     render(){
@@ -109,9 +128,17 @@ class EditPersonalData extends Component{
                             <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
                         </Form.Group>
                     </Form.Row>
-                    <Button variant="outline-primary" type="submit">
-                        Update details
-                    </Button>
+                    {!this.state.success &&
+                        <Button variant="outline-primary" type="submit">
+                            Update details
+                        </Button>
+                    }
+                    {this.state.success &&
+                        <Button variant="success" disabled>
+                            Success!
+                        </Button>
+                    }
+                    
                 </Form>
             </Div>
         )

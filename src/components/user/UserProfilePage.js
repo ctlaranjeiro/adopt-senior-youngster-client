@@ -63,19 +63,18 @@ class UserProfilePage extends Component {
         specificNeeds: []
     };
 
+  
     componentDidMount(){
         const { params } = this.props.match;
-        axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
-            .then(responseFromAPI => {
-                // console.log('responseFromAPI.data', responseFromAPI.data);
-                const loggedInAccount = responseFromAPI.data;
+      
+            this.props.getCurrentUserProfile(params.id).then(result => {
                 this.setState({ 
-                    loggedInAccount: loggedInAccount,
-                    emergencyContact: loggedInAccount.emergencyContact,
-                    schedulePreference: loggedInAccount.schedulePreference,
-                    specificNeeds: loggedInAccount.specificNeeds
+                    loggedInAccount: result.account,
+                    emergencyContact: result.account.emergencyContact,
+                    schedulePreference: result.account.schedulePreference,
+                    specificNeeds: result.account.specificNeeds
                 });
-            })
+               });
     }
 
     componentDidUpdate(prevProps) {
@@ -87,11 +86,12 @@ class UserProfilePage extends Component {
 
     updateStateUserProfile = () => {
         const { params } = this.props.match;
+        
 
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
                 // console.log('responseFromAPI.data', responseFromAPI.data);
-                const loggedInAccount = responseFromAPI.data;
+                const loggedInAccount = responseFromAPI.data.account;
                 this.setState({ 
                     loggedInAccount: loggedInAccount,
                     emergencyContact: loggedInAccount.emergencyContact,
@@ -111,7 +111,7 @@ class UserProfilePage extends Component {
                             pic={this.state.loggedInAccount.profilePicture}
                             size='8em' 
                         />
-                        <Span>Welcome, {this.state.loggedInAccount.firstName}</Span>
+                        <Span>Hello, {this.state.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
                         <Link to={{
@@ -140,7 +140,11 @@ class UserProfilePage extends Component {
                                 pupil: this.state.specificNeeds.pupil,
                                 notes: this.state.loggedInAccount.notes,
                                 profilePicture: this.state.loggedInAccount.profilePicture,
+                                // updateState: this.updateStateUserProfile
                             },
+                         test: {
+                             bla: 'bla'
+                         }
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>

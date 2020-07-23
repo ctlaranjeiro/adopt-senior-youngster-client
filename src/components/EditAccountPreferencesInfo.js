@@ -63,7 +63,10 @@ class EditAccountPreferencesInfo extends Component{
         displacements: this.props.displacements,
         grocery: this.props.grocery,
         pupil: this.props.pupil,
-        notes: this.props.notes
+        notes: this.props.notes,
+        successNeeds: false,
+        successSchedule: false,
+        successNotes: false
     }
 
     handleChange = (event) => {  
@@ -123,6 +126,17 @@ class EditAccountPreferencesInfo extends Component{
         }, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    successSchedule: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            successSchedule: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -151,6 +165,17 @@ class EditAccountPreferencesInfo extends Component{
         }, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    successNeeds: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            successNeeds: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -166,6 +191,17 @@ class EditAccountPreferencesInfo extends Component{
         axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/userNotes`, { userNotes: notes } , { withCredentials: true })
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    successNotes: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            successNotes: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -225,9 +261,16 @@ class EditAccountPreferencesInfo extends Component{
                                 />
                             </Form.Group>
                             <div className="center-btn">
-                                <Button variant="outline-primary" type="submit">
-                                    Update needs
-                                </Button>
+                                {!this.state.successNeeds &&
+                                    <Button variant="outline-primary" type="submit">
+                                        Update needs
+                                    </Button>
+                                }
+                                {this.state.successNeeds &&
+                                    <Button variant="success" disabled>
+                                        Success!
+                                    </Button>
+                                }
                             </div>
                         </Form>
                     </Div>
@@ -285,9 +328,16 @@ class EditAccountPreferencesInfo extends Component{
                                 />
                             </Form.Group>
                             <div className="center-btn">
-                                <Button variant="outline-primary" type="submit">
-                                    Update schedule
-                                </Button>
+                                {!this.state.successSchedule &&
+                                    <Button variant="outline-primary" type="submit">
+                                        Update schedule
+                                    </Button>
+                                }
+                                {this.state.successSchedule &&
+                                    <Button variant="success" disabled>
+                                        Success!
+                                    </Button>
+                                }
                             </div>
                         </Form>
                     </Div>
@@ -299,9 +349,16 @@ class EditAccountPreferencesInfo extends Component{
                             <Form.Control as="textarea" rows="5" maxLength="250" name="notes" value={this.state.notes} onChange={this.handleChange} />
                         </Form.Group>
                     </Div>
-                    <Button variant="outline-primary" type="submit">
-                        Update notes
-                    </Button>
+                    {!this.state.successNotes &&
+                        <Button variant="outline-primary" type="submit">
+                            Update notes
+                        </Button>
+                    }
+                    {this.state.successNotes &&
+                        <Button variant="success" disabled>
+                            Success!
+                        </Button>
+                    }
                 </Form>
             </Div>
         )        

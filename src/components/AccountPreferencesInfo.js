@@ -310,15 +310,6 @@ function AccountPreferencesInfo(props){
                             </Table>
                         </Div>
                     </Div>
-                    <Div>
-                    {account && account.aboutMe &&
-                            <Div notes>
-                                <H5>About Me:</H5>
-                                <span>{account.aboutMe}</span>
-                            </Div>
-                        }
-                        
-                    </Div>
                 </Div>
             </Div>
         )

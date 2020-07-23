@@ -28,7 +28,8 @@ class EditEmergencyContact extends Component{
         emergLastName: this.props.emergLastName,
         emergEmail: this.props.emergEmail,
         emergAddress: this.props.emergAddress,
-        emergPhoneNumber: this.props.emergPhoneNumber
+        emergPhoneNumber: this.props.emergPhoneNumber,
+        success: false
     }
 
     handleChange = (event) => {  
@@ -56,6 +57,17 @@ class EditEmergencyContact extends Component{
         }, { withCredentials: true})
             .then(() => {
                 this.props.updateState();
+
+                this.setState({
+                    success: true
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 1000)
+                });
+
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
@@ -95,9 +107,16 @@ class EditEmergencyContact extends Component{
                             <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange} />
                     </Form.Group>
                 </Form.Row>
-                <Button variant="outline-primary" type="submit">
-                    Update Emergency Contact
-                </Button>
+                {!this.state.success &&
+                        <Button variant="outline-primary" type="submit">
+                            Update emergency contact
+                        </Button>
+                    }
+                    {this.state.success &&
+                        <Button variant="success" disabled>
+                            Success!
+                        </Button>
+                    }
             </Form>
             </Div>
         )        

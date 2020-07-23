@@ -6,7 +6,8 @@ class Login extends Component {
     state = {
         accountType: this.props.accountType,
         email: '',
-        password: ''
+        password: '',
+        loggingIn: false
     }
 
     service = new AuthService();
@@ -21,18 +22,22 @@ class Login extends Component {
         const { email, password } = this.state;
 
         if(this.state.accountType === 'user'){
-            this.service.loginUser(email, password)
-            .then(response => {
-                //Set the whole application with the user that just loggedin
-                this.props.setCurrentAccount(response);
-                //the line of code above lifts the state up to app.js
+            this.setState({ loggingIn: true });
 
-                this.setState({ email: '', password: ''})
-                localStorage.setItem("loggedin", true);
+            setTimeout(() => {
+                this.service.loginUser(email, password)
+                    .then(response => {
+                        //Set the whole application with the user that just loggedin
+                        this.props.setCurrentAccount(response);
+                        //the line of code above lifts the state up to app.js
 
-                //redirect the user
-                this.props.history.push(`/user/${response._id}`);
-            })
+                        this.setState({ email: '', password: ''})
+                        localStorage.setItem("loggedin", true);
+
+                        //redirect the user
+                        this.props.history.push(`/user/${response._id}`);
+                    })
+            }, 1500)
         }
 
         if(this.state.accountType === 'volunteer'){
@@ -62,24 +67,19 @@ class Login extends Component {
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+                        <Form.Control type="password" pattern=".{6,}" required title="6 characters minimum" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Login
-                    </Button>
+                    {!this.state.loggingIn &&
+                        <Button variant="primary" type="submit">
+                            Login
+                        </Button>
+                    }
+                    {this.state.loggingIn &&
+                        <Button variant="primary" disabled>
+                            Welcome back!
+                        </Button>
+                    }
                 </Form>
-
-                {/* <form onSubmit={this.handleFormSubmit}>
-                    <label>Email:</label>
-                    <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
-                    <label>Password:</label>
-                    <input name="password" value={this.state.password} onChange={this.handleChange} />
-                    
-                    <input type="submit" value="Login" />
-                </form>
-                <p>Don't have account? 
-                    <Link to={"/signup"}> Signup</Link>
-                </p> */}
             </div>
         )
     }

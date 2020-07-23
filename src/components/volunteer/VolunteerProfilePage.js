@@ -2,11 +2,19 @@ import React, { Component } from 'react';
 import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
 import PersonalData from '../PersonalData';
+import EmergencyContact from '../user/EmergencyContact';
 import AccountPreferencesInfo from '../AccountPreferencesInfo';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { FiEdit } from "react-icons/fi";
+import axios from 'axios';
+
+
 
 const Div = styled.div`
     ${props => props.mainContainer && css`
-        margin: 0 80px;
+        margin: auto 80px;
+        ${'' /* height: 100%; */}
     `}
 
     ${props => props.welcomeProfileContainer && css`
@@ -24,17 +32,16 @@ const Div = styled.div`
     ${props => props.info && css`
         display: flex;
         justify-content: space-between;
-        height: 65vh;
+        ${'' /* height: 65vh; */}
     `}
 
-    ${props => props.rightInfo && css`
+    ${props => props.leftInfo && css`
         width: 50%;
         padding-right: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        background-color: #f1f1f1;
+        border-radius: 20px;
     `}
-    ${props => props.leftInfo && css`
+    ${props => props.rightInfo && css`
         width: 50%;
         padding-left: 20px;
     `}
@@ -48,25 +55,98 @@ const Span = styled.span`
 `;
 
 class VolunteerProfilePage extends Component {
+    state = {
+        loggedInAccount: [],
+        availablePeriods: [],
+        skills: []
+    };
+
+  
+    componentDidMount(){
+        const { params } = this.props.match;
+      
+            this.props.getCurrentVolunteerProfile(params.id).then(result => {
+                console.log('result', result);
+                this.setState({ 
+                    loggedInAccount: result.account,
+                    availablePeriods: result.account.availablePeriods,
+                    skills: result.account.skills
+                });
+               });
+    }
+
+    componentDidUpdate(prevProps) {
+        // compare this.props and prevProps
+        if (this.props !== prevProps) {
+            this.updateStateVolunteerProfile();
+        }
+    }
+
+    updateStateVolunteerProfile = () => {
+        const { params } = this.props.match;
+        
+
+        axios.get(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}`)
+            .then(responseFromAPI => {
+                // console.log('responseFromAPI.data', responseFromAPI.data);
+                const loggedInAccount = responseFromAPI.data.account;
+                this.setState({ 
+                    loggedInAccount: loggedInAccount,
+                    availablePeriods: loggedInAccount.availablePeriods,
+                    skills: loggedInAccount.skills
+                });
+            })
+    }
+
     render(){
         return(
             <Div mainContainer>
                 {/* <h1>{this.props.loggedInAccount.firstName}'s User Profile Page</h1> */}
                 <Div welcomeProfileContainer>
                     <Div welcomeMessage>
-                        <RoundedPicture loggedInAccount={this.props.loggedInAccount} size='8em' />
-                        <Span>Welcome, {this.props.loggedInAccount && this.props.loggedInAccount.firstName}</Span>
+                        <RoundedPicture
+                            pic={this.state.loggedInAccount.profilePicture}
+                            size='8em' 
+                        />
+                        <Span>Hello, {this.state.loggedInAccount.firstName}</Span>
                     </Div>
                     <Div editBtn>
-                        <button>Edit Profile</button>
+                        <Link to={{
+                            pathname: `/volunteer/${this.state.loggedInAccount._id}/edit`,
+                            state: {
+                                firstName: this.state.loggedInAccount.firstName,
+                                lastName: this.state.loggedInAccount.lastName,
+                                email: this.state.loggedInAccount.email,
+                                address: this.state.loggedInAccount.address,
+                                phoneNumber: this.state.loggedInAccount.phoneNumber,
+                                morning: this.state.availablePeriods.morning,
+                                afternoon: this.state.availablePeriods.afternoon,
+                                evening: this.state.availablePeriods.evening,
+                                night: this.state.availablePeriods.night,
+                                overNight: this.state.availablePeriods.overNight,
+                                fullDay: this.state.availablePeriods.fullDay,
+                                healthCare: this.state.skills.healthCare,
+                                houseCare: this.state.skills.houseCare,
+                                displacements: this.state.skills.displacements,
+                                grocery: this.state.skills.grocery,
+                                mentor: this.state.skills.mentor,
+                                aboutMe: this.state.loggedInAccount.aboutMe,
+                                profilePicture: this.state.loggedInAccount.profilePicture,
+                            },
+                         test: {
+                             bla: 'bla'
+                         }
+                        }}>
+                        <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
+                        </Link>
                     </Div>
                 </Div>
                 <Div info>
-                    <Div rightInfo>
-                        <PersonalData loggedInAccount={this.props.loggedInAccount} />
-                    </Div>
                     <Div leftInfo>
-                        <AccountPreferencesInfo loggedInAccount={this.props.loggedInAccount} />
+                        <PersonalData loggedInAccount={this.state.loggedInAccount} />
+                    </Div>
+                    <Div rightInfo>
+                        <AccountPreferencesInfo loggedInAccount={this.state.loggedInAccount} />
                     </Div>
                 </Div>
                 

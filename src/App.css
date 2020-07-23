@@ -69,7 +69,7 @@
 
 .center-btn{
   text-align: center;
-  width: 150px;
+  width: 180px;
   margin: auto;
 }
 
@@ -236,4 +236,8 @@ ul li {
 
 #assVolSkills li {
   margin-left: 3em;
+}
+
+.checkboxes{
+  margin-top: 30px;
 }

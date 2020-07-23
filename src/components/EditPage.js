@@ -104,6 +104,16 @@ const Div = styled.div`
         heigth: auto;
     `}
 
+    ${props => props.byeMsg && css`
+        background-color: #DD3444;
+        color: white;
+        width: 250px;
+        padding: 10px;
+        margin: 20px auto 0;
+        border-radius: 50px;
+        font-size: 0.9em;
+    `}
+
     
 `;
 
@@ -176,13 +186,28 @@ class EditPage extends Component{
         maxHelp: false,
         allVolunteersDB: [],
         availableVol: [],
+        success: false
     };
 
-    componentDidMount(){
+
+    // componentDidMount(){
+    //     const { params } = this.props.match;
+      
+    //         this.props.getCurrentUserProfile(params.id).then(result => {
+    //             this.setState({ 
+    //                 loggedInAccount: result,
+    //                 emergencyContact: result.emergencyContact,
+    //                 schedulePreference: result.schedulePreference,
+    //                 specificNeeds: result.specificNeeds
+    //             });
+    //         })
+    // }
+
+   componentDidMount(){
         const { params } = this.props.match;
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
-                const loggedInAccount = responseFromAPI.data;
+                const loggedInAccount = responseFromAPI.data.account;
                 this.setState({loggedInAccount: loggedInAccount, emergencyContact: loggedInAccount.emergencyContact, assignedVolunteers: loggedInAccount.assignedVolunteers}, () => {
                     this.checkAssignedVolNumber();
                 });
@@ -198,6 +223,11 @@ class EditPage extends Component{
                     });
             })
             // console.log('firstName state:',this.state.firstName);
+    }
+
+    componentDidUpdate(){
+        console.log('yp', this.props.location.test);
+        // this.props.location.state.updateState();
     }
 
     newVolMatchList = () => {
@@ -489,8 +519,14 @@ class EditPage extends Component{
         axios.delete(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/deleteAccount`, { withCredentials: true})
             .then(result => {
                 console.log('User account deleted!');
-                this.props.setCurrentAccount(null);
-                this.props.history.push(`/`);
+                this.setState({
+                    success: true
+                }, () => {
+                    setTimeout(() => {
+                        this.props.setCurrentAccount(null);
+                        this.props.history.push(`/`);
+                    }, 2000)
+                });
             })
             .catch(err => {
                 console.log('Error while deleting user account', err);
@@ -503,7 +539,7 @@ class EditPage extends Component{
         axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
             .then(responseFromAPI => {
                 // console.log('responseFromAPI.data', responseFromAPI.data);
-                const loggedInAccount = responseFromAPI.data;
+                const loggedInAccount = responseFromAPI.data.account;
                 this.setState({ 
                     firstName: loggedInAccount.firstName,
                     lastName: loggedInAccount.lastName,
@@ -637,9 +673,16 @@ class EditPage extends Component{
                 </Div>
                 <Div topMargin>
                     <span>No longer wish to have an account?</span>
-                    <Div btnDelete>
-                        <Button variant="outline-danger" size="sm" onClick={this.handleDeleteAccount}>Delete Account</Button>
-                    </Div>
+                    {!this.state.success &&
+                        <Div btnDelete>
+                            <Button variant="outline-danger" size="sm" onClick={this.handleDeleteAccount}>Delete Account</Button>
+                        </Div>
+                    }
+                    {this.state.success &&
+                        <Div byeMsg>
+                            Hope to see you again soon!
+                        </Div>
+                    }
                 </Div>
 
             </Div>
