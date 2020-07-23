@@ -78,6 +78,29 @@ class UserProfilePage extends Component {
             })
     }
 
+    componentDidUpdate(prevProps) {
+        // compare this.props and prevProps
+        if (this.props !== prevProps) {
+            this.updateStateUserProfile();
+        }
+    }
+
+    updateStateUserProfile = () => {
+        const { params } = this.props.match;
+
+        axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
+            .then(responseFromAPI => {
+                // console.log('responseFromAPI.data', responseFromAPI.data);
+                const loggedInAccount = responseFromAPI.data;
+                this.setState({ 
+                    loggedInAccount: loggedInAccount,
+                    emergencyContact: loggedInAccount.emergencyContact,
+                    schedulePreference: loggedInAccount.schedulePreference,
+                    specificNeeds: loggedInAccount.specificNeeds
+                });
+            })
+    }
+
     render(){
         return(
             <Div mainContainer>

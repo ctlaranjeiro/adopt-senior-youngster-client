@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { Form, Button, Col, FormText } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 

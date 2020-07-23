@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ButtonAssigned from './ButtonAssigned';
 import axios from 'axios';
 import styled, { css } from 'styled-components';
 import RoundedPicture from '../components/RoundedPicture';
@@ -14,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import DeleteAssignedVol from './user/DeleteAssignedVol';
 import AssignNewVol from './user/AssignNewVol';
+import FooterComponent from './FooterComponent';
 
 
 
@@ -164,7 +164,9 @@ class EditPage extends Component{
         profilePicture: this.props.location.state.profilePicture,
         modalShow: false,
         setModalShow: false,
-        maxHelp: false
+        maxHelp: false,
+        allVolunteersDB: [],
+        availableVol: [],
     };
 
     componentDidMount(){
@@ -176,12 +178,274 @@ class EditPage extends Component{
                     this.checkAssignedVolNumber();
                 });
                 // console.log('this.state', this.state);
+
+                axios.get(`${process.env.REACT_APP_SERVER}/api/allVolunteers`)
+                    .then(allVolunteers => {
+                        this.setState({
+                            allVolunteersDB: allVolunteers.data
+                        }, () => {
+                            this.newVolMatchList();
+                        });
+                    });
             })
-            console.log('firstName state:',this.state.firstName);
+            // console.log('firstName state:',this.state.firstName);
     }
 
+    newVolMatchList = () => {
+        //------- Exclude already assignedVolunteers from list displayes on add new volunteer
+        const filtered = [];
+        const ids = this.state.assignedVolunteers.map(vol => {return vol._id});
+
+        this.state.allVolunteersDB.forEach(item => {
+            if(!ids.includes(item._id)){
+                filtered.push(item);
+            }
+        })
+        console.log('Initialfilter', filtered)
+
+
+        //------- Set Match between user's schedulePreferences && needs AND volunteer's availablePeriods && skills
+
+        const finalMatch = [];
+        const finalIds = [];
+
+        if(this.state.morning){
+            filtered.forEach(item => {
+                if(item.availablePeriods.morning){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+        // console.log('FinalMatch 1:', finalMatch);
+        // console.log('IDS 1:', finalIds);
+
+        if(this.state.afternoon){
+            filtered.forEach(item => {
+                if(item.availablePeriods.afternoon){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+
+        // console.log('FinalMatch 1:', finalMatch);
+        // console.log('IDS 1:', finalIds);
+
+        if(this.state.evening){
+            filtered.forEach(item => {
+                if(item.availablePeriods.evening){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+        if(this.state.night){
+            filtered.forEach(item => {
+                if(item.availablePeriods.night){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+        if(this.state.overNight){
+            filtered.forEach(item => {
+                if(item.availablePeriods.overNight){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+        if(this.state.fullDay){
+            filtered.forEach(item => {
+                if(item.availablePeriods.fullDay){
+                    if(this.state.healthCare && item.skills.healthCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.houseCare && item.skills.houseCare){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.displacements && item.skills.displacements){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.grocery && item.skills.grocery){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                    if(this.state.pupil && item.skills.mentor){
+                        if(!finalIds.includes(item._id)){
+                            finalMatch.push(item);
+                            finalIds.push(item._id);
+                        }
+                    }
+                }
+            });
+        }
+
+        console.log('FinalMatch 1:', finalMatch);
+        console.log('IDS 1:', finalIds);
+            
+
+
+        this.setState({
+            availableVol: finalMatch
+        })
+    }
+
+
     checkAssignedVolNumber = () => {
-        if(this.state.assignedVolunteers.length === 4){
+        if(this.state.assignedVolunteers.length >= 4){
             this.setState({
                 maxHelp: true
             })
@@ -256,6 +520,9 @@ class EditPage extends Component{
                     notes: loggedInAccount.notes,
                     profilePicture: loggedInAccount.profilePicture,
                     assignedVolunteers: loggedInAccount.assignedVolunteers,
+                }, () => {
+                    this.checkAssignedVolNumber();
+                    this.newVolMatchList();
                 });
             })
     }
@@ -355,7 +622,7 @@ class EditPage extends Component{
                                     max number to equal max of 4 volunteers assigned (ex: if user already 
                                     has 3 volunteers, only let him check one more from the choosing)                        
                             */}
-                            <AssignNewVol assignedVol={this.state.assignedVolunteers} maxHelp={this.state.maxHelp} updateState={this.updateStateEdit} {...this.props} />
+                            <AssignNewVol assignedVol={this.state.assignedVolunteers} maxHelp={this.state.maxHelp} allVolunteersDB={this.state.availableVol} updateState={this.updateStateEdit} {...this.props} />
                         </Div>
                     </Div>
                 </Div>
@@ -366,22 +633,6 @@ class EditPage extends Component{
                     </Div>
                 </Div>
 
-
-
-
-
-                {/* {this.state.assignedVolunteers.map((volunteer) => {
-                    return(
-                        <Div assignedVol key={volunteer._id}>
-                            <ButtonAssigned key={volunteer._id}
-                                picture={volunteer.profilePicture}
-                                firstName={volunteer.firstName}
-                                lastName={volunteer.lastName}
-                                btnWidth="15em"
-                            />
-                        </Div>
-                    )
-                })} */}
             </Div>
         )
     }

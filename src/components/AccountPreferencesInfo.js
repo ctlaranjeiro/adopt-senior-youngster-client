@@ -79,7 +79,7 @@ function AccountPreferencesInfo(props){
 
     if(account && account.accountType === 'User'){
         //NEEDS
-        let needsKeys = Object.keys(account.specificNeeds);;
+        let needsKeys = Object.keys(account.specificNeeds);
         let filteredNeeds;
 
         filteredNeeds = needsKeys.filter(function(key) {
@@ -106,7 +106,7 @@ function AccountPreferencesInfo(props){
         
 
         //SCHEDULE
-        let scheduleKeys = Object.keys(account.schedulePreference);;
+        let scheduleKeys = Object.keys(account.schedulePreference);
         let filteredSchedule;
 
         filteredSchedule = scheduleKeys.filter(function(key) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Form, Button, Col } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -9,28 +9,6 @@ const Div = styled.div`
     width: 100%;
     padding: 20px 30px;
     border-radius: 20px;
-`;
-
-const Table = styled.table`
-    text-align: left;
-`;
-
-const Th = styled.th`
-    font-size: 1.1em;
-    padding-bottom: 10px;
-`;
-
-const Td = styled.td`
-    padding: 5px 0;
-
-    ${props => props.td1 && css`
-        width: 200px;
-        border-right: 1px solid black;
-    `}
-
-    ${props => props.td2 && css`
-        padding-left: 20px;
-    `}
 `;
 
 const H5 = styled.h5`
