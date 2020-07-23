@@ -70,7 +70,7 @@ class App extends Component {
               return <Redirect to="/" />
             }
           }} />
-          <Route exact path='/user/:id/assignedVolunteers' render={(props) => {
+          <Route path='/user/:id/assignedVolunteers' render={(props) => {
             if(localStorage.getItem("loggedin")){
               return <AssignedVolunteers loggedInAccount={this.state.loggedInAccount} {...props} /> 
             } else{
@@ -84,7 +84,7 @@ class App extends Component {
               return <Redirect to="/" />
             }
           }} />
-          <Route exact path='/volunteer/:id/edit' render={(props) => {
+          <Route path='/volunteer/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
               return <EditPage {...props} /> 
             } else{
@@ -93,6 +93,7 @@ class App extends Component {
           }} />
           <Route exact path='/logout' render={(props) => { return <Redirect to="/" /> }} />
         </Switch>
+
         <FooterComponent />
       </div>
     );

@@ -214,3 +214,26 @@ ul li {
 .test-form{
   margin-left: -20px;
 }
+
+.tab {
+  height: auto;
+  text-align: left;
+  padding: 1em;
+}
+.tab h5 {
+  margin-bottom: 2em;
+}
+
+.volList {
+  padding: 5em 0;
+}
+
+#assVolSkills {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+#assVolSkills li {
+  margin-left: 3em;
+}

@@ -51,15 +51,13 @@ const Div = styled.div `
         height: auto;
         margin-left: 20px;
         text-align: center;
-        border-radius:20px;
-        background-color: #f1f1f1;
     `}
 `
 
 const Ul = styled.div `
-    ${props => props.list && css `
+    ${props => props.lista && css `
         width: 100%;
-        height: 100%;
+        height: auto;
 
         display: flex;
         flex-direction: column;
@@ -67,6 +65,7 @@ const Ul = styled.div `
         justify-content: space-around;
 
         list-style: none;
+        background-color: #f1f1f1;
     `}
 `
 
@@ -74,8 +73,12 @@ export default class AssignedVolunteers extends Component {
     state = {
         loggedInAccount: [],
         assignedVolunteers: [],
-        selectedVolunteer: []
+        selectedVolunteer: [],
+        skills: [],
+        availability: []
     }
+
+
 
     componentDidMount() {
         const { params } = this.props.match;
@@ -85,18 +88,105 @@ export default class AssignedVolunteers extends Component {
                 this.setState({
                     loggedInAccount: loggedInAccount,
                     assignedVolunteers: loggedInAccount.assignedVolunteers
+                }, () => {
+                    if (this.state.assignedVolunteers.length > 0) {
+                        
+                        this.setState({
+                            selectedVolunteer: this.state.assignedVolunteers[0]/* ,
+                            skills: this.state.assignedVolunteers[0].skills */
+                        }, () => {
+                            this.renderSkills();
+                            this.renderAvailability();
+                        })
+                    }
                 })
             })
     }
 
-    
+    selectedVol = (vol) => {
+        this.setState({
+            selectedVolunteer: vol
+        }, () => {
+            this.renderSkills();
+            this.renderAvailability();
+        })
+    }
+
+    renderSkills() {
+        let skillsKeys = Object.keys(this.state.selectedVolunteer.skills);
+        let filteredSkills;
+
+        filteredSkills = skillsKeys.filter((key) => {
+            return this.state.selectedVolunteer.skills[key];
+        });
+
+        for (let i = 0; i < filteredSkills.length; i++){
+            if(filteredSkills[i] === "healthCare"){
+                filteredSkills[i] = "Health Care"
+            }
+            if(filteredSkills[i] === "houseCare"){
+                filteredSkills[i] = "House Care/Maintenance"
+            }
+            if(filteredSkills[i] === "displacements"){
+                filteredSkills[i] = "Displacements"
+            }
+            if(filteredSkills[i] === "grocery"){
+                filteredSkills[i] = "Grocery Shopping"
+            }
+            if(filteredSkills[i] === "mentor"){
+                filteredSkills[i] = "Mentor"
+            }
+        }
+        console.log('filteredSkills:', filteredSkills);
+        this.setState({
+            skills: filteredSkills
+        })
+    }
+
+    renderAvailability() {
+        let availablePeriodsKeys = Object.keys(this.state.selectedVolunteer.availablePeriods);
+        let filteredAvailablePeriods;
+
+        filteredAvailablePeriods = availablePeriodsKeys.filter((key) => {
+            return this.state.selectedVolunteer.availablePeriods[key];
+        });
+
+        if(filteredAvailablePeriods.includes("fullDay")){
+            filteredAvailablePeriods = ["fullDay"];
+        }
+
+        for (let j = 0; j < filteredAvailablePeriods.length; j++){
+            if(filteredAvailablePeriods[j] === "morning"){
+                filteredAvailablePeriods[j] = "Morning: 8am - 12pm"
+            }
+            if(filteredAvailablePeriods[j] === "afternoon"){
+                filteredAvailablePeriods[j] = "Afternoon: 12pm - 4pm"
+            }
+            if(filteredAvailablePeriods[j] === "evening"){
+                filteredAvailablePeriods[j] = "Evening: 4pm - 8pm"
+            }
+            if(filteredAvailablePeriods[j] === "night"){
+                filteredAvailablePeriods[j] = "Night: 8pm - 12am"
+            }
+            if(filteredAvailablePeriods[j] === "overNight"){
+                filteredAvailablePeriods[j] = "Over night: 12am - 8am"
+            }
+            if(filteredAvailablePeriods[j] === "fullDay"){
+                filteredAvailablePeriods[j] = "Full-day: 24 hours"
+            }
+        }
+        console.log('filteredAvailablePeriods:', filteredAvailablePeriods);
+        this.setState({
+            availablePeriods: filteredAvailablePeriods
+        })
+    }
 
     render(){
-        console.log('listOfVolunteers: ', this.state.loggedInAccount);
+        console.log(this.state.selectedVolunteer);
         return(
-            <div mainContainer>
+            <Div mainContainer>
 
-                {/* <Div titleContainer>
+                <Div titleContainer>
                     <h2>Assigned Volunteers</h2>
                     <Div editBtn>
                         <Link to={{
@@ -107,17 +197,14 @@ export default class AssignedVolunteers extends Component {
                         </Link>
                     </Div>
                 </Div>
-                 */}
 
-                {/* <Div info> */}
-                    {/* <Div leftInfo>
-                    {this.props.loggedInAccount && this.state.loggedInAccount.assignedVolunteers.map(vol => {
-                        this.setState.selectedVolunteer;
+                <Div info>
+                    <Div leftInfo>
+                    {this.props.loggedInAccount && this.state.assignedVolunteers.map(vol => {
                         return (
-                            <Ul list> */}
-                            {/* onclick={ () => this.setState……………..} */}
-                                {/* <li>
-                                    <a className="aLink" href="#information" onClick={ () => this.setState.selectedVolunteer(vol.props)}>
+                            <Ul lista key={vol._id}>
+                                <li className="volList">
+                                    <a className="aLink" href="#information" onClick={this.selectedVol.bind(this, vol)}>
                                         <Div banner>
                                             <span>
                                                 <strong>
@@ -131,24 +218,37 @@ export default class AssignedVolunteers extends Component {
                             </Ul>
                         )
                     })}
-                    </Div> */}
-                    {/* <Div rightInfo>
+                    </Div>
+
+                    <Div rightInfo>
                         <Tabs defaultActiveKey="profile" id="information">
-                            <Tab eventKey="profile" title="Profile">
-                                <p>Name: {this.state.selectedVolunteer} {this.state.selectedVolunteer.lastName}</p>
+                            <Tab className="tab" eventKey="profile" title="Profile">
+                                <h5>Volunteer Details</h5>
+                                <p><strong>Name:</strong> {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</p>
+                                <p><strong>Age:</strong> {this.state.selectedVolunteer.age}</p>
+                                <p><strong>Occupation:</strong> {this.state.selectedVolunteer.occupation}</p>
+                                <ul id="assVolSkills">
+                                    <strong>Skills:</strong>
+                                    {this.state.skills && this.state.skills.map(skill => (<li key={skill}>{skill}</li>))}
+                                </ul>
+                                <p><strong>About:</strong> {this.state.selectedVolunteer.aboutMe}</p>
                             </Tab>
-                            <Tab eventKey="reports" title="Reports">
+                            <Tab className="tab" eventKey="schedule" title="Schedule">
+                                <ol>
+                                    <h5>Availability</h5>
+                                    {this.state.availability && this.state.availability.map(per => (<li key={per}>{per}</li>))}
+                                </ol>
                             </Tab>
-                            <Tab eventKey="schedule" title="Schedule">
+                            <Tab className="tab" eventKey="reports" title="Reports">
                             </Tab>
-                            <Tab eventKey="review" title="Review">
+                            <Tab className="tab" eventKey="review" title="Review">
                             </Tab>
-                            <Tab eventKey="location" title="Location">
+                            <Tab className="tab" eventKey="location" title="Location">
                             </Tab>
                         </Tabs>
                     </Div>
-                </Div> */}
-        </div>
+                </Div>
+        </Div>
         )
     }
 }

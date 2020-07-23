@@ -11,7 +11,7 @@ export default class FooterComponent extends Component {
                     </div>
                     <div className="social">
                         <a href="http://www.facebook.com">
-                            <img alt="facebook.com" src="../icons/facebook-icon.png" />
+                            <img alt="facebook.com" src="/../icons/facebook-icon.png" />
                         </a>
                     </div>
                 </footer>

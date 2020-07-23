@@ -20,7 +20,7 @@ import AssignNewVol from './user/AssignNewVol';
 const Div = styled.div`
     ${props => props.mainContainer && css`
         margin: auto 80px;
-        height: 89vh;
+        height: auto;
     `}
 
     ${props => props.welcomeProfileContainer && css`
@@ -28,16 +28,19 @@ const Div = styled.div`
         align-items: center;
         justify-content: space-between;
         padding: 25px 0;
+        height: auto;
     `}
 
     ${props => props.welcomeMessage && css`
         display: flex;
         align-items: center;
+        height: auto;
     `}
 
     ${props => props.btnPicture && css`
         position: absolute;
         border-radius: 50%;
+        height: auto;
         
         &:hover ${ButtonStyled} {
             background-color: rgba(0,0,0,0.5);
@@ -49,12 +52,13 @@ const Div = styled.div`
     ${props => props.info && css`
         display: flex;
         justify-content: space-between;
-        ${'' /* height: auto; */}
+        height: auto;
         ${'' /* background-color: blue; */}
     `}
 
     ${props => props.rightInfo && css`
         width: 50%;
+        height: auto;
         padding-right: 20px;
         display: flex;
         flex-direction: column;
@@ -63,6 +67,7 @@ const Div = styled.div`
 
     ${props => props.leftInfo && css`
         width: 50%;
+        height: auto;
         padding-left: 20px;
     `}
 
@@ -72,6 +77,7 @@ const Div = styled.div`
 
     ${props => props.assignedVolunteers && css`
         width: 100%;
+        heigth: auto;
         background-color: #f1f1f1;
         padding: 20px 30px;
         border-radius: 20px;
@@ -82,6 +88,7 @@ const Div = styled.div`
 
     ${props => props.btnDelete && css`
         width: 300px;
+        heigth: auto;
         margin: auto;
         margin-top: 10px;
         margin-bottom: 40px;
@@ -89,10 +96,12 @@ const Div = styled.div`
 
     ${props => props.titleAssVol && css`
         width: 100%;
+        heigth: auto;
     `}
 
     ${props => props.deleteAndAssign && css`
         display: flex;
+        heigth: auto;
     `}
 
     
