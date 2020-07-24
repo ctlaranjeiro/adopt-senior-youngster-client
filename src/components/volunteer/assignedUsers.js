@@ -1,3 +1,8 @@
+//PARA FAZER: ADAPTAR O CONTEUDO AO VOLUNTEER E FAZER IMPORT NO APP.JS
+
+
+
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import RoundedPicture from '../RoundedPicture';
@@ -7,8 +12,6 @@ import { Button } from 'react-bootstrap';
 import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import GoogleMap from '../GoogleMap';
-// import { ToastContainer, toast } from 'react-toastify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -414,7 +417,6 @@ export default class AssignedVolunteers extends Component {
                                 </div>
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
-                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedVolunteer.address} />
                             </Tab>
                         </Tabs>
                     </Div>
