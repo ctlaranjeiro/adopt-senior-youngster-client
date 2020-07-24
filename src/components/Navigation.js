@@ -39,10 +39,8 @@ export default class Navigation extends Component {
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                     <Nav>
                     
-                    <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}/edit`}>Edit Details</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}`}>Profile</Nav.Link>
+                    
                     <Nav.Link href={`/user/${this.props.loggedInAccount._id}/assignedVolunteers`} onClick={this.assignedVolunteers}>Assigned Volunteers</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
@@ -61,10 +59,8 @@ export default class Navigation extends Component {
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                     <Nav className="foi">
                     
-                    <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}/edit`}>Edit Details</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}`}>Profile</Nav.Link>
+                    
                     <Nav.Link href={`/user/${this.props.loggedInAccount._id}/assignedUser`}>Assigned Users</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
@@ -73,28 +69,26 @@ export default class Navigation extends Component {
             )
         }
         
-        if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'Institution') {
-            return(
-                <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="/">
-                    <img className="logo" src="../Logo.png" alt="logo"/>
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
-                    <Nav className="foi">
+        // if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'Institution') {
+        //     return(
+        //         <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
+        //         <Navbar.Brand href="/">
+        //             <img className="logo" src="../Logo.png" alt="logo"/>
+        //         </Navbar.Brand>
+        //         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        //         <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
+        //             <Nav className="foi">
                     
-                    <NavDropdown title="Profile" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}`}>Details</NavDropdown.Item>
-                        <NavDropdown.Item href={`/user/${this.props.loggedInAccount._id}/edit`}>Edit Details</NavDropdown.Item>
-                    </NavDropdown>
-                    <Nav.Link href="#">Users</Nav.Link>
-                    <Nav.Link href="#">Volunteers</Nav.Link>
-                    <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-                </Navbar>
-            )
-        }
+        //             <Nav.Link href={`/user/${this.props.loggedInAccount._id}`}>Profile</Nav.Link>
+                    
+        //             <Nav.Link href="#">Users</Nav.Link>
+        //             <Nav.Link href="#">Volunteers</Nav.Link>
+        //             <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
+        //             </Nav>
+        //         </Navbar.Collapse>
+        //         </Navbar>
+        //     )
+        // }
         
         return(
             <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
@@ -108,12 +102,12 @@ export default class Navigation extends Component {
                         <NavDropdown title="Login" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="/login/user">User</NavDropdown.Item>
                             <NavDropdown.Item href="/login/volunteer">Volunteer</NavDropdown.Item>
-                            <NavDropdown.Item href="/login/institution">Institution</NavDropdown.Item>
+                            {/* <NavDropdown.Item href="/login/institution">Institution</NavDropdown.Item> */}
                         </NavDropdown>
                         <NavDropdown title="Signup" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="/signup/user">User</NavDropdown.Item>
                             <NavDropdown.Item href="/signup/volunteer">Volunteer</NavDropdown.Item>
-                            <NavDropdown.Item href="/signup/institution">Institution</NavDropdown.Item>
+                            {/* <NavDropdown.Item href="/signup/institution">Institution</NavDropdown.Item> */}
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

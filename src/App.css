@@ -216,7 +216,7 @@ ul li {
 }
 
 .tab {
-  height: auto;
+  height: 40rem;
   text-align: left;
   padding: 1em;
 }
@@ -240,4 +240,9 @@ ul li {
 
 .checkboxes{
   margin-top: 30px;
+}
+
+.radio {
+  margin-left: 2px;
+  margin-right: 7px;
 }

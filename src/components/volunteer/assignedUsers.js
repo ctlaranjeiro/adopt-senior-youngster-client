@@ -1,3 +1,8 @@
+//PARA FAZER: ADAPTAR O CONTEUDO AO VOLUNTEER E FAZER IMPORT NO APP.JS
+
+
+
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import RoundedPicture from '../RoundedPicture';
