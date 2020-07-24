@@ -8,7 +8,8 @@ import AuthService from './components/auth/auth-service';
 import UserProfilePage from './components/user/UserProfilePage';
 import VolunteerProfilePage from './components/volunteer/VolunteerProfilePage';
 import AssignedVolunteers from './components/user/AssignedVolunteers';
-import EditPage from './components/EditPage';
+import UserEditPage from './components/user/UserEditPage';
+import VolEditPage from './components/volunteer/VolEditPage';
 import LandingPage from './components/LandingPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FooterComponent from './components/FooterComponent';
@@ -95,14 +96,14 @@ class App extends Component {
           }} />
           <Route exact path='/user/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <EditPage getCurrentUserProfile={this.getCurrentUserProfile} setCurrentAccount={this.setCurrentAccount} {...props} /> 
+              return <UserEditPage getCurrentUserProfile={this.getCurrentUserProfile} setCurrentAccount={this.setCurrentAccount} {...props} /> 
             } else{
               return <Redirect to="/" />
             }
           }} />
           <Route path='/volunteer/:id/edit' render={(props) => {
             if (localStorage.getItem("loggedin")) {
-              return <EditPage {...props} /> 
+              return <VolEditPage {...props} setCurrentAccount={this.setCurrentAccount} /> 
             } else{
               return <Redirect to="/" />
             }

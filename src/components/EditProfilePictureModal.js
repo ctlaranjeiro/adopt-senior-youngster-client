@@ -38,14 +38,23 @@ class ModalProfilePicture extends Component {
                 // console.log('state profilePicture:', this.state.profilePicture);
                 const { profilePicture } = this.state;
 
-                axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/profilePicture`, { profilePicture }, { withCredentials: true })
+                if(this.props.accountType === 'User'){
+                    axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/profilePicture`, { profilePicture }, { withCredentials: true })
                     .then(() => {
                         this.props.updateState();
-                        // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
                     })
                     .catch(err => {
                         console.log('Error while updating profile picture in DB', err);
                     });
+                } else if(this.props.accountType === 'Volunteer'){
+                    axios.put(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}/edit/profilePicture`, { profilePicture }, { withCredentials: true })
+                    .then(() => {
+                        this.props.updateState();
+                    })
+                    .catch(err => {
+                        console.log('Error while updating profile picture in DB', err);
+                    });
+                }
             })
             .catch(err => {
                 console.log('Error while uploading image', err);
@@ -87,7 +96,7 @@ class ModalProfilePicture extends Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                    Change Profile Picture
+                        Change Profile Picture
                     </Modal.Title>
                 </Modal.Header>
                 {this.state.progress < 100 && 

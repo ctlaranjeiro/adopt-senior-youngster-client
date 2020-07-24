@@ -26,6 +26,7 @@ const Hr = styled.hr`
 
 class EditPassword extends Component{    
     state = {
+        accountType: this.props.accountType,
         password: '',
         success: false
     }
@@ -40,25 +41,47 @@ class EditPassword extends Component{
         const { params } = this.props.match;
         const { password } = this.state;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/password`, 
-        { password }, { withCredentials: true })
-            .then(() => {
-                console.log('Password updated successfully!')
+        if(this.state.accountType === 'User'){
+            axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/password`, 
+            { password }, { withCredentials: true })
+                .then(() => {
+                    console.log('Password updated successfully!')
 
-                this.setState({
-                    success: true
-                }, () => {
-                    setTimeout(() => {
-                        this.setState({
-                            success: false
-                        })
-                    }, 1000)
+                    this.setState({
+                        success: true
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false
+                            })
+                        }, 1000)
+                    });
+                    // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                })
+                .catch(err => {
+                    console.log('Error while updating password on DB', err);
                 });
-                // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
-            })
-            .catch(err => {
-                console.log('Error while updating password on DB', err);
-            });
+        }else if(this.state.accountType === 'Volunteer'){
+            axios.put(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}/edit/password`, 
+            { password }, { withCredentials: true })
+                .then(() => {
+                    console.log('Password updated successfully!')
+
+                    this.setState({
+                        success: true
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false
+                            })
+                        }, 1000)
+                    });
+                    // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
+                })
+                .catch(err => {
+                    console.log('Error while updating password on DB', err);
+                });
+        }
     }
 
     render(){

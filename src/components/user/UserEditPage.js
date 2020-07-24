@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styled, { css } from 'styled-components';
-import RoundedPicture from '../components/RoundedPicture';
+import RoundedPicture from '../RoundedPicture';
 import { FiEdit, FiCamera } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
-import EditPersonalData from '../components/EditPersonalData';
-import EditEmergencyContact from './EditEmergencyContact';
-import EditAccountPreferencesInfo from './EditAccountPreferencesInfo';
-import EditPassword from './EditPassword';
-import ModalProfilePicture from './EditProfilePictureModal';
+import EditPersonalData from '../EditPersonalData';
+import EditEmergencyContact from '../EditEmergencyContact';
+import EditAccountPreferencesInfo from '../EditAccountPreferencesInfo';
+import EditPassword from '../EditPassword';
+import ModalProfilePicture from '../EditProfilePictureModal';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import DeleteAssignedVol from './user/DeleteAssignedVol';
-import AssignNewVol from './user/AssignNewVol';
-import FooterComponent from './FooterComponent';
+import DeleteAssignedVol from './DeleteAssignedVol';
+import AssignNewVol from './AssignNewVol';
+import FooterComponent from '../FooterComponent';
 
 
 
@@ -158,6 +158,7 @@ class EditPage extends Component{
         loggedInAccount: [],
         emergencyContact: [],
         assignedVolunteers: [],
+        accountType: this.props.location.state.accountType,
         firstName: this.props.location.state.firstName,
         lastName: this.props.location.state.lastName,
         email: this.props.location.state.email,
@@ -589,7 +590,13 @@ class EditPage extends Component{
                                     Change picture
                                 </ButtonStyled>
 
-                                <ModalProfilePicture show={this.state.modalShow} onHide={this.handleHideModal} updateState={this.updateStateEdit} {...this.props} />
+                                <ModalProfilePicture 
+                                    show={this.state.modalShow} 
+                                    onHide={this.handleHideModal} 
+                                    updateState={this.updateStateEdit} 
+                                    accountType={this.state.accountType}
+                                    {...this.props} 
+                                />
                             </Div>
                         </Div>
                         <Span><FiEdit /> Edit your account</Span>
@@ -610,7 +617,7 @@ class EditPage extends Component{
                             address={this.state.address}
                             phoneNumber={this.state.phoneNumber}
                             updateState={this.updateStateEdit}
-                            // updateState={this.props.location.state.updateState}
+                            accountType={this.state.accountType}
                         />
                         <Div topMargin>
                             <EditEmergencyContact 
@@ -640,9 +647,10 @@ class EditPage extends Component{
                             pupil={this.state.pupil}
                             notes={this.state.notes}
                             updateState={this.updateStateEdit}
+                            accountType={this.state.accountType}
                         />
                         <Div topMargin>
-                            <EditPassword {...this.props} />
+                            <EditPassword {...this.props} accountType={this.state.accountType} />
                         </Div>
                     </Div>
                 </Div>

@@ -7,24 +7,17 @@ import axios from 'axios';
 
 const Div = styled.div`
      ${props => props.main && css`
+        width: 100%;
         padding: 20px 30px;
         border-radius: 20px;
-        width: 50%;
+        width: 100%;
     `};
 
-    ${props => props.volInfo && css`
+    ${props => props.userInfo && css`
         width: 70%;
         display: flex;
         align-items: center;
         text-align: left;
-    `};
-
-    ${props => props.avgRate && css`
-        width: 30%;
-        padding-right: 10px;
-        display: flex;
-        justify-content: flex-end;
-        font-size: 0.8em;
     `};
 
     ${props => props.topMargin && css`
@@ -32,13 +25,18 @@ const Div = styled.div`
     `};
 
     ${props => props.buttonMaxNumber && css`
-        width: 50%;
+        width: 100%;
         margin: 40px auto;
+    `};
+
+    ${props => props.flexColumn && css`
+        display: flex;
+        flex-direction: column;
     `};
 `;
 
 const Span = styled.span`
-    ${props => props.volName && css`
+    ${props => props.userName && css`
         margin-left: 15px;
     `};
 `;
@@ -55,7 +53,7 @@ const H6 = styled.h6`
 
 
 
-class DeleteAssignedVol extends Component{
+class DeleteAssignedUsers extends Component{
     state = {
         value: [],
         setValue: [],
@@ -73,8 +71,8 @@ class DeleteAssignedVol extends Component{
         event.preventDefault();
         const { params } = this.props.match;
 
-        axios.put(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/deleteAssignedVolunteers`, 
-        { assignedVolunteer: this.state.setValue}, { withCredentials: true })
+        axios.put(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}/edit/deleteAssignedUsers`, 
+        { assignedUser: this.state.setValue}, { withCredentials: true })
             .then(() => {
                 this.props.updateState();
 
@@ -93,7 +91,7 @@ class DeleteAssignedVol extends Component{
                 // this.props.history.push(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit`);
             })
             .catch(err => {
-                console.log('Error while updating assignedVolunteers in DB', err);
+                console.log('Error while updating assignedUsers in DB', err);
             });
     }
 
@@ -101,39 +99,34 @@ class DeleteAssignedVol extends Component{
     render(){
         return (
             <Div main>
-                <H6>Your volunteers</H6>
+                <H6>Your users</H6>
                 <Form.Text className="text-muted">
-                    Select volunteers you no longer wish to help you
+                    Select users you no longer wish to help
                 </Form.Text>
-                {this.props.assignedVol.length === 0 && 
+                {this.props.assignedUsers.length === 0 && 
                     <Div buttonMaxNumber>
                         <Button variant="outline-dark" size="sm" disabled>
-                            <span>No volunteers assigned yet. Please choose from the list on the right.</span>
+                            <Div flexColumn>
+                                <span>No users assigned yet.</span>
+                                <span>Please wait until a user asks for your help.</span>
+                            </Div>
                         </Button>
                     </Div>
                 }
-                {this.props.assignedVol.length > 0 && 
+                {this.props.assignedUsers.length > 0 && 
                     <Form onSubmit={this.handleFormSubmit}>
                         <Form.Group controlId="checkScheduleForm">
-                            {this.props.assignedVol && this.props.assignedVol.map(volunteer => {
+                            {this.props.assignedUsers && this.props.assignedUsers.map(user => {
                                 return(
-                                    <Div key={volunteer._id}>
+                                    <Div centerCheck key={user._id}>
                                         <Form.Check type="checkbox">
                                             <ToggleButtonGroup type="checkbox" value={this.state.value} onChange={this.handleChange} className="toggle-btn-group test-form">
-                                                <ToggleButton value={volunteer._id} variant="outline-danger" className="toggle-btn">
-                                                    <Div volInfo>
+                                                <ToggleButton value={user._id} variant="outline-danger" className="toggle-btn">
+                                                    <Div userInfo>
                                                         <RoundedPicture
-                                                            pic={volunteer.profilePicture}
+                                                            pic={user.profilePicture}
                                                             size='3.2em' />
-                                                        <Span volName>{volunteer.firstName} {volunteer.lastName}</Span>
-                                                    </Div>
-                                                    <Div avgRate>
-                                                        {volunteer.evaluation.averageRate &&
-                                                            <span>Rate: {volunteer.evaluation.averageRate}</span>
-                                                        }
-                                                        {!volunteer.evaluation.averageRate &&
-                                                            <span>Rate: 0</span>
-                                                        }
+                                                        <Span userName>{user.firstName} {user.lastName}</Span>
                                                     </Div>
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
@@ -144,7 +137,7 @@ class DeleteAssignedVol extends Component{
                             <Div topMargin>
                                 {!this.state.success &&
                                     <Button variant="danger" type="submit">
-                                        Delete selected volunteers
+                                        Delete selected users
                                     </Button>
                                 }
                                 {this.state.success &&
@@ -161,4 +154,4 @@ class DeleteAssignedVol extends Component{
     }
 }
 
-export default DeleteAssignedVol;
+export default DeleteAssignedUsers;

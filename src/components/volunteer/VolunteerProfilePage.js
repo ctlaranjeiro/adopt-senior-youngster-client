@@ -114,11 +114,13 @@ class VolunteerProfilePage extends Component {
                         <Link to={{
                             pathname: `/volunteer/${this.state.loggedInAccount._id}/edit`,
                             state: {
+                                accountType: this.state.loggedInAccount.accountType,
                                 firstName: this.state.loggedInAccount.firstName,
                                 lastName: this.state.loggedInAccount.lastName,
                                 email: this.state.loggedInAccount.email,
                                 address: this.state.loggedInAccount.address,
-                                phoneNumber: this.state.loggedInAccount.phoneNumber,
+                                volPhoneNumber: this.state.loggedInAccount.volPhoneNumber,
+                                occupation: this.state.loggedInAccount.occupation,
                                 morning: this.state.availablePeriods.morning,
                                 afternoon: this.state.availablePeriods.afternoon,
                                 evening: this.state.availablePeriods.evening,
@@ -132,10 +134,7 @@ class VolunteerProfilePage extends Component {
                                 mentor: this.state.skills.mentor,
                                 aboutMe: this.state.loggedInAccount.aboutMe,
                                 profilePicture: this.state.loggedInAccount.profilePicture,
-                            },
-                         test: {
-                             bla: 'bla'
-                         }
+                            }
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>

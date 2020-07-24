@@ -14,7 +14,7 @@ import axios from 'axios';
 const Div = styled.div`
     ${props => props.mainContainer && css`
         margin: auto 80px;
-        ${'' /* height: 100%; */}
+        height: 100%;
     `}
 
     ${props => props.welcomeProfileContainer && css`
@@ -32,19 +32,26 @@ const Div = styled.div`
     ${props => props.info && css`
         display: flex;
         justify-content: space-between;
-        ${'' /* height: 65vh; */}
     `}
 
-    ${props => props.rightInfo && css`
+    ${props => props.leftInfo && css`
         width: 50%;
+        height: auto;
         padding-right: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     `}
-    ${props => props.leftInfo && css`
+    ${props => props.rightInfo && css`
         width: 50%;
+        height: auto;
         padding-left: 20px;
+        background-color: #f1f1f1;
+        border-radius: 20px;
+    `}
+
+    ${props => props.topMargin && css`
+        margin-top: 20px;
     `}
 `;
 
@@ -117,6 +124,7 @@ class UserProfilePage extends Component {
                         <Link to={{
                             pathname: `/user/${this.state.loggedInAccount._id}/edit`,
                             state: {
+                                accountType: this.state.loggedInAccount.accountType,
                                 firstName: this.state.loggedInAccount.firstName,
                                 lastName: this.state.loggedInAccount.lastName,
                                 email: this.state.loggedInAccount.email,
@@ -141,21 +149,20 @@ class UserProfilePage extends Component {
                                 notes: this.state.loggedInAccount.notes,
                                 profilePicture: this.state.loggedInAccount.profilePicture,
                                 // updateState: this.updateStateUserProfile
-                            },
-                         test: {
-                             bla: 'bla'
-                         }
+                            }
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
                     </Div>
                 </Div>
                 <Div info>
-                    <Div rightInfo>
-                        <PersonalData loggedInAccount={this.state.loggedInAccount} />
-                        <EmergencyContact loggedInAccount={this.state.emergencyContact} />
-                    </Div>
                     <Div leftInfo>
+                        <PersonalData loggedInAccount={this.state.loggedInAccount} />
+                        <Div topMargin>
+                            <EmergencyContact loggedInAccount={this.state.emergencyContact} />
+                        </Div>
+                    </Div>
+                    <Div rightInfo>
                         <AccountPreferencesInfo loggedInAccount={this.state.loggedInAccount} />
                     </Div>
                 </Div>

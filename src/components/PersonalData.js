@@ -166,6 +166,14 @@ function PersonalData(props){
                         </tr>
                         <tr>
                             <Td td1>
+                                Occupation
+                            </Td>
+                            <Td td2>
+                                {account.occupation}
+                            </Td>
+                        </tr>
+                        <tr>
+                            <Td td1>
                                 Address
                             </Td>
                             <Td td2>
