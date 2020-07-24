@@ -196,7 +196,7 @@ export default class AssignedVolunteers extends Component {
                 filteredSkills[i] = "Mentor"
             }
         }
-        console.log('filteredSkills:', filteredSkills);
+        // console.log('filteredSkills:', filteredSkills);
         /* this.setState({
             skills: filteredSkills
         }) */
@@ -235,7 +235,7 @@ export default class AssignedVolunteers extends Component {
                 filteredAvailablePeriods[j] = "Full-day: 24 hours"
             }
         }
-        console.log('filteredAvailablePeriods:', filteredAvailablePeriods);
+        // console.log('filteredAvailablePeriods:', filteredAvailablePeriods);
         /* this.setState({
             availablePeriods: filteredAvailablePeriods
         }) */
@@ -244,19 +244,19 @@ export default class AssignedVolunteers extends Component {
 
     selectReports() {
         if(!this.state.reports) {
-            console.log('THERE ARE NO REPORTS TO SHOW!')
+            // console.log('THERE ARE NO REPORTS TO SHOW!')
             return;
         }
         // filtering the user associated reports according to the volunteer
         let rep = [];
         let allReps = this.state.reports;
-        console.log('allReps:', allReps);
+        // console.log('allReps:', allReps);
         allReps.forEach(report => {
             if(report.author._id === this.state.selectedVolunteer._id) {
                 rep.push(report);
             }
         });
-        console.log('rep:', rep);
+        // console.log('rep:', rep);
         // setting the state with the selected reports
         /* this.setState({
             selVolReports:rep
@@ -293,9 +293,9 @@ export default class AssignedVolunteers extends Component {
     }
 
     render(){
-        console.log('ALL REPORTS:', this.state.reports);
-        console.log('Assigned Volunteers:', this.state.assignedVolunteers);
-        console.log('Selected Volunter:',this.state.selectedVolunteer);
+        // console.log('ALL REPORTS:', this.state.reports);
+        // console.log('Assigned Volunteers:', this.state.assignedVolunteers);
+        // console.log('Selected Volunter:',this.state.selectedVolunteer);
         return(
             <Div mainContainer>
 
@@ -414,7 +414,7 @@ export default class AssignedVolunteers extends Component {
                                 </div>
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
-                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedVolunteer.address} />
+                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedVolunteer.address} volName={this.state.selectedVolunteer.firstName}/>
                             </Tab>
                         </Tabs>
                     </Div>

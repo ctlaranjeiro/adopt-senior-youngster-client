@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
-import NodeGeocoder from 'node-geocoder';
+import axios from 'axios';
 
 const mapStyles = {
   width: '800px',
   height: '500px'
 };
 
-export class MapContainer extends Component {
+export class GoogleMap extends Component {
     state = {
         places: [],
         showingInfoWindow: false,
@@ -16,26 +16,61 @@ export class MapContainer extends Component {
     }
 
     componentDidMount(){
-        const options = {
-            provider: 'google',
-            apiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
-            formatterPattern: 'string'
-          };
-           
-          const geocoder = NodeGeocoder(options);
-           
-          // Using callback
-          const res = geocoder.geocode('29 champs elysée paris');
+        this.googleAPIGeocodingRequest();
+    }
 
-          console.log('res', res);
+    componentDidUpdate(){
+        this.googleAPIGeocodingRequest();
+    }
+
+
+    googleAPIGeocodingRequest = () => {
+        const userAddress = this.props.userLocation;
+        const userFormattedAddress = userAddress.split(' ').join('+');
+        const volAddress = this.props.volLocation;
+        const volFormattedAddress = volAddress.split(' ').join('+');
+        // console.log('address', address);
+        // console.log('formatedAdress', userFormattedAddress);
+
+        let places = [];
+
+        //USER GEOCODING
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${userFormattedAddress}&key=${process.env.REACT_APP_GOOGLE_GEOCODING_API}`)
+            .then(userGeocoding => {
+                // console.log('axios get google API', userGeocoding.data.results[0].geometry.location);
+                const lat = userGeocoding.data.results[0].geometry.location.lat;
+                const lng = userGeocoding.data.results[0].geometry.location.lng;
+
+                places.push({lat: lat, lng: lng, name:'Your location'});
+
+                //VOLUNTEER GEOCODING
+                axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${volFormattedAddress}&key=${process.env.REACT_APP_GOOGLE_GEOCODING_API}`)
+                    .then(volGeocoding => {
+                        const lat = volGeocoding.data.results[0].geometry.location.lat;
+                        const lng = volGeocoding.data.results[0].geometry.location.lng;
+
+                        places.push({lat: lat, lng: lng, name:`${this.props.volName}'s location`});
+
+                        // console.log('places', places);
+
+                        this.setState({
+                            places: places
+                        })
+                    })
+
+            })
+            .catch(err => {
+                console.log('Error while getting info from Google API', err);
+            })
     }
 
     displayMarkers = () => {
         return this.state.places.map((store, index) => {
             return <Marker key={index} id={index} position={{
-                lat: store.latitude,
-                lng: store.longitude
-            }}
+                lat: store.lat,
+                lng: store.lng
+            }} 
+            name={store.name}
             onClick={this.onMarkerClick} />
         })
     }
@@ -57,12 +92,10 @@ export class MapContainer extends Component {
     };
 
     render() {
-        console.log('userLocation:', this.props.userLocation);
-        console.log('volLocation:', this.props.volLocation);
         return (
             <Map
                 google={this.props.google}
-                zoom={14}
+                zoom={9}
                 style={mapStyles}
                 initialCenter={{
                 lat: 38.7104766,
@@ -74,7 +107,7 @@ export class MapContainer extends Component {
                     marker={this.state.activeMarker}
                     visible={this.state.showingInfoWindow}>
                         <div>
-                        <h1>{this.state.selectedPlace.name}</h1>
+                        <h6>{this.state.selectedPlace.name}</h6>
                         </div>
                 </InfoWindow>
             </Map>
@@ -85,4 +118,4 @@ export class MapContainer extends Component {
 
 export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API
-})(MapContainer);
+})(GoogleMap);
