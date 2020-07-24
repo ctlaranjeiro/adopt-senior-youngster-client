@@ -166,7 +166,6 @@ class UserProfilePage extends Component {
                         <AccountPreferencesInfo loggedInAccount={this.state.loggedInAccount} />
                     </Div>
                 </Div>
-                
             </Div>
         )
     }

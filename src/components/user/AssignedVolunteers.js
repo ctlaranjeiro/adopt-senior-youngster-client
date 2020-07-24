@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import GoogleMap from '../GoogleMap';
 // import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -359,6 +360,7 @@ export default class AssignedVolunteers extends Component {
                             </form> */}
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
+                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedVolunteer.address} />
                             </Tab>
                         </Tabs>
                     </Div>
