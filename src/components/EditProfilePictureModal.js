@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, Form, ProgressBar } from 'react-bootstrap';
 import axios from 'axios';

@@ -127,7 +127,7 @@ class AssignNewVol extends Component{
             <Div main>
                 <H6>Add volunteers</H6>
                 <Form.Text className="text-muted">
-                    If you need more help, add new volunteers
+                    If you need more help, select from the list below
                 </Form.Text>
                 {this.state.allVolunteersDB && this.state.maxHelp && 
                     <Div buttonMaxNumber>

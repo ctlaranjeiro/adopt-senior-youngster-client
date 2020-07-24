@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FiEdit } from "react-icons/fi";
 import axios from 'axios';
-import GoogleMap from '../GoogleMap';
 
 
 

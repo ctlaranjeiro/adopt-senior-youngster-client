@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import DeleteAssignedVol from './DeleteAssignedVol';
 import AssignNewVol from './AssignNewVol';
-import FooterComponent from '../FooterComponent';
 
 
 
@@ -226,11 +225,6 @@ class EditPage extends Component{
             // console.log('firstName state:',this.state.firstName);
     }
 
-    componentDidUpdate(){
-        console.log('yp', this.props.location.test);
-        // this.props.location.state.updateState();
-    }
-
     newVolMatchList = () => {
         //------- Exclude already assignedVolunteers from list displayes on add new volunteer
         const filtered = [];
@@ -241,7 +235,7 @@ class EditPage extends Component{
                 filtered.push(item);
             }
         })
-        console.log('Initialfilter', filtered)
+        // console.log('Initialfilter', filtered)
 
 
         //------- Set Match between user's schedulePreferences && needs AND volunteer's availablePeriods && skills
@@ -473,8 +467,8 @@ class EditPage extends Component{
             });
         }
 
-        console.log('FinalMatch 1:', finalMatch);
-        console.log('IDS 1:', finalIds);
+        // console.log('FinalMatch 1:', finalMatch);
+        // console.log('IDS 1:', finalIds);
             
 
 
@@ -489,12 +483,12 @@ class EditPage extends Component{
             this.setState({
                 maxHelp: true
             })
-            console.log('maxHelp set to true');
+            // console.log('maxHelp set to true');
         } else if (this.state.assignedVolunteers.length < 4){
             this.setState({
                 maxHelp: false
             })
-            console.log('maxHelp set to false');
+            // console.log('maxHelp set to false');
         }
     }
 
@@ -519,7 +513,7 @@ class EditPage extends Component{
 
         axios.delete(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/edit/deleteAccount`, { withCredentials: true})
             .then(result => {
-                console.log('User account deleted!');
+                // console.log('User account deleted!');
                 this.setState({
                     success: true
                 }, () => {
@@ -530,7 +524,7 @@ class EditPage extends Component{
                 });
             })
             .catch(err => {
-                console.log('Error while deleting user account', err);
+                // console.log('Error while deleting user account', err);
             });
     }
 

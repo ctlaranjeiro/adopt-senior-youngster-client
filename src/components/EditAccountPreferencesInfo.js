@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { Form, Button, Col } from 'react-bootstrap';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Div = styled.div`
@@ -144,6 +145,17 @@ class EditAccountPreferencesInfo extends Component{
                 })
                 .catch(err => {
                     console.log('Error while updating schedulePreferences on DB', err);
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }else if(this.state.accountType === 'Volunteer'){
             const { 
@@ -179,6 +191,17 @@ class EditAccountPreferencesInfo extends Component{
                 })
                 .catch(err => {
                     console.log('Error while updating schedulePreferences on DB', err);
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }
 
@@ -223,6 +246,17 @@ class EditAccountPreferencesInfo extends Component{
                 })
                 .catch(err => {
                     console.log('Error while updating schedulePreferences on DB', err);
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }else if(this.state.accountType === 'Volunteer'){
             const { 
@@ -258,6 +292,17 @@ class EditAccountPreferencesInfo extends Component{
                 })
                 .catch(err => {
                     console.log('Error while updating schedulePreferences on DB', err);
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }
         
@@ -355,10 +400,11 @@ class EditAccountPreferencesInfo extends Component{
                                 </div>
                             </Form>
                         </Div>
+                        <ToastContainer />
                         <Div schedule>
                             <Form onSubmit={this.handleFormSubmitSchedule}>
                                 <Form.Group as={Col} controlId="checkScheduleForm">
-                                    <H6>Schedule Preference</H6>
+                                    <H6>Schedule Preferences</H6>
                                     <Form.Check 
                                         type="switch"
                                         id="morning"
@@ -422,6 +468,7 @@ class EditAccountPreferencesInfo extends Component{
                                 </div>
                             </Form>
                         </Div>
+                        <ToastContainer />
                     </Div>
                     <Form onSubmit={this.handleFormSubmitNotes}>
                         <Div notes>
@@ -502,7 +549,7 @@ class EditAccountPreferencesInfo extends Component{
                                 <div className="center-btn">
                                     {!this.state.successNeeds &&
                                         <Button variant="outline-primary" type="submit">
-                                            Update needs
+                                            Update skills
                                         </Button>
                                     }
                                     {this.state.successNeeds &&
@@ -513,6 +560,7 @@ class EditAccountPreferencesInfo extends Component{
                                 </div>
                             </Form>
                         </Div>
+                        <ToastContainer />
                         <Div schedule>
                             <Form onSubmit={this.handleFormSubmitSchedule}>
                                 <Form.Group as={Col} controlId="checkScheduleForm">
@@ -569,7 +617,7 @@ class EditAccountPreferencesInfo extends Component{
                                 <div className="center-btn">
                                     {!this.state.successSchedule &&
                                         <Button variant="outline-primary" type="submit">
-                                            Update schedule
+                                            Update availability
                                         </Button>
                                     }
                                     {this.state.successSchedule &&
@@ -581,6 +629,7 @@ class EditAccountPreferencesInfo extends Component{
                             </Form>
                         </Div>
                     </Div>
+                    <ToastContainer />
                 </Div>
             )    
         } else {
