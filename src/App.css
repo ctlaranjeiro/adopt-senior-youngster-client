@@ -75,7 +75,7 @@
 
 
 .blue{
-  color:blue;
+  color:#057bfe;
 }
 
 .navBar{
@@ -97,7 +97,7 @@
 
 .foi{
   display:flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -145,6 +145,7 @@
   font-size: 2.5em;
   margin-bottom: 2em;
   font-weight: 400; 
+  color: #057bfe;
 }
 
 .signupLink::hover {
@@ -190,7 +191,7 @@
   color: #fff
 }
 
-ul li {
+li {
   list-style: none;
 }
 

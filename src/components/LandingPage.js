@@ -11,7 +11,6 @@ const Div = styled.div`
     ${props => props.mainContainer && css `
         overflow: auto;
     `}
-
     ${props => props.landing && css `
         background-image: url('../images/carousel-user.jpg');
         background-size: cover;
@@ -29,11 +28,9 @@ const Div = styled.div`
         margin-left: 10vw;
         margin-bottom: 10vh;
     `}
-
     ${props => props.accounts && css `
         margin-top: 25px;
     `}
-
     ${props => props.centerFlex && css `
         height: 30em;
         display: flex;
@@ -45,7 +42,7 @@ const Div = styled.div`
 const Button = styled.div `
     ${props => props.signupLanding && css `
         border-radius: 5px;
-        background-color: #3da8c2;
+        background-color: #057bfe;
         padding: 5px 10px;
         margin-bottom: 2em;
         color: #fff;
