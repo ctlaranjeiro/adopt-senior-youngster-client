@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { FiEdit } from "react-icons/fi";
+// import { Link } from 'react-router-dom';
+// import { Button } from 'react-bootstrap';
+// import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import GoogleMap from '../GoogleMap';
-// import { ToastContainer, toast } from 'react-toastify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -76,12 +75,8 @@ const Ul = styled.div `
 export default class AssignedVolunteers extends Component {
     state = {
         author: '',
-        review: [
-            {
-                text: '',
-                rate: ''
-            }
-        ],
+        review: '',
+        rate: '',
         subject: '',
         reports: [],
         loggedInAccount: [],
@@ -93,30 +88,32 @@ export default class AssignedVolunteers extends Component {
     }
 
     handleFormSubmit = (event) => {
-        const author = this.state.author;
-        const subject = this.state.subject;
-        const text = this.state.review[0].text;
-        const rate = this.state.review[0].rate;
-        axios.post(`${process.env.REACT_APP_SERVER}/api/user/:id/submitReview`, {author, subject, text, rate}, {withCredentials: true})
+        event.preventDefault();
+        const { params } = this.props.match;
+        const subject = this.state.selectedVolunteer._id;
+        const review = this.state.review;
+        const rate = this.state.rate;
+        console.log(this.state);
+        axios.post(`${process.env.REACT_APP_SERVER}/api/user/${params.id}/submitReview`, {subject, review, rate}, {withCredentials: true})
             .then(() => {
-                this.refreshReviews();
                 this.setState({
                     author: '',
                     subject: '',
-                    review: [
-                        {
-                            text: '',
-                            rate: ''
-                        }
-                    ]
+                    review: '',
+                    rate: ''
                 });
                 toast('Review created!');
             })
     }
 
-    handleChange = (event) => {
-        const { name, value } = event.target;
-        this.setState({[name] : value});
+    handleChange = (event) => {  
+        const {name, value} = event.target;
+
+        /* if(event.target.type === 'radio'){
+            this.setState({[name]: event.target.radio});
+        } else */{
+            this.setState({[name]: value});
+        }
     }
 
     componentFunctions() {
@@ -301,7 +298,7 @@ export default class AssignedVolunteers extends Component {
 
                 <Div titleContainer>
                     <h2>Assigned Volunteers</h2>
-                    <Div editBtn>
+                    {/* <Div editBtn>
                         <Link to={{
                             pathname: `/user/${this.state.loggedInAccount._id}/edit`,
                             state: {
@@ -332,7 +329,7 @@ export default class AssignedVolunteers extends Component {
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
-                    </Div>
+                    </Div> */}
                 </Div>
 
                 <Div info>
@@ -341,7 +338,7 @@ export default class AssignedVolunteers extends Component {
                         return (
                             <Ul lista key={vol._id}>
                                 <li className="volList">
-                                    <a className="aLink" href="#" onClick={this.selectedVol.bind(this, vol)}>
+                                    <a className="aLink" href="#information" onClick={this.selectedVol.bind(this, vol)}>
                                         <Div banner>
                                             <span>
                                                 <strong>
@@ -385,16 +382,16 @@ export default class AssignedVolunteers extends Component {
                             <Tab className="tab" eventKey="review" title="Review">
                                 <div>
                                     <h5>Rate the volunteer {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</h5>
-                                    <form onSubmit={this.handleReviewSubmit}>
+                                    <form onSubmit={this.handleFormSubmit}>
                                         <label htmlFor="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
-                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} onChange={this.handleChange} hidden/> <br/>
+                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} hidden/> <br/>
                                         <label htmlFor="subject">Subject: {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</label>
-                                        <input type="text" name="subject" id="subject" value={this.state.selectedVolunteer._id} onChange={this.handleChange} hidden/> <br/>
+                                        <input type="text" name="subject" id="subject" value={this.state.selectedVolunteer._id} hidden/> <br/>
                                         <label>From 1 to 5 (1 beeing bad and 5 beeing awsome) how do you rate the volunteer?</label> <br/>
                                         <label htmlFor="one">1</label>
                                         <input className="radio" type="radio" id="one" name="rate" value="1" onChange={this.handleChange}/>
                                         <label htmlFor="two">2</label>
-                                        <input className="radio" type="radio" id="two" name="rate" value="2"onChange={this.handleChange}/>
+                                        <input className="radio" type="radio" id="two" name="rate" value="2" onChange={this.handleChange}/>
                                         <label htmlFor="three">3</label>
                                         <input className="radio" type="radio" id="three" name="rate" value="3" onChange={this.handleChange}/>
                                         <label htmlFor="fuor">4</label>
@@ -403,8 +400,8 @@ export default class AssignedVolunteers extends Component {
                                         <input className="radio" type="radio" id="five" name="rate" value="5" onChange={this.handleChange}/>
                                         <br />
 
-                                        <label htmlFor="text">Your inpressions here:</label> <br />
-                                        <textarea name="text" id="text" cols="150" rows="10" onChange={this.handleChange}></textarea>
+                                        <label htmlFor="text">Your impressions here:</label> <br />
+                                        <textarea name="review" id="text" cols="150" rows="10" onChange={this.handleChange}></textarea>
 
                                         <br />
 

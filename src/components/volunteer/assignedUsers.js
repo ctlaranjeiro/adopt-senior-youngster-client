@@ -1,19 +1,15 @@
-//PARA FAZER: ADAPTAR O CONTEUDO AO VOLUNTEER E FAZER IMPORT NO APP.JS
-
-
-
-
 import React, { Component } from 'react';
 import axios from 'axios';
 import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { FiEdit } from "react-icons/fi";
+// import { Link } from 'react-router-dom';
+// import { Button } from 'react-bootstrap';
+// import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GoogleMap from '../GoogleMap';
 
 
 const Div = styled.div `
@@ -76,44 +72,35 @@ const Ul = styled.div `
     `}
 `
 
-export default class AssignedVolunteers extends Component {
+export default class AssignedUsers extends Component {
     state = {
-        author: '',
-        review: [
-            {
-                text: '',
-                rate: ''
-            }
-        ],
-        subject: '',
-        reports: [],
+        reviews: [],
         loggedInAccount: [],
-        assignedVolunteers: [],
-        selectedVolunteer: [],
-        skills: [],
-        availablePeriods: [],
-        selVolReports: []
+        assignedUsers: [],
+        selectedUser: [],
+        needs: [],
+        preferedPeriods: [],
+        selUserReviews: [],
+        averageRate: '',
+        author: '',
+        subject: '',
+        report:''
     }
 
     handleFormSubmit = (event) => {
-        const author = this.state.author;
-        const subject = this.state.subject;
-        const text = this.state.review[0].text;
-        const rate = this.state.review[0].rate;
-        axios.post(`${process.env.REACT_APP_SERVER}/api/user/:id/submitReview`, {author, subject, text, rate}, {withCredentials: true})
+        event.preventDefault();
+        const { params } = this.props.match;
+        const subject = this.state.selectedUser._id;
+        const report = this.state.report;
+        console.log(this.state);
+        axios.post(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}/submitReport`, {subject, report}, {withCredentials: true})
             .then(() => {
-                this.refreshReviews();
+                // this.props.refreshReports();
                 this.setState({
-                    author: '',
                     subject: '',
-                    review: [
-                        {
-                            text: '',
-                            rate: ''
-                        }
-                    ]
+                    report: ''
                 });
-                toast('Review created!');
+                // toast('Review created!');
             })
     }
 
@@ -123,188 +110,164 @@ export default class AssignedVolunteers extends Component {
     }
 
     componentFunctions() {
-        const filteredSkills = this.renderSkills();
-        const filteredAvailablePeriods = this.renderAvailability();
-        const rep = this.selectReports();
+        const filteredNeeds = this.renderNeeds();
+        const filteredPreferedPeriods = this.renderAvailability();
+        const rev = this.selectReviews();
         this.setState({
-            skills: filteredSkills,
-            availablePeriods: filteredAvailablePeriods,
-            selVolReports: rep
+            Needs: filteredNeeds,
+            preferedPeriods: filteredPreferedPeriods,
+            selUserReviews: rev
         })
     }
 
     componentDidMount() {
         const { params } = this.props.match;
-        axios.get(`${process.env.REACT_APP_SERVER}/api/user/${params.id}`)
+        axios.get(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}`)
             .then(responseFromAPI => {
                 // console.log('API Res:', responseFromAPI.data);
                 const loggedInAccount = responseFromAPI.data.account;
                 this.setState({
                     loggedInAccount: loggedInAccount,
-                    assignedVolunteers: loggedInAccount.assignedVolunteers,
-                    reports: responseFromAPI.data.reports
+                    assignedUsers: loggedInAccount.assignedUsers,
+                    reviews: responseFromAPI.data.reviews,
+                    averageRate: loggedInAccount.evaluation.averageRate
                 }, () => {
-                    if (this.state.assignedVolunteers.length > 0) {
+                    if (this.state.assignedUsers.length > 0) {
                         
                         this.setState({
-                            selectedVolunteer: this.state.assignedVolunteers[0]
+                            selectedUser: this.state.assignedUsers[0]
                         }, () => {
                             this.componentFunctions()
-                            // this.renderSkills();
-                            // this.renderAvailability();
-                        }/* , () => {
-                            this.renderAvailability();
-                        }, () => {
-                            this.selectReports();
-                        } */)
+                        })
                     }
                 })
             })
     }
 
-    selectedVol = (vol) => {
+    selectedUser = (user) => {
         this.setState({
-            selectedVolunteer: vol
+            selectedUser: user
         }, () => {
             this.componentFunctions();
-        }/* , () => {
-            this.renderAvailability();
-        }, () => {
-            this.selectReports();
-        } */)
+        })
     }
 
-    renderSkills() {
-        let skillsKeys = Object.keys(this.state.selectedVolunteer.skills);
-        let filteredSkills;
+    renderNeeds() {
+        let needsKeys = Object.keys(this.state.selectedUser.specificNeeds);
+        let filteredNeeds;
 
-        filteredSkills = skillsKeys.filter((key) => {
-            return this.state.selectedVolunteer.skills[key];
+        filteredNeeds = needsKeys.filter((key) => {
+            return this.state.selectedUser.specificNeeds[key];
         });
 
-        for (let i = 0; i < filteredSkills.length; i++){
-            if(filteredSkills[i] === "healthCare"){
-                filteredSkills[i] = "Health Care"
+        for (let i = 0; i < filteredNeeds.length; i++){
+            if(filteredNeeds[i] === "healthCare"){
+                filteredNeeds[i] = "Health Care"
             }
-            if(filteredSkills[i] === "houseCare"){
-                filteredSkills[i] = "House Care/Maintenance"
+            if(filteredNeeds[i] === "houseCare"){
+                filteredNeeds[i] = "House Care/Maintenance"
             }
-            if(filteredSkills[i] === "displacements"){
-                filteredSkills[i] = "Displacements"
+            if(filteredNeeds[i] === "displacements"){
+                filteredNeeds[i] = "Displacements"
             }
-            if(filteredSkills[i] === "grocery"){
-                filteredSkills[i] = "Grocery Shopping"
+            if(filteredNeeds[i] === "grocery"){
+                filteredNeeds[i] = "Grocery Shopping"
             }
-            if(filteredSkills[i] === "mentor"){
-                filteredSkills[i] = "Mentor"
+            if(filteredNeeds[i] === "mentor"){
+                filteredNeeds[i] = "Mentor"
             }
         }
-        console.log('filteredSkills:', filteredSkills);
-        /* this.setState({
-            skills: filteredSkills
-        }) */
-        return filteredSkills;
+        // console.log('filteredNeeds:', filteredNeeds);
+
+        return filteredNeeds;
     }
 
     renderAvailability() {
-        let availablePeriodsKeys = Object.keys(this.state.selectedVolunteer.availablePeriods);
-        let filteredAvailablePeriods;
+        let preferedPeriodsKeys = Object.keys(this.state.selectedUser.schedulePreference);
+        let filteredPreferedPeriods;
 
-        filteredAvailablePeriods = availablePeriodsKeys.filter((key) => {
-            return this.state.selectedVolunteer.availablePeriods[key];
+        filteredPreferedPeriods = preferedPeriodsKeys.filter((key) => {
+            return this.state.selectedUser.schedulePreference[key];
         });
 
-        if(filteredAvailablePeriods.includes("fullDay")){
-            filteredAvailablePeriods = ["fullDay"];
+        if(filteredPreferedPeriods.includes("fullDay")){
+            filteredPreferedPeriods = ["fullDay"];
         }
 
-        for (let j = 0; j < filteredAvailablePeriods.length; j++){
-            if(filteredAvailablePeriods[j] === "morning"){
-                filteredAvailablePeriods[j] = "Morning: 8am - 12pm"
+        for (let j = 0; j < filteredPreferedPeriods.length; j++){
+            if(filteredPreferedPeriods[j] === "morning"){
+                filteredPreferedPeriods[j] = "Morning: 8am - 12pm"
             }
-            if(filteredAvailablePeriods[j] === "afternoon"){
-                filteredAvailablePeriods[j] = "Afternoon: 12pm - 4pm"
+            if(filteredPreferedPeriods[j] === "afternoon"){
+                filteredPreferedPeriods[j] = "Afternoon: 12pm - 4pm"
             }
-            if(filteredAvailablePeriods[j] === "evening"){
-                filteredAvailablePeriods[j] = "Evening: 4pm - 8pm"
+            if(filteredPreferedPeriods[j] === "evening"){
+                filteredPreferedPeriods[j] = "Evening: 4pm - 8pm"
             }
-            if(filteredAvailablePeriods[j] === "night"){
-                filteredAvailablePeriods[j] = "Night: 8pm - 12am"
+            if(filteredPreferedPeriods[j] === "night"){
+                filteredPreferedPeriods[j] = "Night: 8pm - 12am"
             }
-            if(filteredAvailablePeriods[j] === "overNight"){
-                filteredAvailablePeriods[j] = "Over night: 12am - 8am"
+            if(filteredPreferedPeriods[j] === "overNight"){
+                filteredPreferedPeriods[j] = "Over night: 12am - 8am"
             }
-            if(filteredAvailablePeriods[j] === "fullDay"){
-                filteredAvailablePeriods[j] = "Full-day: 24 hours"
+            if(filteredPreferedPeriods[j] === "fullDay"){
+                filteredPreferedPeriods[j] = "Full-day: 24 hours"
             }
         }
-        console.log('filteredAvailablePeriods:', filteredAvailablePeriods);
-        /* this.setState({
-            availablePeriods: filteredAvailablePeriods
-        }) */
-        return filteredAvailablePeriods
+        // console.log('filteredPreferedPeriods:', filteredPreferedPeriods);
+        return filteredPreferedPeriods
     }
 
-    selectReports() {
-        if(!this.state.reports) {
-            console.log('THERE ARE NO REPORTS TO SHOW!')
-            return;
+    selectReviews() {
+        if(!this.state.reviews) {
+            // console.log('THERE ARE NO REVIEWS TO SHOW!')
+            return 'No Reviews';
         }
-        // filtering the user associated reports according to the volunteer
-        let rep = [];
-        let allReps = this.state.reports;
-        console.log('allReps:', allReps);
-        allReps.forEach(report => {
-            if(report.author._id === this.state.selectedVolunteer._id) {
-                rep.push(report);
+
+        let rev = [];
+        let allReviews = this.state.reviews;
+        // console.log('allReviews:', allReviews);
+        allReviews.forEach(review => {
+            if(review.author._id === this.state.selectedUser._id) {
+                rev.push(review);
             }
         });
-        console.log('rep:', rep);
-        // setting the state with the selected reports
-        /* this.setState({
-            selVolReports:rep
-        }); */
+        // console.log('rev:', rev);
 
-        return rep
+        return rev
     }
 
-    showReports(auth, sub) {
-        sub = this.state.loggedInAccount._id;
-        auth = this.state.selectedVolunteer._id;
+    showReviews() {
+        let selURev = this.state.selUserReviews;
 
-        let authName = `${this.state.selectedVolunteer.firstName} ${this.state.selectedVolunteer.lastName}`;
-        
+        for(let n = 0; n < selURev.length; n ++) {
+            let revSub = selURev[n].subject;
+            let date = selURev[n].review[0].createdAt;
+            let text = selURev[n].review[0].text;
+            let rate = selURev[n].review[0].rate;
 
-        return (
-            this.state.selVolReports.map(rep => {
-                
+            if(revSub === this.state.loggedInAccount._id) {
                 return (
-                    <li key={rep._id}>
-                        <p><strong>{authName}</strong></p>
-                        {rep.text.map((res, i) => {
-                            return (
-                                <div key={i}>
-                                    <p><strong>Report:</strong> {res.report}</p>
-                                    <p><strong>Posted on:</strong>{res.createdAt}</p>
-                                </div>
-                            )
-                        })}
+                    <li key={n}>
+                        <p><strong>Rate:</strong> {rate}</p>
+                        <p><strong>Review:</strong> {text}</p>
+                        <p><small><strong>Created on:</strong> {date}</small></p>
                     </li>
-                );
-            })
-        );
+                )
+            }
+        }
     }
 
     render(){
-        console.log('ALL REPORTS:', this.state.reports);
-        console.log('Assigned Volunteers:', this.state.assignedVolunteers);
-        console.log('Selected Volunter:',this.state.selectedVolunteer);
+        // console.log('ALL REVIEWS:', this.state.reviews);
+        // console.log('Assigned Users:', this.state.assignedUsers);
+        // console.log('Selected User:',this.state.selectedUser);
         return(
             <Div mainContainer>
 
                 <Div titleContainer>
-                    <h2>Assigned Volunteers</h2>
-                    <Div editBtn>
+                    <h2>Assigned Users</h2>
+                    {/* <Div editBtn>
                         <Link to={{
                             pathname: `/user/${this.state.loggedInAccount._id}/edit`,
                             state: {
@@ -335,23 +298,23 @@ export default class AssignedVolunteers extends Component {
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
-                    </Div>
+                    </Div> */}
                 </Div>
 
                 <Div info>
                     <Div leftInfo>
-                    {this.props.loggedInAccount && this.state.assignedVolunteers.map(vol => {
+                    {this.props.loggedInAccount && this.state.assignedUsers.map(user => {
                         return (
-                            <Ul lista key={vol._id}>
+                            <Ul lista key={user._id}>
                                 <li className="volList">
-                                    <a className="aLink" href="#" onClick={this.selectedVol.bind(this, vol)}>
+                                    <a className="aLink" href="#information" onClick={this.selectedUser.bind(this, user)}>
                                         <Div banner>
                                             <span>
                                                 <strong>
-                                                    {vol.firstName} {vol.lastName}
+                                                    {user.firstName} {user.lastName}
                                                 </strong>
                                             </span>
-                                            <RoundedPicture pic={vol.profilePicture} size='3em' />
+                                            <RoundedPicture pic={user.profilePicture} size='3em' />
                                         </Div>
                                     </a>
                                 </li>
@@ -363,51 +326,40 @@ export default class AssignedVolunteers extends Component {
                     <Div rightInfo>
                         <Tabs defaultActiveKey="profile" id="information">
                             <Tab className="tab" eventKey="profile" title="Profile" id="informationProfile">
-                                <h5>Volunteer Details</h5>
-                                <p><strong>Name:</strong> {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</p>
-                                <p><strong>Age:</strong> {this.state.selectedVolunteer.age}</p>
-                                <p><strong>Occupation:</strong> {this.state.selectedVolunteer.occupation}</p>
-                                <ul id="assVolSkills">
-                                    <strong>Skills:</strong>
-                                    {this.state.skills && this.state.skills.map(skill => (<li key={skill}>{skill}</li>))}
+                                <h5>User Details</h5>
+                                <p><strong>Name:</strong> {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</p>
+                                <p><strong>Age:</strong> {this.state.selectedUser.age}</p>
+                                <p><strong>Occupation:</strong> {this.state.selectedUser.occupation}</p>
+                                <ul id="assVolNeeds">
+                                    <strong>Needs:</strong>
+                                    {this.state.needs && this.state.needs.map(skill => (<li key={skill}>{skill}</li>))}
                                 </ul>
-                                <p><strong>About:</strong> {this.state.selectedVolunteer.aboutMe}</p>
+                                <p><strong>User Notes:</strong> {this.state.selectedUser.notes}</p>
                             </Tab>
-                            <Tab className="tab" eventKey="schedule" title="Schedule" id="informationSchedule">
+                            <Tab className="tab" eventKey="schedule-preferences" title="Schedule Preferences" id="informationSchedule">
                                 <ol>
-                                    <h5>Availability</h5>
-                                    {this.state.availablePeriods && this.state.availablePeriods.map(per => (<li key={per}>{per}</li>))}
+                                    <h5>Schedule Preferences</h5>
+                                    {this.state.preferedPeriods && this.state.preferedPeriods.map(per => (<li key={per}>{per}</li>))}
                                 </ol>
                             </Tab>
-                            <Tab className="tab" eventKey="reports" title="Reports" id="informationReports">
-                                <h5>Your Reports</h5>
+                            <Tab className="tab" eventKey="reviews" title="Reviews" id="informationReviews">
+                                <p><strong>Your average rate:</strong> {this.state.averageRate}</p>
+                                <h5>Your Reviews</h5>
                                 <ol>
-                                    {this.showReports()}
+                                    {this.showReviews()}
                                 </ol>
                             </Tab>
-                            <Tab className="tab" eventKey="review" title="Review">
+                            <Tab className="tab" eventKey="report" title="Report">
                                 <div>
-                                    <h5>Rate the volunteer {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</h5>
-                                    <form onSubmit={this.handleReviewSubmit}>
-                                        <label htmlFor="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
-                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} onChange={this.handleChange} hidden/> <br/>
-                                        <label htmlFor="subject">Subject: {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</label>
-                                        <input type="text" name="subject" id="subject" value={this.state.selectedVolunteer._id} onChange={this.handleChange} hidden/> <br/>
-                                        <label>From 1 to 5 (1 beeing bad and 5 beeing awsome) how do you rate the volunteer?</label> <br/>
-                                        <label htmlFor="one">1</label>
-                                        <input className="radio" type="radio" id="one" name="rate" value="1" onChange={this.handleChange}/>
-                                        <label htmlFor="two">2</label>
-                                        <input className="radio" type="radio" id="two" name="rate" value="2"onChange={this.handleChange}/>
-                                        <label htmlFor="three">3</label>
-                                        <input className="radio" type="radio" id="three" name="rate" value="3" onChange={this.handleChange}/>
-                                        <label htmlFor="fuor">4</label>
-                                        <input className="radio" type="radio" id="fuor" name="rate" value="4" onChange={this.handleChange}/>
-                                        <label htmlFor="five">5</label>
-                                        <input className="radio" type="radio" id="five" name="rate" value="5" onChange={this.handleChange}/>
-                                        <br />
+                                    <h5>Your report on the visit to the user {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</h5>
+                                    <form onSubmit={this.handleFormSubmit}>
+                                        <label for="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
+                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} hidden /> <br/>
+                                        <label for="subject">Subject: {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</label>
+                                        <input type="text" name="subject" id="subject" value={this.state.selectedUser._id} hidden /> <br/>
 
-                                        <label htmlFor="text">Your inpressions here:</label> <br />
-                                        <textarea name="text" id="text" cols="150" rows="10" onChange={this.handleChange}></textarea>
+                                        <label for="report">Your impressions here:</label> <br />
+                                        <textarea name="report" id="report" cols="150" rows="10" value={this.state.report} onChange={this.handleChange}></textarea>
 
                                         <br />
 
@@ -417,6 +369,7 @@ export default class AssignedVolunteers extends Component {
                                 </div>
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
+                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedUser.address} volName={this.state.selectedUser.firstName}/>
                             </Tab>
                         </Tabs>
                     </Div>
