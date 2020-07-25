@@ -19,12 +19,16 @@ export class GoogleMap extends Component {
         this.googleAPIGeocodingRequest();
     }
 
-    componentDidUpdate(){
-        this.googleAPIGeocodingRequest();
+    componentDidUpdate(prevProps){
+        if (this.props !== prevProps) {
+            this.googleAPIGeocodingRequest();
+        }
+        // if(this.state.)
     }
 
 
     googleAPIGeocodingRequest = () => {
+        if(this.props.userLocation && this.props.volLocation){
         const userAddress = this.props.userLocation;
         const userFormattedAddress = userAddress.split(' ').join('+');
         const volAddress = this.props.volLocation;
@@ -62,6 +66,7 @@ export class GoogleMap extends Component {
             .catch(err => {
                 console.log('Error while getting info from Google API', err);
             })
+        }
     }
 
     displayMarkers = () => {
