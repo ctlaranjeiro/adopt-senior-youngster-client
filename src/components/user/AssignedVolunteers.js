@@ -51,7 +51,7 @@ const Div = styled.div `
     `}
     ${props => props.leftInfo && css`
         width: 15%;
-        height: auto;
+        height: 100%;
         margin-left: 20px;
         text-align: center;
     `}
@@ -410,7 +410,7 @@ export default class AssignedVolunteers extends Component {
                                     <ToastContainer />
                                 </div>
                             </Tab>
-                            <Tab className="tab" eventKey="location" title="Location">
+                            <Tab className="tab mapTab" eventKey="location" title="Location">
                                 <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedVolunteer.address} volName={this.state.selectedVolunteer.firstName}/>
                             </Tab>
                         </Tabs>

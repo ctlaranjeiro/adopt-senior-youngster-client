@@ -216,7 +216,7 @@ li {
 }
 
 .tab {
-  height: 32rem;
+  height: 100%;
   text-align: left;
   padding: 1.5em 1em;
 }
@@ -250,4 +250,15 @@ li {
 ol {
   padding: 0;
   margin: 0;
+}
+
+.mapTab {
+  position: relative;
+}
+
+.maps {
+  position: absolute;
+  top: -180px;
+  left: 0;
+  /* transform: translateY(-50); */
 }
