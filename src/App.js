@@ -15,6 +15,8 @@ import LandingPage from './components/LandingPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FooterComponent from './components/FooterComponent';
 import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 class App extends Component {
   state = {

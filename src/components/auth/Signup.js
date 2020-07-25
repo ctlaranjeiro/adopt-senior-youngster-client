@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AuthService from './auth-service';
 import { Form, Button, Col } from 'react-bootstrap';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 class Signup extends Component {
     state = {
@@ -59,7 +61,6 @@ class Signup extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
-        this.setState({ signingUp: true });
 
         console.log('accountType:', this.state.accountType);
 
@@ -94,9 +95,13 @@ class Signup extends Component {
             const uploadData = new FormData();
             uploadData.append("profilePicture", this.state.file);
 
-            axios.post(`${process.env.REACT_APP_SERVER}/api/checkIfRegistered`, email)
+            axios.post(`${process.env.REACT_APP_SERVER}/api/checkIfRegistered`, {email: email})
                 .then(responseFromAPI => {
-                    //console.log('checkIfRegistered:', responseFromAPI);
+                    // console.log('checkIfRegistered:', responseFromAPI);
+
+                    this.setState({ 
+                        signingUp: true,
+                    });
 
                     axios.post(`${process.env.REACT_APP_SERVER}/api/upload`, uploadData)
                         .then((response) => {
@@ -133,53 +138,102 @@ class Signup extends Component {
                                 emergEmail,
                                 emergAddress
                             )
-                            .then(response => {
-                                //Set the whole application with the user that just loggedin
-                                this.props.setCurrentAccount(response);
-                                localStorage.setItem("loggedin", true);
-                                //the line of code above lifts the state up to app.js
-                
+                            .then(response => {   
                                 this.setState({ 
-                                    email: '',
-                                    password: '',
-                                    firstName: '',
-                                    lastName: '',
-                                    gender: '',
-                                    birthDate: '',
-                                    address: '',
-                                    phoneNumber: '',
-                                    profilePicture: '',
-                                    morning: '',
-                                    afternoon: '',
-                                    evening: '',
-                                    night: '',
-                                    overNight: '',
-                                    fullDay: '',
-                                    healthCare: '',
-                                    houseCare: '',
-                                    displacements: '',
-                                    grocery: '',
-                                    pupil: '',
-                                    emergFirstName: '',
-                                    emergLastName: '',
-                                    emergPhoneNumber: '',
-                                    emergEmail: '',
-                                    emergAddress: ''
-                                })
-                                //redirect the user
-                                this.props.history.push(`/user/${response._id}`);
+                                    signingUp: true
+                                }, () => {
+                                    setTimeout(() => {
+                                        //Set the whole application with the user that just loggedin
+                                        this.props.setCurrentAccount(response);
+                                        localStorage.setItem("loggedin", true);
+                                        //the line of code above lifts the state up to app.js
+
+                                        this.setState({ 
+                                            email: '',
+                                            password: '',
+                                            firstName: '',
+                                            lastName: '',
+                                            gender: '',
+                                            birthDate: '',
+                                            address: '',
+                                            phoneNumber: '',
+                                            profilePicture: '',
+                                            morning: '',
+                                            afternoon: '',
+                                            evening: '',
+                                            night: '',
+                                            overNight: '',
+                                            fullDay: '',
+                                            healthCare: '',
+                                            houseCare: '',
+                                            displacements: '',
+                                            grocery: '',
+                                            pupil: '',
+                                            emergFirstName: '',
+                                            emergLastName: '',
+                                            emergPhoneNumber: '',
+                                            emergEmail: '',
+                                            emergAddress: ''
+                                        });
+    
+                                        //redirect the user
+                                        this.props.history.push(`/user/${response._id}`);
+                                    }, 1500)
+                                });
                             })
                             .catch(err => {
-                                console.log('Error while signing up user:', err);
+                                // console.log('Error while signing up user:', err.response);
+                                this.setState({ 
+                                    signingUp: false,
+                                });
+                                if(err.response.data.message) {
+                                    toast.error(err.response.data.message, {
+                                        position: "top-center",
+                                        autoClose: 5000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                    });
+                                }
                             });
                             
                         })
                         .catch(err => {
-                            console.log('Error uploading image file', err);
+                            // console.log('Error uploading image file', err.response);
+                            this.setState({ 
+                                signingUp: false,
+                            });
+                            if(err.response.status === 500) {
+                                toast.error('Choose a profile picture', {
+                                    position: "top-center",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                });
+                            }
                         });
                 })
                 .catch(err => {
                     console.log('Check if email is registered:', err.response.data.message);
+                    this.setState({ 
+                        signingUp: false,
+                    });
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message+'.', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }
 
@@ -211,9 +265,13 @@ class Signup extends Component {
             const uploadData = new FormData();
             uploadData.append("profilePicture", this.state.file);
 
-            axios.post(`${process.env.REACT_APP_SERVER}/api/checkIfRegistered`, email)
+            axios.post(`${process.env.REACT_APP_SERVER}/api/checkIfRegistered`, {email: email})
                 .then(responseFromAPI => {
-                    //console.log('checkIfRegistered:', responseFromAPI);
+                    // console.log('checkIfRegistered:', responseFromAPI);
+
+                    this.setState({ 
+                        signingUp: true,
+                    });
 
                     axios.post(`${process.env.REACT_APP_SERVER}/api/upload`, uploadData)
                         .then((response) => {
@@ -248,49 +306,100 @@ class Signup extends Component {
                                 aboutMe
                             )
                             .then(response => {
-                                //Set the whole application with the user that just loggedin
-                                this.props.setCurrentAccount(response);
-                                localStorage.setItem("loggedin", true);
-                                //the line of code above lifts the state up to app.js
+                                this.setState({ 
+                                    signingUp: true
+                                }, () => {
+                                    setTimeout(() => {
+                                        //Set the whole application with the user that just loggedin
+                                        this.props.setCurrentAccount(response);
+                                        localStorage.setItem("loggedin", true);
+                                        //the line of code above lifts the state up to app.js
+                                        
+                                        this.setState({
+                                            email: '',
+                                            password: '',
+                                            firstName: '',
+                                            lastName: '',
+                                            gender: '',
+                                            birthDate: '',
+                                            address: '',
+                                            volPhoneNumber: '',
+                                            occupation: '',
+                                            profilePicture: '',
+                                            morning: '',
+                                            afternoon: '',
+                                            evening: '',
+                                            night: '',
+                                            overNight: '',
+                                            fullDay: '',
+                                            healthCare: '',
+                                            houseCare: '',
+                                            displacements: '',
+                                            grocery: '',
+                                            mentor: '',
+                                            aboutMe: ''
+                                        });
+
+                                        //redirect the user
+                                        this.props.history.push(`/volunteer/${response._id}`);
+                                    }, 1500)
+                                });
                 
-                                this.setState({
-                                    email: '',
-                                    password: '',
-                                    firstName: '',
-                                    lastName: '',
-                                    gender: '',
-                                    birthDate: '',
-                                    address: '',
-                                    volPhoneNumber: '',
-                                    occupation: '',
-                                    profilePicture: '',
-                                    morning: '',
-                                    afternoon: '',
-                                    evening: '',
-                                    night: '',
-                                    overNight: '',
-                                    fullDay: '',
-                                    healthCare: '',
-                                    houseCare: '',
-                                    displacements: '',
-                                    grocery: '',
-                                    mentor: '',
-                                    aboutMe: ''
-                                })
-                                //redirect the user
-                                this.props.history.push(`/volunteer/${response._id}`);
+                                
                             })
                             .catch(err => {
-                                console.log('Error while signing up volunteer:', err);
+                                // console.log('Error while signing up volunteer:', err);
+                                this.setState({ 
+                                    signingUp: false,
+                                });
+                                if(err.response.data.message) {
+                                    toast.error(err.response.data.message, {
+                                        position: "top-center",
+                                        autoClose: 5000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                    });
+                                }
                             });
                             
                         })
                         .catch(err => {
-                            console.log('Error uploading image file', err);
+                            // console.log('Error uploading image file', err.response);
+                            this.setState({ 
+                                signingUp: false,
+                            });
+                            if(err.response.status === 500) {
+                                toast.error('Choose a profile picture', {
+                                    position: "top-center",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                });
+                            }
                         });
                 })
                 .catch(err => {
                     console.log('Check if email is registered:', err.response.data.message);
+                    this.setState({ 
+                        signingUp: false,
+                    });
+                    if(err.response.data.message) {
+                        toast.error(err.response.data.message+'.', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 });
         }
     }
@@ -310,7 +419,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" pattern=".{6,}" required title="6 characters minimum" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
                                     <Form.Text className="text-muted">
                                         Password length must be at least 6 characters
                                     </Form.Text>
@@ -319,30 +428,30 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} required />
+                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} required />
+                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} required />
+                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleChange} required/>
+                                    <Form.Control type="number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleChange}/>
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridGender">
                                     <Form.Label>Gender</Form.Label>
-                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom required>
+                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom>
                                     <option value="" disabled selected>Select</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
@@ -351,7 +460,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridDate">
                                     <Form.Label>Birthdate</Form.Label>
-                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} required/>
+                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange}/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
@@ -384,21 +493,21 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="emergFirstName" value={this.state.emergFirstName} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="emergFirstName" value={this.state.emergFirstName} onChange={this.handleChange}/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicEmergLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="emergLastName" value={this.state.emergLastName} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="emergLastName" value={this.state.emergLastName} onChange={this.handleChange}/>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergEmail">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" name="emergEmail" value={this.state.emergEmail} onChange={this.handleChange} required/>
+                                    <Form.Control type="email" name="emergEmail" value={this.state.emergEmail} onChange={this.handleChange}/>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicEmergPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="emergPhoneNumber" value={this.state.emergPhoneNumber} onChange={this.handleChange} required/>
+                                    <Form.Control type="number" name="emergPhoneNumber" value={this.state.emergPhoneNumber} onChange={this.handleChange}/>
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
@@ -407,7 +516,7 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmergAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="emergAddress" value={this.state.emergAddress} onChange={this.handleChange}/>
                                 </Form.Group>
                             </Form.Row>
                             
@@ -426,6 +535,7 @@ class Signup extends Component {
                             
                         </Form>
                     </div>
+                    <ToastContainer />
                 </div>
             )
         }
@@ -440,11 +550,11 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicEmail">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleChange} required />
+                                    <Form.Control type="email" name="email" value={this.state.email} onChange={this.handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" pattern=".{6,}" required title="6 characters minimum" name="password" value={this.state.password} onChange={this.handleChange} />
+                                    <Form.Control type="password" name="password" value={this.state.password} onChange={this.handleChange} />
                                     <Form.Text className="text-muted">
                                         Password length must be at least 6 characters
                                     </Form.Text>
@@ -453,27 +563,27 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicFirstName">
                                     <Form.Label>First Name</Form.Label>
-                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicLastName">
                                     <Form.Label>Last Name</Form.Label>
-                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicAddress">
                                     <Form.Label>Address</Form.Label>
-                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} required/>
+                                    <Form.Control type="text" name="address" value={this.state.address} onChange={this.handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formBasicOccupation">
                                     <Form.Label>Occupation</Form.Label>
-                                    <Form.Control type="text" name="occupation" value={this.state.occupation} onChange={this.handleChange} />
+                                    <Form.Control type="text" name="occupation" placeholder="optional" value={this.state.occupation} onChange={this.handleChange} />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPhoneNumber">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control type="number" name="volPhoneNumber" value={this.state.volPhoneNumber} onChange={this.handleChange} required/>
+                                    <Form.Control type="number" name="volPhoneNumber" value={this.state.volPhoneNumber} onChange={this.handleChange} />
                                     <Form.Text className="text-muted">
                                         Phone number must have 9 digits
                                     </Form.Text>
@@ -482,7 +592,7 @@ class Signup extends Component {
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridGender">
                                     <Form.Label>Gender</Form.Label>
-                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom required>
+                                    <Form.Control as="select" name="gender" value={this.state.value} onChange={this.handleChange} custom >
                                     <option value="" disabled selected>Select</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
@@ -491,7 +601,7 @@ class Signup extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridDate">
                                     <Form.Label>Birthdate</Form.Label>
-                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} required/>
+                                    <Form.Control type="date" name="birthDate" value={this.state.birthDate} onChange={this.handleChange} />
                                 </Form.Group>
                             </Form.Row>
                             <Form.Group>
@@ -519,7 +629,7 @@ class Signup extends Component {
                             </div>
                             <Form.Group controlId="formControlTextarea">
                                 <Form.Label>About Me:</Form.Label>
-                                <Form.Control as="textarea" rows="3" maxLength="250" name="aboutMe" value={this.state.aboutMe} onChange={this.handleChange} />
+                                <Form.Control as="textarea" rows="3" maxLength="250" name="aboutMe" placeholder="optional" value={this.state.aboutMe} onChange={this.handleChange} />
                             </Form.Group>
                             
                             <div className="center-btn">
@@ -537,6 +647,7 @@ class Signup extends Component {
                             
                         </Form>
                     </div>
+                    <ToastContainer />
                 </div>
             )
         }
