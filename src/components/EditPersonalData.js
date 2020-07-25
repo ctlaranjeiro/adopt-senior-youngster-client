@@ -234,7 +234,7 @@ class EditPersonalData extends Component{
                         <Div aboutMe>
                             <H6>About Me</H6>
                             <Form.Group controlId="formControlTextarea">
-                                <Form.Control as="textarea" rows="5" maxLength="250" name="notes" value={this.state.aboutMe} onChange={this.handleChange} />
+                                <Form.Control as="textarea" rows="5" maxLength="250" name="aboutMe" value={this.state.aboutMe} onChange={this.handleChange} />
                             </Form.Group>
                         </Div>
                         {!this.state.success &&
