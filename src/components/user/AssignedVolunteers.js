@@ -8,7 +8,6 @@ import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import GoogleMap from '../GoogleMap';
-// import { ToastContainer, toast } from 'react-toastify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -341,7 +340,7 @@ export default class AssignedVolunteers extends Component {
                         return (
                             <Ul lista key={vol._id}>
                                 <li className="volList">
-                                    <a className="aLink" href="#" onClick={this.selectedVol.bind(this, vol)}>
+                                    <a className="aLink" href="#information" onClick={this.selectedVol.bind(this, vol)}>
                                         <Div banner>
                                             <span>
                                                 <strong>
@@ -385,7 +384,7 @@ export default class AssignedVolunteers extends Component {
                             <Tab className="tab" eventKey="review" title="Review">
                                 <div>
                                     <h5>Rate the volunteer {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</h5>
-                                    <form onSubmit={this.handleReviewSubmit}>
+                                    <form onSubmit={this.handleFormSubmit}>
                                         <label htmlFor="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
                                         <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} onChange={this.handleChange} hidden/> <br/>
                                         <label htmlFor="subject">Subject: {this.state.selectedVolunteer.firstName} {this.state.selectedVolunteer.lastName}</label>
@@ -394,7 +393,7 @@ export default class AssignedVolunteers extends Component {
                                         <label htmlFor="one">1</label>
                                         <input className="radio" type="radio" id="one" name="rate" value="1" onChange={this.handleChange}/>
                                         <label htmlFor="two">2</label>
-                                        <input className="radio" type="radio" id="two" name="rate" value="2"onChange={this.handleChange}/>
+                                        <input className="radio" type="radio" id="two" name="rate" value="2" onChange={this.handleChange}/>
                                         <label htmlFor="three">3</label>
                                         <input className="radio" type="radio" id="three" name="rate" value="3" onChange={this.handleChange}/>
                                         <label htmlFor="fuor">4</label>

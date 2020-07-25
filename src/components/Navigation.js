@@ -23,11 +23,17 @@ export default class Navigation extends Component {
             })
     }
 
+    assignedUsers = () => {
+        this.service.assignedUsers()
+            .then(() => {
+                this.props.setCurrentAccount();
+            })
+    }
+
 
     render() {
         
         if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'User') {
-            const userVolPath = `/user/${this.props.loggedInAccount._id}/assignedVolunteers`
 
             // console.log('Account:', this.props.loggedInAccount);
             return(
@@ -50,18 +56,19 @@ export default class Navigation extends Component {
         }
         
         if (this.props.loggedInAccount && this.props.loggedInAccount.accountType === 'Volunteer') {
+
             return(
                 <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Brand href="/">
-                    <img className="logo" src="../Logo.png" alt="logo"/>
+                    <img className="logo" src="/../Logo.png" alt="logo"/>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                     <Nav className="foi">
                     
-                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}`}>Profile</Nav.Link>
+                    <Nav.Link href={`/volunteer/${this.props.loggedInAccount._id}`}>Profile</Nav.Link>
                     
-                    <Nav.Link href={`/user/${this.props.loggedInAccount._id}/assignedUser`}>Assigned Users</Nav.Link>
+                    <Nav.Link href={`/volunteer/${this.props.loggedInAccount._id}/assignedUsers`} onClick={this.assignedUsers}>Assigned Users</Nav.Link>
                     <Nav.Link href="/logout" onClick={this.logoutAccount}>LOGOUT</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -93,7 +100,7 @@ export default class Navigation extends Component {
         return(
             <Navbar className="navBar" collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Brand href="/">
-                    <img className="logo" src="../Logo.png" alt="logo"/>
+                    <img className="logo" src="/../Logo.png" alt="logo"/>
                 </Navbar.Brand>
                 <Navbar.Brand className="oi justify-self-end">Hello!</Navbar.Brand>
                 <Navbar.Toggle className="foi" aria-controls="responsive-navbar-nav" />
