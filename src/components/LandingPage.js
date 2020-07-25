@@ -8,11 +8,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const Div = styled.div`
-    ${props => props.mainContainer && css `
-        overflow: auto;
-    `}
     ${props => props.landing && css `
-        background-image: url('../images/carousel-user.jpg');
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3),rgba(255, 255, 255, 0.73)), url('../images/carousel-user.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -24,7 +21,7 @@ const Div = styled.div`
     ${props => props.captions && css `
         width: 30%;
         text-align: left;
-        margin-top: 20vh;
+        margin-top: 10vh;
         margin-left: 10vw;
         margin-bottom: 10vh;
     `}
@@ -53,7 +50,7 @@ export default class LandingPage extends Component {
     
     render() {
         return(
-            <Div mainContainer>
+            <div>
                 <Div landing>
                     <Div captions>
                         <h1 className="caption">For a brighter tomorrow!</h1>
@@ -111,7 +108,7 @@ export default class LandingPage extends Component {
                         </Link>
                     </div> */}
                 </Div>
-            </Div>
+            </div>
         )
     }
 }
