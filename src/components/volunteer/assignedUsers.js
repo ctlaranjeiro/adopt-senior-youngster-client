@@ -88,18 +88,18 @@ export default class AssignedUsers extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
-        const author = this.state.author;
-        const subject = this.state.subject;
+        const { params } = this.props.match;
+        const subject = this.state.selectedUser._id;
         const report = this.state.report;
-        axios.post(`${process.env.REACT_APP_SERVER}/api/volunteer/:id/submitReport`, {author, subject, report}, {withCredentials: true})
+        console.log(this.state);
+        axios.post(`${process.env.REACT_APP_SERVER}/api/volunteer/${params.id}/submitReport`, {subject, report}, {withCredentials: true})
             .then(() => {
                 // this.props.refreshReports();
                 this.setState({
-                    author: '',
                     subject: '',
                     report: ''
                 });
-                toast('Review created!');
+                // toast('Review created!');
             })
     }
 
@@ -266,7 +266,7 @@ export default class AssignedUsers extends Component {
 
                 <Div titleContainer>
                     <h2>Assigned Users</h2>
-                    <Div editBtn>
+                    {/* <Div editBtn>
                         <Link to={{
                             pathname: `/user/${this.state.loggedInAccount._id}/edit`,
                             state: {
@@ -297,7 +297,7 @@ export default class AssignedUsers extends Component {
                         }}>
                         <Button variant="outline-secondary" size="sm"><FiEdit /> Edit Profile</Button>
                         </Link>
-                    </Div>
+                    </Div> */}
                 </Div>
 
                 <Div info>
@@ -352,12 +352,12 @@ export default class AssignedUsers extends Component {
                                 <div>
                                     <h5>Your report on the visit to the user {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</h5>
                                     <form onSubmit={this.handleFormSubmit}>
-                                        <label htmlFor="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
-                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} onChange={this.handleChange} hidden/> <br/>
-                                        <label htmlFor="subject">Subject: {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</label>
-                                        <input type="text" name="subject" id="subject" value={this.state.selectedUser._id} onChange={this.handleChange} hidden/> <br/>
+                                        <label for="author">Author: {this.state.loggedInAccount.firstName} {this.state.loggedInAccount.lastName}</label>
+                                        <input type="text" name="author" id="author" value={this.state.loggedInAccount._id} hidden /> <br/>
+                                        <label for="subject">Subject: {this.state.selectedUser.firstName} {this.state.selectedUser.lastName}</label>
+                                        <input type="text" name="subject" id="subject" value={this.state.selectedUser._id} hidden /> <br/>
 
-                                        <label htmlFor="report">Your inpressions here:</label> <br />
+                                        <label for="report">Your impressions here:</label> <br />
                                         <textarea name="report" id="report" cols="150" rows="10" value={this.state.report} onChange={this.handleChange}></textarea>
 
                                         <br />
