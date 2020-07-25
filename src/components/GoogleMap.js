@@ -3,8 +3,8 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import axios from 'axios';
 
 const mapStyles = {
-  width: '800px',
-  height: '500px'
+  width: '65%',
+  height: '65%'
 };
 
 export class GoogleMap extends Component {

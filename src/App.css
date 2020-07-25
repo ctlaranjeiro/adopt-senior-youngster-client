@@ -217,16 +217,16 @@ li {
 }
 
 .tab {
-  height: 40rem;
+  height: 32rem;
   text-align: left;
-  padding: 1em;
+  padding: 1.5em 1em;
 }
 .tab h5 {
   margin-bottom: 2em;
 }
 
 .volList {
-  padding: 5em 0;
+  padding: 2.5em 0;
 }
 
 #assVolSkills {
@@ -246,4 +246,9 @@ li {
 .radio {
   margin-left: 2px;
   margin-right: 7px;
+}
+
+ol {
+  padding: 0;
+  margin: 0;
 }
