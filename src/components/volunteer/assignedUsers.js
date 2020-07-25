@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import RoundedPicture from '../RoundedPicture';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { FiEdit } from "react-icons/fi";
+// import { Link } from 'react-router-dom';
+// import { Button } from 'react-bootstrap';
+// import { FiEdit } from "react-icons/fi";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GoogleMap from '../GoogleMap';
 
 
 const Div = styled.div `
@@ -368,6 +369,7 @@ export default class AssignedUsers extends Component {
                                 </div>
                             </Tab>
                             <Tab className="tab" eventKey="location" title="Location">
+                                <GoogleMap userLocation={this.state.loggedInAccount.address} volLocation={this.state.selectedUser.address} volName={this.state.selectedUser.firstName}/>
                             </Tab>
                         </Tabs>
                     </Div>
